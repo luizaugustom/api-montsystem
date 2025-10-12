@@ -1,0 +1,113 @@
+[31m[Nest] 21116  - [39m11/10/2025, 22:03:06 [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3001[39m[38;5;3m +2ms[39m
+Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at ExpressAdapter.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\platform-express\adapters\express-adapter.js:88:32)
+    at C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:180:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:169:16)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (C:\Users\Luiz\www\api-montsystem\src\main.ts:54:3)
+[31m[Nest] 27332  - [39m11/10/2025, 22:06:15 [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3001[39m[38;5;3m +2ms[39m
+Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at ExpressAdapter.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\platform-express\adapters\express-adapter.js:88:32)
+    at C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:180:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:169:16)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (C:\Users\Luiz\www\api-montsystem\src\main.ts:54:3)[31m[Nest] 30388  - [39m11/10/2025, 22:06:25 [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3001[39m[38;5;3m +2ms[39m
+Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at ExpressAdapter.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\platform-express\adapters\express-adapter.js:88:32)
+    at C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:180:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:169:16)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (C:\Users\Luiz\www\api-montsystem\src\main.ts:54:3)[31m[Nest] 30108  - [39m11/10/2025, 22:08:13 [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3001[39m[38;5;3m +3ms[39m
+Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at ExpressAdapter.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\platform-express\adapters\express-adapter.js:88:32)
+    at C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:180:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:169:16)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (C:\Users\Luiz\www\api-montsystem\src\main.ts:54:3)[31m[Nest] 9352  - [39m11/10/2025, 22:10:21 [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3001[39m[38;5;3m +6ms[39m
+Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at ExpressAdapter.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\platform-express\adapters\express-adapter.js:88:32)
+    at C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:180:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:169:16)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (C:\Users\Luiz\www\api-montsystem\src\main.ts:54:3)
+[31m[Nest] 6292  - [39m11/10/2025, 22:11:56 [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3001[39m[38;5;3m +3ms[39m
+Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at ExpressAdapter.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\platform-express\adapters\express-adapter.js:88:32)
+    at C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:180:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:169:16)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (C:\Users\Luiz\www\api-montsystem\src\main.ts:54:3)
+[31m[Nest] 9212  - [39m11/10/2025, 22:12:06 [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3001[39m[38;5;3m +1ms[39m
+Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at ExpressAdapter.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\platform-express\adapters\express-adapter.js:88:32)
+    at C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:180:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:169:16)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (C:\Users\Luiz\www\api-montsystem\src\main.ts:54:3)
+[31m[Nest] 18428  - [39m11/10/2025, 22:12:14 [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3001[39m[38;5;3m +3ms[39m
+Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at ExpressAdapter.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\platform-express\adapters\express-adapter.js:88:32)
+    at C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:180:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:169:16)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (C:\Users\Luiz\www\api-montsystem\src\main.ts:54:3)
+[31m[Nest] 14936  - [39m11/10/2025, 22:12:37 [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3001[39m[38;5;3m +2ms[39m
+Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at ExpressAdapter.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\platform-express\adapters\express-adapter.js:88:32)
+    at C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:180:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:169:16)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (C:\Users\Luiz\www\api-montsystem\src\main.ts:54:3)
+3)
+www\api-montsystem\node_modules\@nestjs\core\nest-application.js:180:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:169:16)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (C:\Users\Luiz\www\api-montsystem\src\main.ts:54:3)
+[31m[Nest] 19316  - [39m11/10/2025, 22:12:37 [31m  ERROR[39m [38;5;3m[NestApplication] [39m[31mError: listen EADDRINUSE: address already in use :::3001[39m[38;5;3m +2ms[39m
+Error: listen EADDRINUSE: address already in use :::3001
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at ExpressAdapter.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\platform-express\adapters\express-adapter.js:88:32)
+    at C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:180:30
+    at new Promise (<anonymous>)
+    at NestApplication.listen (C:\Users\Luiz\www\api-montsystem\node_modules\@nestjs\core\nest-application.js:169:16)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at bootstrap (C:\Users\Luiz\www\api-montsystem\src\main.ts:54:3)

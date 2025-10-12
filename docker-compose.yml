@@ -1,0 +1,76 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-montsystem}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+      notification:
+        condition: service_started
+    env_file: .env
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: ${POSTGRES_USER:-postgres}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      DATABASE_NAME: ${POSTGRES_DB:-montsystem}
+    ports:
+      - '3000:3000'
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  notification:
+    build: ./services/notification
+    ports:
+      - '4000:4000'
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4000/events || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  db-backup:
+    image: alpine:3.18
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - db_backups:/backups
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      apk add --no-cache postgresql-client bash curl && \
+      export PGPASSWORD=${POSTGRES_PASSWORD:-postgres} && \
+      while true; do \
+        TIMESTAMP=$(date +%Y%m%d%H%M); \
+        pg_dump -h db -U ${POSTGRES_USER:-postgres} -F c -d ${POSTGRES_DB:-montsystem} -f /backups/montsystem-${TIMESTAMP}.dump || true; \
+        # remove backups older than 7 days
+        find /backups -type f -mtime +7 -name '*.dump' -delete || true; \
+        sleep 10800; \
+      done
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+
+volumes:
+  db_data:
+  db_backups:

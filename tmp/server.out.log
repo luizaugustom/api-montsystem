@@ -1,0 +1,974 @@
+
+> api-montsystem@0.1.0 start:dev
+> ts-node-dev --respawn --transpile-only src/main.ts
+
+[INFO] 22:00:34 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +75ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +135ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +44ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +4ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6976  - [39m11/10/2025, 22:00:38 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +6ms[39m
+API listening on http://localhost:3001
+[INFO] 22:02:56 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\services\nfse-webservice.service.ts has been modified
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +252ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +6ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +372ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +84ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +7ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22492  - [39m11/10/2025, 22:03:01 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +8ms[39m
+[ERROR] 22:03:01 Error: listen EADDRINUSE: address already in use :::3001
+[INFO] 22:03:02 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\services\nfse-webservice.service.ts has been modified
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32m[Nest] 25272  - [39m11/10/2025, [32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +81ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +168ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +8ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +54ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +4ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[Router[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[R[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LO[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LOG[39m[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[R[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 28828  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38;5;3m[NestApplication] [3[32m[Nest] 25272  - [39m11/10/2025, 22:03:06 [32m    LOG[39m [38API listening on http://localhost:3001
+[INFO] 22:05:51 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\nfse.module.ts has been modified
+[32m[Nest] 5908  - [39m11/10/2025, 22:05:55 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 5908  - [39m11/10/2025, 22:05:55 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +77ms[39m
+[32m[Nest] 5908  - [39m11/10/2025, 22:05:55 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 5908  - [39m11/10/2025, 22:05:55 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +4ms[39m
+[32m[Nest] 5908  - [39m11/10/2025, 22:05:55 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +4ms[39m
+[32m[Nest] 5908  - [39m11/10/2025, 22:05:55 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 5908  - [39m11/10/2025, 22:05:55 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 5908  - [39m11/10/2025, 22:05:55 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 5908  - [39m11/10/2025, 22:05:55 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 5908  - [39m11/10/2025, 22:05:55 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initiali[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +3079ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +10ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +38ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16704  - [39m11/10/2025, 22:05:58 [[INFO] 22:06:11 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\services\nfse-webservice.service.ts has been modified
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:14 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +89ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +7ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +150ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +46ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24752  - [39m11/10/2025, 22:06:15 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +7ms[39m
+[ERROR] 22:06:15 Error: listen EADDRINUSE: address already in use :::3001
+[INFO] 22:06:22 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\services\nfse-webservice.service.ts has been modified
+[32m[Nest] 26404  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 26404  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +79m[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +73ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +5ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest[32m[Nest] 26404  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +146ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] [32m[Nest] 26404  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +51ms[39m[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +55ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 13216  - [39m11/10/2025, 22:06:25 [3[INFO] 22:08:09 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\services\nfse-webservice.service.ts has been modified
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:12 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:12 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +73ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:12 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:12 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +5ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:12 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:12 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:12 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:12 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +189ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +11ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +83ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +5ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 24568  - [39m11/10/2025, 22:08:13 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +22ms[39m
+[ERROR] 22:08:13 Error: listen EADDRINUSE: address already in use :::3001
+[INFO] 22:08:16 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\services\nfse-webservice.service.ts has been modified
+[32m[Nest] 10236  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 10236  -[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +68ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +4ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  -[32m[Nest] 10236  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +145ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +41ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9152  - [39m11/10/2025, 22:08:19 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest a[INFO] 22:10:18 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\services\nfse-webservice.service.ts has been modified
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +175ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +5ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +222ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +2ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +68ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9352  - [39m11/10/2025, 22:10:21 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +9ms[39m
+[ERROR] 22:10:21 Error: listen EADDRINUSE: address already in use :::3001
+[INFO] 22:10:24 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\services\nfse-webservice.service.ts has been modified
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +86ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +4ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +164ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +45ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 22732  - [39m11/10/2025, 22:10:27 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +6ms[39m
+API listening on http:/[32m[Nest] 2892[INFO] 22:11:52 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\services\nfse-webservice.service.ts has been modified
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +81ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +6ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +9ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +165ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +64ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 6292  - [39m11/10/2025, 22:11:56 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +9ms[39m
+[ERROR] 22:11:56 Error: listen EADDRINUSE: address already in use :::3001
+[INFO] 22:12:02 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\services\nfse-webservice.service.ts has been modified
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +91ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoad[32m[Nest] 15108  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[In[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +4ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceL[32m[Nest] 15108  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 15108  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 15108  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 15108  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[Insta[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +165ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +7ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32m[32m[Nest] 15108  - [39m11/10/2025, 22:12:06 [32m    LOG[39m[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +50ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCus[32m[Nest] 15108  - [39m11/10/2025, 22:12:06 [32m    LOG[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 9212  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +6ms[39m
+[ERROR] 22:12:06 Error: listen EADDRINUSE: address already in use :::3001
+[INFO] 22:12:10 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\services\nfse-webservice.service.ts has been modified
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +79ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +174ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +44ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 18428  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +4ms[39m
+[ERROR] 22:12:14 Error: listen EADDRINUSE: address already in use :::3001
+[INFO] 22:12:33 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\invoices\invoices.service.ts has been modified
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +91ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3[32m[Nest] 19316  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +108ms[39m
+[32m[Nest] 19316  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 19316  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +6ms[39m
+[32m[Nest] 19316  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 19316  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 19316  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +202ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +50ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14936  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +5ms[39m
+[ERROR] 22:12:37 Error: listen EADDRINUSE: address already in use :::3001
+2m[Nest] 19316  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +4ms[39m
+[ERROR] 22:12:37 Error: listen EADDRINUSE: address already in use :::3001
+InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +146ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +48ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 16468  - [39m11/10/2025, 22:12:06 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +7ms[39m
+[ERROR] 22:12:06 Error: listen EADDRINUSE: address already in use :::3001
+[INFO] 22:12:10 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\nfse\services\nfse-webservice.service.ts has been modified
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +74ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +17ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:13 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +3ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +145ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +44ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +3ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14532  - [39m11/10/2025, 22:12:14 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +7ms[39m
+[ERROR] 22:12:14 Error: listen EADDRINUSE: address already in use :::3001
+[INFO] 22:12:33 Restarting: C:\Users\Luiz\www\api-montsystem\src\modules\invoices\invoices.service.ts has been modified
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +84ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscoveryModule dependencies initialized[39m[38;5;3m +5ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNFeModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mEventEmitterModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:36 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCompanyModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmCoreModule dependencies initialized[39m[38;5;3m +185ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mTypeOrmModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mNfseModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCustomersModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSalesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInvoicesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +42ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +4ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCustomersController {/api/customers}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, POST} route[39m[38;5;3m +2ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/customers/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mSalesController {/api/sales}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/:id, DELETE} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/sales/list-by-month, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mInvoicesController {/api/invoices}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/stats, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/next-number/:series, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, PUT} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/status, PUT} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id, DELETE} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/send-sefaz, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/validate-before-send, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/sefaz-status, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/cancel, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/files, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/invoices/:id/danfe, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mNfseController {/api/nfse}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/rps, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/nfse/consult, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCompanyController {/api/company}:[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/company/certificate-info, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 14540  - [39m11/10/2025, 22:12:37 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +6ms[39m
+API listening on http://localhost:3001

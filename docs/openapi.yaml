@@ -1,0 +1,813 @@
+openapi: 3.0.0
+info:
+  title: API MontsSystem
+  version: 1.0.0
+  description: API para gestão de vendas e clientes
+servers:
+  - url: http://localhost:3001/api
+    description: Servidor de desenvolvimento
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Customer:
+      type: object
+      # ... (schema do Customer existente)
+
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID único da nota fiscal
+        number:
+          type: string
+          description: Número da nota fiscal
+        series:
+          type: string
+          description: Série da nota fiscal
+        type:
+          type: string
+          enum: [nfe, nfce, nfse]
+          description: Tipo da nota fiscal
+          default: nfe
+        accessKey:
+          type: string
+          maxLength: 44
+          description: Chave de acesso da nota fiscal
+          nullable: true
+        status:
+          type: string
+          enum: [draft, pending, sent, authorized, cancelled, rejected]
+          description: Status da nota fiscal
+          default: draft
+        issueDate:
+          type: string
+          format: date
+          description: Data de emissão
+        dueDate:
+          type: string
+          format: date
+          description: Data de vencimento
+          nullable: true
+        totalValue:
+          type: number
+          format: float
+          description: Valor total em reais
+          minimum: 0
+        totalValueCents:
+          type: integer
+          description: Valor total em centavos
+          minimum: 0
+        taxValue:
+          type: number
+          format: float
+          description: Valor dos impostos em reais
+          nullable: true
+          minimum: 0
+        discountValue:
+          type: number
+          format: float
+          description: Valor do desconto em reais
+          nullable: true
+          minimum: 0
+        clientName:
+          type: string
+          description: Nome do cliente
+        clientDocument:
+          type: string
+          description: CPF/CNPJ do cliente
+        clientEmail:
+          type: string
+          format: email
+          description: Email do cliente
+          nullable: true
+        clientAddress:
+          type: string
+          description: Endereço do cliente
+          nullable: true
+        description:
+          type: string
+          description: Descrição dos itens/serviços
+        saleId:
+          type: string
+          format: uuid
+          description: ID da venda relacionada
+          nullable: true
+        protocolNumber:
+          type: string
+          description: Número do protocolo de autorização
+          nullable: true
+        sefazResponse:
+          type: string
+          description: Resposta da SEFAZ
+          nullable: true
+        rejectionReason:
+          type: string
+          description: Motivo de rejeição/cancelamento
+          nullable: true
+        xmlFilePath:
+          type: string
+          description: Caminho do arquivo XML
+          nullable: true
+        pdfFilePath:
+          type: string
+          description: Caminho do arquivo PDF
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Data de criação
+        updatedAt:
+          type: string
+          format: date-time
+          description: Data de atualização
+        sale:
+          $ref: '#/components/schemas/Sale'
+          nullable: true
+      required:
+        - number
+        - series
+        - issueDate
+        - totalValue
+        - clientName
+        - clientDocument
+        - description
+
+    CreateInvoiceRequest:
+      type: object
+      properties:
+        number:
+          type: string
+          description: Número da nota fiscal
+          example: "123"
+        series:
+          type: string
+          description: Série da nota fiscal
+          example: "1"
+        type:
+          type: string
+          enum: [nfe, nfce, nfse]
+          description: Tipo da nota fiscal
+          default: nfe
+        issueDate:
+          type: string
+          format: date
+          description: Data de emissão
+          example: "2025-10-10"
+        dueDate:
+          type: string
+          format: date
+          description: Data de vencimento
+          example: "2025-11-10"
+        totalValue:
+          oneOf:
+            - type: number
+              format: float
+            - type: string
+          description: Valor total (aceita "R$ 1.234,56" ou número)
+          example: "R$ 1.234,56"
+        taxValue:
+          oneOf:
+            - type: number
+              format: float
+            - type: string
+          description: Valor dos impostos
+          example: "123,45"
+        discountValue:
+          oneOf:
+            - type: number
+              format: float
+            - type: string
+          description: Valor do desconto
+          example: "50,00"
+        clientName:
+          type: string
+          description: Nome do cliente
+          example: "João Silva"
+        clientDocument:
+          type: string
+          description: CPF/CNPJ do cliente
+          example: "12345678901"
+        clientEmail:
+          type: string
+          format: email
+          description: Email do cliente
+          example: "joao@email.com"
+        clientAddress:
+          type: string
+          description: Endereço completo do cliente
+          example: "Rua das Flores, 123, São Paulo - SP"
+        description:
+          type: string
+          description: Descrição dos itens/serviços
+          example: "Prestação de serviços de instalação"
+        saleId:
+          type: string
+          format: uuid
+          description: ID da venda relacionada
+      required:
+        - number
+        - series
+        - issueDate
+        - totalValue
+        - clientName
+        - clientDocument
+        - description
+
+    UpdateInvoiceStatusRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [draft, pending, sent, authorized, cancelled, rejected]
+          description: Novo status da nota fiscal
+        accessKey:
+          type: string
+          maxLength: 44
+          description: Chave de acesso da nota fiscal
+        protocolNumber:
+          type: string
+          description: Número do protocolo de autorização
+        sefazResponse:
+          type: string
+          description: Resposta completa da SEFAZ
+        rejectionReason:
+          type: string
+          description: Motivo de rejeição/cancelamento
+      required:
+        - status
+
+    Sale:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID único da venda
+        clientId:
+          type: string
+          description: ID do cliente
+          nullable: true
+        clientName:
+          type: string
+          description: Nome do cliente
+        phone:
+          type: string
+          description: Telefone do cliente
+        cpfOrCnpj:
+          type: string
+          description: CPF ou CNPJ do cliente
+          nullable: true
+        address:
+          type: string
+          description: Endereço do cliente
+          nullable: true
+        saleDate:
+          type: string
+          format: date
+          description: Data da venda
+          nullable: true
+        warrantyEndDate:
+          type: string
+          format: date
+          description: Data de fim da garantia
+          nullable: true
+        productDescription:
+          type: string
+          description: Descrição do produto/serviço
+          nullable: true
+        saleValue:
+          type: number
+          format: float
+          description: Valor da venda em reais
+          nullable: true
+          minimum: 0
+        saleValueCents:
+          type: integer
+          description: Valor da venda em centavos
+          nullable: true
+          minimum: 0
+        isMonthly:
+          type: boolean
+          description: Indica se é uma venda mensal/assinatura
+          default: false
+        entryValue:
+          type: number
+          format: float
+          description: Valor de entrada para clientes mensais
+          nullable: true
+          minimum: 0
+        monthlyValue:
+          type: number
+          format: float
+          description: Valor mensal para clientes de assinatura
+          nullable: true
+          minimum: 0
+        nextPaymentDate:
+          type: string
+          format: date
+          description: Data do próximo pagamento
+          nullable: true
+        contractFile:
+          type: string
+          description: Caminho do arquivo de contrato
+          nullable: true
+        invoiceFile:
+          type: string
+          description: Caminho do arquivo de nota fiscal
+          nullable: true
+      required:
+        - clientName
+        - phone
+        - isMonthly
+
+    CreateSaleRequest:
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: ID do cliente
+        clientName:
+          type: string
+          description: Nome do cliente
+        phone:
+          type: string
+          description: Telefone do cliente
+        cpfOrCnpj:
+          type: string
+          description: CPF ou CNPJ do cliente
+        address:
+          type: string
+          description: Endereço do cliente
+        saleDate:
+          type: string
+          format: date
+          description: Data da venda
+        warrantyEndDate:
+          type: string
+          format: date
+          description: Data de fim da garantia
+        productDescription:
+          type: string
+          description: Descrição do produto/serviço
+        saleValue:
+          oneOf:
+            - type: number
+              format: float
+            - type: string
+          description: Valor da venda (aceita "R$ 1.234,56" ou número)
+          example: "R$ 1.234,56"
+        isMonthly:
+          type: boolean
+          description: Indica se é uma venda mensal/assinatura
+          default: false
+        entryValue:
+          oneOf:
+            - type: number
+              format: float
+            - type: string
+          description: Valor de entrada (aceita formatos monetários)
+          example: "200,00"
+        monthlyValue:
+          oneOf:
+            - type: number
+              format: float
+            - type: string
+          description: Valor mensal (aceita formatos monetários)
+          example: "150,00"
+        nextPaymentDate:
+          type: string
+          format: date
+          description: Data do próximo pagamento
+      required:
+        - clientName
+        - phone
+
+paths:
+  /auth/login:
+    post:
+      summary: Autenticação de usuário
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: luiz
+                password:
+                  type: string
+                  example: "832010pj"
+              required:
+                - username
+                - password
+      responses:
+        '200':
+          description: Login realizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT token
+        '401':
+          description: Credenciais inválidas
+
+  /sales:
+    get:
+      summary: Listar todas as vendas
+      tags:
+        - Sales
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de vendas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sale'
+              examples:
+                vendas_exemplo:
+                  value:
+                    - id: "abc123"
+                      clientId: "cli-1"
+                      clientName: "João Silva"
+                      phone: "11999999999"
+                      saleValue: 1234.56
+                      saleValueCents: 123456
+                      saleDate: "2025-10-01"
+                      isMonthly: false
+                      productDescription: "Instalação X"
+                    - id: "def456"
+                      clientId: "cli-2"
+                      clientName: "Maria Santos"
+                      phone: "11888888888"
+                      isMonthly: true
+                      entryValue: 200.00
+                      monthlyValue: 150.00
+                      nextPaymentDate: "2025-11-01"
+                      productDescription: "Contrato mensal Y"
+
+    post:
+      summary: Criar nova venda
+      tags:
+        - Sales
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSaleRequest'
+            examples:
+              venda_unica:
+                summary: Venda única
+                value:
+                  clientId: "cli-1"
+                  clientName: "João Silva"
+                  phone: "11999999999"
+                  saleValue: "R$ 1.234,56"
+                  saleDate: "2025-10-01"
+                  productDescription: "Instalação X"
+                  isMonthly: false
+              cliente_mensal:
+                summary: Cliente mensal
+                value:
+                  clientId: "cli-2"
+                  clientName: "Maria Santos"
+                  phone: "11888888888"
+                  isMonthly: true
+                  entryValue: "200,00"
+                  monthlyValue: "150,00"
+                  nextPaymentDate: "2025-11-01"
+                  productDescription: "Contrato mensal Y"
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateSaleRequest'
+      responses:
+        '201':
+          description: Venda criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '400':
+          description: Dados inválidos
+        '401':
+          description: Token de autorização inválido
+
+  /sales/{id}:
+    get:
+      summary: Obter venda por ID
+      tags:
+        - Sales
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Dados da venda
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '404':
+          description: Venda não encontrada
+
+    put:
+      summary: Atualizar venda
+      tags:
+        - Sales
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSaleRequest'
+      responses:
+        '200':
+          description: Venda atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '404':
+          description: Venda não encontrada
+
+    delete:
+      summary: Remover venda
+      tags:
+        - Sales
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Venda removida com sucesso
+        '404':
+          description: Venda não encontrada
+
+  /invoices:
+    get:
+      summary: Listar todas as notas fiscais
+      tags:
+        - Invoices
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [draft, pending, sent, authorized, cancelled, rejected]
+          description: Filtrar por status
+        - name: clientDocument
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filtrar por CPF/CNPJ do cliente
+        - name: startDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Data inicial (filtro por data de emissão)
+        - name: endDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Data final (filtro por data de emissão)
+      responses:
+        '200':
+          description: Lista de notas fiscais
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+              examples:
+                notas_fiscais_exemplo:
+                  value:
+                    - id: "nf-123"
+                      number: "123"
+                      series: "1"
+                      type: "nfe"
+                      status: "authorized"
+                      issueDate: "2025-10-10"
+                      totalValue: 1234.56
+                      clientName: "João Silva"
+                      clientDocument: "12345678901"
+        '401':
+          description: Token de autorização inválido
+
+    post:
+      summary: Criar nova nota fiscal
+      tags:
+        - Invoices
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInvoiceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateInvoiceRequest'
+      responses:
+        '201':
+          description: Nota fiscal criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '400':
+          description: Dados inválidos
+        '401':
+          description: Token de autorização inválido
+
+  /invoices/{id}:
+    get:
+      summary: Obter nota fiscal por ID
+      tags:
+        - Invoices
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Dados da nota fiscal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Nota fiscal não encontrada
+
+    put:
+      summary: Atualizar nota fiscal
+      tags:
+        - Invoices
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInvoiceRequest'
+      responses:
+        '200':
+          description: Nota fiscal atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Nota fiscal não encontrada
+
+    delete:
+      summary: Remover nota fiscal
+      tags:
+        - Invoices
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Nota fiscal removida com sucesso
+        '404':
+          description: Nota fiscal não encontrada
+
+  /invoices/{id}/status:
+    patch:
+      summary: Atualizar status da nota fiscal
+      tags:
+        - Invoices
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateInvoiceStatusRequest'
+      responses:
+        '200':
+          description: Status atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Nota fiscal não encontrada
+
+  /invoices/{id}/files:
+    post:
+      summary: Upload de arquivos XML/PDF da nota fiscal
+      tags:
+        - Invoices
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                xmlFile:
+                  type: string
+                  format: binary
+                  description: Arquivo XML da nota fiscal
+                pdfFile:
+                  type: string
+                  format: binary
+                  description: Arquivo PDF da nota fiscal
+      responses:
+        '200':
+          description: Arquivos enviados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        '404':
+          description: Nota fiscal não encontrada
