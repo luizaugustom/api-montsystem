@@ -1,46 +1,34 @@
-import { Injectable } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
-import { NFeConfigService } from '../../modules/nfe/services/nfe-config.service';
-import { Invoice } from '../../modules/invoices/entities/invoice.entity';
+import { Injectable, Logger } from '@nestjs/common';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { ResendService } from './resend.service';
+import { Invoice } from '../../modules/invoices/entities/invoice.entity';
+import { NFeConfigService } from '../../modules/nfe/services/nfe-config.service';
 
 interface EmailOptions {
   to: string;
   subject: string;
   html: string;
-  attachments?: Array<{
-    filename: string;
-    path: string;
-  }>;
+  attachments?: Array<{ filename: string; path: string }>;
 }
 
+/**
+ * EmailService é a fachada usada pelo restante da aplicação. Internamente delega
+ * para ResendService (substitui o antigo nodemailer/SMTP).
+ */
 @Injectable()
 export class EmailService {
-  private transporter!: nodemailer.Transporter;
+  private readonly logger = new Logger(EmailService.name);
 
-  constructor(private nfeConfigService: NFeConfigService) {
-    this.setupTransporter();
-  }
-
-  private setupTransporter() {
-    const config = this.nfeConfigService.getConfig();
-    
-    this.transporter = nodemailer.createTransport({
-      host: config.email.host,
-      port: config.email.port,
-      secure: config.email.secure,
-      auth: {
-        user: config.email.user,
-        pass: config.email.pass
-      }
-    });
-  }
+  constructor(
+    private resend: ResendService,
+    private nfeConfigService: NFeConfigService,
+  ) {}
 
   async sendInvoiceEmail(invoice: Invoice): Promise<boolean> {
     try {
       if (!invoice.clientEmail) {
-        console.warn(`Cliente ${invoice.clientName} não possui email cadastrado`);
+        this.logger.warn(`Cliente ${invoice.clientName} não possui email cadastrado`);
         return false;
       }
 
@@ -52,12 +40,9 @@ export class EmailService {
         const xmlPath = path.join(process.cwd(), 'storage', 'nfe', 'xml', invoice.xmlFilePath);
         try {
           await fs.access(xmlPath);
-          attachments.push({
-            filename: `NFe-${invoice.number}.xml`,
-            path: xmlPath
-          });
+          attachments.push({ filename: `NFe-${invoice.number}.xml`, path: xmlPath });
         } catch {
-          console.warn(`Arquivo XML não encontrado: ${xmlPath}`);
+          this.logger.warn(`Arquivo XML não encontrado: ${xmlPath}`);
         }
       }
 
@@ -66,51 +51,75 @@ export class EmailService {
         const pdfPath = path.join(process.cwd(), 'storage', 'nfe', 'pdf', invoice.pdfFilePath);
         try {
           await fs.access(pdfPath);
-          attachments.push({
-            filename: `NFe-${invoice.number}.pdf`,
-            path: pdfPath
-          });
+          attachments.push({ filename: `NFe-${invoice.number}.pdf`, path: pdfPath });
         } catch {
-          console.warn(`Arquivo PDF não encontrado: ${pdfPath}`);
+          this.logger.warn(`Arquivo PDF não encontrado: ${pdfPath}`);
         }
       }
 
       const emailHtml = this.generateInvoiceEmailTemplate(invoice);
 
-      const emailOptions: EmailOptions = {
+      const res = await this.resend.sendWithFileAttachment({
         to: invoice.clientEmail,
         subject: `Nota Fiscal Eletrônica - ${invoice.number}/${invoice.series} - ${config.company.name}`,
         html: emailHtml,
-        attachments
-      };
+        attachments,
+      });
 
-      await this.sendEmail(emailOptions);
-      
-      console.log(`Email da NFe ${invoice.number} enviado para ${invoice.clientEmail}`);
-      return true;
-
+      if (res.ok) {
+        this.logger.log(`Email da NFe ${invoice.number} enviado para ${invoice.clientEmail}`);
+        return true;
+      }
+      this.logger.warn(`Falha ao enviar email da NFe ${invoice.number}: ${res.error}`);
+      return false;
     } catch (error: any) {
-      console.error(`Erro ao enviar email da NFe ${invoice.number}:`, error.message);
+      this.logger.error(`Erro ao enviar email da NFe ${invoice.number}: ${error.message}`);
       return false;
     }
   }
 
-  async sendEmail(options: EmailOptions): Promise<void> {
-    const mailOptions = {
-      from: this.nfeConfigService.getConfig().email.user,
+  async sendEmail(options: EmailOptions): Promise<boolean> {
+    const res = await this.resend.sendWithFileAttachment({
       to: options.to,
       subject: options.subject,
       html: options.html,
-      attachments: options.attachments
-    };
+      attachments: options.attachments || [],
+    });
+    return res.ok;
+  }
 
-    await this.transporter.sendMail(mailOptions);
+  /**
+   * Envia email genérico (template livre) com texto/HTML e anexos opcionais via path.
+   */
+  async sendCustom(opts: {
+    to: string | string[];
+    subject: string;
+    html: string;
+    text?: string;
+    attachments?: Array<{ filename: string; path: string }>;
+  }): Promise<boolean> {
+    if (opts.attachments && opts.attachments.length > 0) {
+      const res = await this.resend.sendWithFileAttachment({
+        to: opts.to,
+        subject: opts.subject,
+        html: opts.html,
+        attachments: opts.attachments,
+      });
+      return res.ok;
+    }
+    const res = await this.resend.send({
+      to: opts.to,
+      subject: opts.subject,
+      html: opts.html,
+      text: opts.text,
+    });
+    return res.ok;
   }
 
   private generateInvoiceEmailTemplate(invoice: Invoice): string {
     const config = this.nfeConfigService.getConfig();
     const isHomologacao = config.environment === 'homologacao';
-    
+
     return `
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -150,7 +159,7 @@ export class EmailService {
         ` : ''}
 
         <h2>Nota Fiscal Eletrônica</h2>
-        
+
         <div class="nfe-info">
             <div class="nfe-number">NFe ${invoice.number}/${invoice.series}</div>
             <div><strong>Chave de Acesso:</strong> ${invoice.accessKey || 'Gerando...'}</div>
@@ -175,7 +184,7 @@ export class EmailService {
         </table>
 
         <p>Esta nota fiscal foi gerada automaticamente pelo sistema <strong>${config.company.fantasy || config.company.name}</strong>.</p>
-        
+
         <p>Os arquivos XML e PDF da nota fiscal estão anexados a este email. Guarde-os para seus registros contábeis.</p>
 
         <div class="footer">
@@ -189,36 +198,11 @@ export class EmailService {
   }
 
   async testEmailConnection(): Promise<boolean> {
-    try {
-      await this.transporter.verify();
-      return true;
-    } catch (error: any) {
-      console.error('Erro na conexão com servidor de email:', error.message);
-      return false;
-    }
+    return this.resend.isConfigured();
   }
 
   async sendTestEmail(to: string): Promise<boolean> {
-    try {
-      const config = this.nfeConfigService.getConfig();
-      
-      await this.sendEmail({
-        to,
-        subject: 'Teste de Conexão - Mont System',
-        html: `
-          <h2>Teste de Conexão de Email</h2>
-          <p>Este é um email de teste do sistema Mont System.</p>
-          <p><strong>Empresa:</strong> ${config.company.name}</p>
-          <p><strong>Ambiente:</strong> ${config.environment}</p>
-          <p><strong>Data/Hora:</strong> ${new Date().toLocaleString('pt-BR')}</p>
-          <p>Se você recebeu este email, a configuração está funcionando corretamente!</p>
-        `
-      });
-      
-      return true;
-    } catch (error: any) {
-      console.error('Erro ao enviar email de teste:', error.message);
-      return false;
-    }
+    const res = await this.resend.sendTestEmail(to);
+    return res.ok;
   }
 }

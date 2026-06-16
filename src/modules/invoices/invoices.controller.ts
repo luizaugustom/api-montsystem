@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UploadedFiles, UseInterceptors, BadRequestException } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
+import { PermissionsGuard } from '../../shared/guards/permissions.guard';
+import { Permissions } from '../../shared/decorators/permissions.decorator';
 import { InvoicesService } from './invoices.service';
 import { Invoice, InvoiceStatus, InvoiceType } from './entities/invoice.entity';
 import { z } from 'zod';
@@ -50,12 +52,13 @@ const UpdateStatusSchema = z.object({
 });
 
 @Controller('invoices')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, PermissionsGuard)
 export class InvoicesController {
   constructor(private invoicesService: InvoicesService) {}
 
   @Post()
   @UseInterceptors(FilesInterceptor('files'))
+  @Permissions('invoices', 'edit')
   async create(@Body() body: any, @UploadedFiles() files: Express.Multer.File[]) {
     const parsed = CreateInvoiceSchema.parse(body);
     
@@ -88,6 +91,7 @@ export class InvoicesController {
   }
 
   @Get()
+  @Permissions('invoices', 'view')
   async findAll(
     @Query('status') status?: InvoiceStatus,
     @Query('startDate') startDate?: string,
@@ -110,34 +114,40 @@ export class InvoicesController {
   }
 
   @Get('stats')
+  @Permissions('invoices', 'view')
   getStats() {
     return this.invoicesService.getStats();
   }
 
   @Get('next-number/:series')
+  @Permissions('invoices', 'view')
   async getNextNumber(@Param('series') series: string) {
     const nextNumber = await this.invoicesService.generateNextNumber(series);
     return { series, nextNumber };
   }
 
   @Get(':id')
+  @Permissions('invoices', 'view')
   findOne(@Param('id') id: string) {
     return this.invoicesService.findOne(id);
   }
 
   @Put(':id')
+  @Permissions('invoices', 'edit')
   update(@Param('id') id: string, @Body() body: any) {
     const parsed = CreateInvoiceSchema.partial().parse(body);
     return this.invoicesService.update(id, parsed);
   }
 
   @Put(':id/status')
+  @Permissions('invoices', 'edit')
   updateStatus(@Param('id') id: string, @Body() body: any) {
     const parsed = UpdateStatusSchema.parse(body);
     return this.invoicesService.updateStatus(id, parsed.status, parsed);
   }
 
   @Delete(':id')
+  @Permissions('invoices', 'edit')
   remove(@Param('id') id: string) {
     return this.invoicesService.remove(id);
   }
@@ -145,22 +155,26 @@ export class InvoicesController {
   // === ENDPOINTS PARA INTEGRAÇÃO SEFAZ ===
 
   @Post(':id/send-sefaz')
+  @Permissions('invoices', 'edit')
   async sendToSefaz(@Param('id') id: string) {
     return this.invoicesService.sendToSefaz(id);
   }
 
   @Post(':id/validate-before-send')
+  @Permissions('invoices', 'view')
   async validateBeforeSend(@Param('id') id: string) {
     const errors = await this.invoicesService.validateBeforeSend(id);
     return { valid: errors.length === 0, errors };
   }
 
   @Get(':id/sefaz-status')
+  @Permissions('invoices', 'view')
   async consultSefazStatus(@Param('id') id: string) {
     return this.invoicesService.consultSefazStatus(id);
   }
 
   @Post(':id/cancel')
+  @Permissions('invoices', 'edit')
   async cancelNFe(@Param('id') id: string, @Body() body: { justificativa: string }) {
     const justificativa = body.justificativa;
     
@@ -173,6 +187,7 @@ export class InvoicesController {
 
   @Post(':id/files')
   @UseInterceptors(FilesInterceptor('files', 10))
+  @Permissions('invoices', 'edit')
   async uploadFiles(
     @Param('id') id: string,
     @UploadedFiles() files: Express.Multer.File[]
@@ -218,6 +233,7 @@ export class InvoicesController {
   }
 
   @Get(':id/danfe')
+  @Permissions('invoices', 'view')
   async getDanfe(@Param('id') id: string, @Res() res: Response) {
     const fileInfo = await this.invoicesService.getOrGenerateDanfe(id);
     res.setHeader('Content-Type', 'application/pdf');

@@ -8,9 +8,7 @@ import { NFeConfigService } from '../nfe/services/nfe-config.service';
 import { NFeXmlService } from '../nfe/services/nfe-xml.service';
 import { NFeSignatureService } from '../nfe/services/nfe-signature.service';
 import { NFeWebServiceService } from '../nfe/services/nfe-webservice.service';
-import { NfseXmlService } from '../nfse/services/nfse-xml.service';
-import { NfseSignatureService } from '../nfse/services/nfse-signature.service';
-import { NfseWebServiceService } from '../nfse/services/nfse-webservice.service';
+import { FocusNfeService } from '../nfse/services/focus-nfe.service';
 import { DanfeService } from '../nfe/services/danfe.service';
 import { NFeData } from '../nfe/interfaces/nfe.interface';
 import * as fs from 'fs/promises';
@@ -55,10 +53,8 @@ export class InvoicesService {
     private nfeSignatureService: NFeSignatureService,
     private nfeWebServiceService: NFeWebServiceService,
     private danfeService: DanfeService,
-    // NFSe services
-    private nfseXmlService: NfseXmlService,
-    private nfseSignatureService: NfseSignatureService,
-    private nfseWebServiceService: NfseWebServiceService,
+    // NFSe (Focus NFe)
+    private focusNfeService: FocusNfeService,
   ) {}
 
   async create(data: CreateInvoiceData & { items?: Array<{ codigo: string; descricao: string; ncm: string; cfop: string; unidade: string; quantidade: number; valorUnitario: number; icms?: { origem: string; cst: string; aliquota?: number; valor?: number } }> }) {
@@ -288,7 +284,7 @@ export class InvoicesService {
   }
 
   /**
-   * Emite NFSe (nota de serviço) via módulo nfse
+   * Emite NFSe (nota de serviço) via Focus NFe.
    */
   async sendNfse(id: string): Promise<Invoice> {
     const invoice = await this.repo.findOne(id);
@@ -301,23 +297,59 @@ export class InvoicesService {
     // Atualiza status
     await this.updateStatus(id, InvoiceStatus.PENDING);
 
-    // Converter invoice para RPS/NFSe
-    const rpsData = this.convertInvoiceToRps(invoice);
-    const xml = this.nfseXmlService.generateRpsXml(rpsData);
-    const signed = this.nfseSignatureService.signXml(xml);
+    const nfeConfig = this.nfeConfigService.getConfig();
+    const tomadorEndereco = this.parseClientAddress(invoice.clientAddress || '');
 
-    // Salvar XML
-    const xmlPath = await this.saveNfseXmlFile(invoice.id, signed);
-    await this.repo.update(id, { xmlFilePath: xmlPath });
+    const focusPayload = {
+      data_emissao: new Date().toISOString().slice(0, 10),
+      prestador: {
+        cnpj: nfeConfig.company.cnpj.replace(/\D/g, ''),
+        inscricao_municipal: nfeConfig.company.ie || undefined,
+        codigo_municipio: nfeConfig.company.address.cityCode || '3550308',
+      },
+      tomador: {
+        cpf_cnpj: (invoice.clientDocument || '').replace(/\D/g, ''),
+        razao_social: invoice.clientName,
+        email: invoice.clientEmail,
+        endereco: tomadorEndereco
+          ? {
+              logradouro: tomadorEndereco.logradouro,
+              numero: tomadorEndereco.numero,
+              bairro: tomadorEndereco.bairro,
+              cep: tomadorEndereco.cep,
+              uf: tomadorEndereco.uf,
+              codigo_municipio: tomadorEndereco.codigoMunicipio,
+              municipio: tomadorEndereco.cidade,
+            }
+          : undefined,
+      },
+      servico: {
+        valor_servicos: invoice.totalValue,
+        descricao: invoice.description,
+        aliquota: 5, // padrão 5%; pode ser configurado por empresa futuramente
+        iss_retido: false,
+        item_lista_servico: '1.05', // default
+      },
+      outras_informacoes: 'Emitido pelo sistema Mont System',
+    } as any;
 
-    // Enviar para provedor — criamos registro NFSe com invoiceId antes do envio
-    const { res: sendRes, record } = await this.nfseWebServiceService.createRecordAndSend(invoice.id, signed);
-    if (sendRes.success) {
-      await this.updateStatus(id, InvoiceStatus.AUTHORIZED, { sefazResponse: JSON.stringify(sendRes), protocolNumber: sendRes.protocol });
+    const record = await this.focusNfeService.emitir(focusPayload, { invoiceId: Number(id) });
+
+    if (record.status === 'authorized') {
+      await this.updateStatus(id, InvoiceStatus.AUTHORIZED, {
+        protocolNumber: record.protocolo,
+        sefazResponse: record.response,
+      });
       this.events.emit('invoice.authorized', { invoice: await this.repo.findOne(id) });
+    } else if (record.status === 'rejected' || record.status === 'error') {
+      await this.updateStatus(id, InvoiceStatus.REJECTED, {
+        rejectionReason: record.rejectionReason,
+        sefazResponse: record.response,
+      });
+      this.events.emit('invoice.rejected', { invoice: await this.repo.findOne(id), reason: record.rejectionReason });
     } else {
-      await this.updateStatus(id, InvoiceStatus.REJECTED, { rejectionReason: sendRes.message, sefazResponse: JSON.stringify(sendRes) });
-      this.events.emit('invoice.rejected', { invoice: await this.repo.findOne(id), reason: sendRes.message });
+      // processing: deixa em PENDING e avisa o cliente
+      this.events.emit('nfse.processing', { invoiceId: id, ref: record.ref });
     }
 
     return this.findOne(id);
@@ -502,40 +534,21 @@ export class InvoicesService {
 
   /**
    * Converte Invoice para dados de RPS/NFSe
+   * (mantido para compatibilidade com chamadas legadas internas; o fluxo real usa FocusNfeService)
    */
   private convertInvoiceToRps(invoice: Invoice) {
-    const tomador = {
-      cpfCnpj: invoice.clientDocument,
-      nome: invoice.clientName
-    };
-
-    const prestador = {
-      cnpj: this.nfeConfigService.getConfig().company.cnpj.replace(/\D/g, ''),
-      im: this.nfeConfigService.getConfig().company.ie || ''
-    };
-
-    const itens = (invoice.items || []).map(it => ({ descricao: it.descricao, valor: (it.valorTotalCents / 100) }));
-
     return {
       numero: invoice.number,
       serie: invoice.series,
       dataEmissao: invoice.issueDate,
-      prestador,
-      tomador,
-      itens,
-      valores: {
-        total: invoice.totalValueCents / 100
-      }
+      prestador: {
+        cnpj: this.nfeConfigService.getConfig().company.cnpj.replace(/\D/g, ''),
+        im: this.nfeConfigService.getConfig().company.ie || '',
+      },
+      tomador: { cpfCnpj: invoice.clientDocument, nome: invoice.clientName },
+      itens: (invoice.items || []).map((it) => ({ descricao: it.descricao, valor: it.valorTotalCents / 100 })),
+      valores: { total: invoice.totalValueCents / 100 },
     };
-  }
-
-  private async saveNfseXmlFile(invoiceId: string, xmlContent: string): Promise<string> {
-    const storageDir = path.join(process.cwd(), 'storage', 'nfse', 'xml');
-    const fileName = `nfse-${invoiceId}.xml`;
-    const filePath = path.join(storageDir, fileName);
-    await fs.mkdir(storageDir, { recursive: true });
-    await fs.writeFile(filePath, xmlContent, 'utf8');
-    return fileName;
   }
 
   /**

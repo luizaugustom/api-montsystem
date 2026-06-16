@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
+import { PermissionsGuard } from '../../shared/guards/permissions.guard';
+import { Permissions } from '../../shared/decorators/permissions.decorator';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
@@ -26,12 +28,13 @@ const SaleSchema = z.object({
 });
 
 @Controller('sales')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, PermissionsGuard)
 export class SalesController {
   constructor(private sales: SalesService) {}
 
   @Post()
   @UseInterceptors(FilesInterceptor('files'))
+  @Permissions('sales', 'edit')
   async create(@Body() body: any, @UploadedFiles() files: Express.Multer.File[]) {
     const parsed = SaleSchema.parse(body);
     const id = `${Date.now()}`;
@@ -53,27 +56,32 @@ export class SalesController {
   }
 
   @Get()
+  @Permissions('sales', 'view')
   findAll() {
     return this.sales.findAll();
   }
 
   @Get(':id')
+  @Permissions('sales', 'view')
   findOne(@Param('id') id: string) {
     return this.sales.findOne(id);
   }
 
   @Put(':id')
+  @Permissions('sales', 'edit')
   update(@Param('id') id: string, @Body() body: any) {
     const parsed = SaleSchema.partial().parse(body);
     return this.sales.update(id, parsed as any);
   }
 
   @Delete(':id')
+  @Permissions('sales', 'edit')
   remove(@Param('id') id: string) {
     return this.sales.remove(id);
   }
 
   @Post('list-by-month')
+  @Permissions('sales', 'view')
   listByMonth(@Body() body: any) {
     const months: string[] = body.months || [];
     return this.sales.findByMonths(months);

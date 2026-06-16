@@ -14,8 +14,16 @@ export class CustomersRepository {
     return this.repo.save(this.repo.create(entity));
   }
 
+  save(entity: Partial<Customer>) {
+    return this.repo.save(entity);
+  }
+
   findAll() {
     return this.repo.find();
+  }
+
+  findAllActive() {
+    return this.repo.find({ where: { active: true } });
   }
 
   findOne(id: string) {

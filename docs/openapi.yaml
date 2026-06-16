@@ -390,10 +390,232 @@ components:
         - clientName
         - phone
 
+    Ticket:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        clientId:
+          type: string
+          format: uuid
+          description: ID do cliente vinculado
+        clientName:
+          type: string
+          nullable: true
+          description: Nome do cliente (denormalizado na resposta)
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [open, in_progress, waiting_customer, resolved, cancelled]
+          default: open
+        priority:
+          type: string
+          enum: [low, medium, high, urgent]
+          default: medium
+        dueDate:
+          type: string
+          format: date-time
+          nullable: true
+        assigneeName:
+          type: string
+          nullable: true
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: URLs públicas dos anexos no DigitalOcean Spaces
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - clientId
+        - title
+        - description
+        - status
+        - priority
+        - createdAt
+        - updatedAt
+
+    TicketUpdate:
+      type: object
+      properties:
+        clientId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [open, in_progress, waiting_customer, resolved, cancelled]
+        priority:
+          type: string
+          enum: [low, medium, high, urgent]
+        dueDate:
+          type: string
+          format: date-time
+        assigneeName:
+          type: string
+        replaceAttachments:
+          type: boolean
+          description: Quando true, substitui os anexos existentes pelos novos enviados
+        files:
+          type: array
+          items:
+            type: string
+            format: binary
+
+    AuthLoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT (1h de validade)
+        user:
+          $ref: '#/components/schemas/UserPublic'
+
+    UserPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum: [admin, user]
+        active:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - username
+        - name
+        - role
+        - active
+
+    UserDetail:
+      allOf:
+        - $ref: '#/components/schemas/UserPublic'
+        - type: object
+          properties:
+            permissions:
+              type: array
+              items:
+                $ref: '#/components/schemas/PermissionItem'
+
+    PermissionItem:
+      type: object
+      properties:
+        resource:
+          type: string
+          enum: [customers, sales, invoices, boletos, mensalidades, nfse, whatsapp, tickets, company, integrations, users]
+        level:
+          type: string
+          enum: [view, edit]
+      required:
+        - resource
+        - level
+
+    PermissionsPayload:
+      type: object
+      properties:
+        isAdmin:
+          type: boolean
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionItem'
+      required:
+        - isAdmin
+        - permissions
+
+    CreateUserRequest:
+      type: object
+      required:
+        - username
+        - password
+        - name
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 64
+        password:
+          type: string
+          minLength: 6
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [admin, user]
+          default: user
+        active:
+          type: boolean
+          default: true
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionItem'
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+          nullable: true
+        password:
+          type: string
+          minLength: 6
+          description: Omitir para não alterar
+        role:
+          type: string
+          enum: [admin, user]
+        active:
+          type: boolean
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionItem'
+
 paths:
   /auth/login:
     post:
       summary: Autenticação de usuário
+      description: |
+        Valida credenciais contra a tabela `users`. Senha é comparada via bcrypt.
+        O JWT retornado carrega apenas `{ sub, username, tokenVersion }` — sem
+        role nem permissões, que são lidas do banco a cada request pelo
+        AuthGuard + PermissionsGuard.
+
+        Rate limit: 10 tentativas por minuto (Throttler).
       tags:
         - Auth
       requestBody:
@@ -405,10 +627,8 @@ paths:
               properties:
                 username:
                   type: string
-                  example: luiz
                 password:
                   type: string
-                  example: "832010pj"
               required:
                 - username
                 - password
@@ -418,13 +638,179 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                    description: JWT token
+                $ref: '#/components/schemas/AuthLoginResponse'
         '401':
-          description: Credenciais inválidas
+          description: Credenciais inválidas ou usuário desativado
+        '429':
+          description: Muitas tentativas (throttler)
+
+  /auth/me:
+    get:
+      summary: Perfil do usuário autenticado
+      description: Retorna `{ id, username, name, email, role }` do usuário autenticado. Não inclui a senha hash nem a matriz de permissões.
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Perfil retornado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+        '401':
+          description: Token ausente, inválido ou expirado
+
+  /auth/permissions:
+    get:
+      summary: Matriz de permissões do próprio usuário autenticado
+      description: |
+        Para admin retorna `{ isAdmin: true, permissions: [] }` (bypass implícito).
+        Para usuários não-admin retorna a matriz real de permissões lidas do banco.
+        O backend (PermissionsGuard) é a fronteira real de segurança — esta
+        informação é usada apenas para gate de UI.
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Matriz de permissões
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionsPayload'
+
+  /users:
+    get:
+      summary: Listar todos os usuários (apenas admin)
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de usuários
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserPublic'
+        '403':
+          description: Sem permissão
+
+    post:
+      summary: Criar usuário (apenas admin)
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: Usuário criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+        '400':
+          description: Erro de validação
+        '403':
+          description: Sem permissão
+        '409':
+          description: Username já em uso
+
+  /users/{id}:
+    get:
+      summary: Buscar usuário por id (apenas admin)
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuário encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetail'
+        '403':
+          description: Sem permissão
+        '404':
+          description: Não encontrado
+
+    put:
+      summary: Atualizar usuário (apenas admin)
+      description: |
+        Campos vazios são ignorados (partial update). Mudança de senha,
+        role ou active incrementa `tokenVersion`, invalidando todas as
+        sessões existentes do usuário.
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: Atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+        '400':
+          description: |
+            Erro de validação ou tentativa de despromover/desativar/deletar
+            o último administrador ativo do sistema.
+        '403':
+          description: Sem permissão
+        '404':
+          description: Não encontrado
+
+    delete:
+      summary: Excluir usuário (apenas admin)
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Excluído
+        '400':
+          description: Tentativa de excluir o último admin
+        '403':
+          description: Sem permissão
+        '404':
+          description: Não encontrado
 
   /sales:
     get:
@@ -811,3 +1197,162 @@ paths:
                 $ref: '#/components/schemas/Invoice'
         '404':
           description: Nota fiscal não encontrada
+
+  /tickets:
+    get:
+      summary: Listar todos os chamados
+      tags:
+        - Tickets
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [open, in_progress, waiting_customer, resolved, cancelled]
+          description: Filtrar por status
+        - name: clientId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+          description: Filtrar por cliente
+        - name: priority
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [low, medium, high, urgent]
+          description: Filtrar por prioridade
+      responses:
+        '200':
+          description: Lista de chamados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+    post:
+      summary: Criar novo chamado
+      tags:
+        - Tickets
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: string
+                  format: uuid
+                title:
+                  type: string
+                description:
+                  type: string
+                status:
+                  type: string
+                  enum: [open, in_progress, waiting_customer, resolved, cancelled]
+                priority:
+                  type: string
+                  enum: [low, medium, high, urgent]
+                dueDate:
+                  type: string
+                  format: date-time
+                assigneeName:
+                  type: string
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Anexos do chamado (PDF/JPG/PNG)
+              required:
+                - clientId
+                - title
+                - description
+      responses:
+        '201':
+          description: Chamado criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        '404':
+          description: Cliente não encontrado
+
+  /tickets/{id}:
+    get:
+      summary: Obter um chamado pelo ID
+      tags:
+        - Tickets
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Chamado encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        '404':
+          description: Chamado não encontrado
+    put:
+      summary: Atualizar um chamado
+      tags:
+        - Tickets
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TicketUpdate'
+      responses:
+        '200':
+          description: Chamado atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        '404':
+          description: Chamado ou cliente não encontrado
+    delete:
+      summary: Remover um chamado
+      tags:
+        - Tickets
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Chamado removido
+        '404':
+          description: Chamado não encontrado

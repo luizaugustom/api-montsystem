@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Post, UseGuards, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CompanyService, CompanyConfig } from './company.service';
 import { AuthGuard } from '../auth/auth.guard';
+import { PermissionsGuard } from '../../shared/guards/permissions.guard';
+import { Permissions } from '../../shared/decorators/permissions.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -8,16 +10,18 @@ import { NFeSignatureService } from '../nfe/services/nfe-signature.service';
 import { NFeConfigService } from '../nfe/services/nfe-config.service';
 
 @Controller('company')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, PermissionsGuard)
 export class CompanyController {
   constructor(private readonly service: CompanyService, private readonly nfeSignature: NFeSignatureService, private readonly nfeConfig: NFeConfigService) {}
 
   @Get()
+  @Permissions('company', 'view')
   getConfig() {
     return this.service.get();
   }
 
   @Post()
+  @Permissions('company', 'edit')
   saveConfig(@Body() body: CompanyConfig) {
     const res = this.service.save(body);
     this.nfeConfig.reload();
@@ -26,6 +30,7 @@ export class CompanyController {
 
   @Post('certificate')
   @UseInterceptors(FileInterceptor('file'))
+  @Permissions('company', 'edit')
   uploadCertificate(@UploadedFile() file: Express.Multer.File, @Body('password') password: string) {
     if (!file) {
       return { message: 'Arquivo não enviado' };
@@ -43,6 +48,7 @@ export class CompanyController {
   }
 
   @Get('certificate-info')
+  @Permissions('company', 'view')
   certificateInfo() {
     const cfg = this.service.get();
     if (!cfg?.certificate?.path) return { valid: false, message: 'Certificado não configurado' };

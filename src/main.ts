@@ -1,16 +1,15 @@
-// Carrega variáveis de ambiente com prioridade: .env.local -> .env.docker -> .env
+// Carrega variáveis de ambiente a partir do .env.example (único arquivo de env do projeto).
+// dotenv já está no package.json; se preferir, copie .env.example para .env — o loader abaixo
+// também lê .env caso ele exista, mantendo o .env.example como template/ativo por padrão.
 import * as fs from 'fs';
 import * as path from 'path';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const dotenv = require('dotenv');
 const cwd = process.cwd();
-const candidates = ['.env.local', '.env.docker', '.env'].map((n) => path.join(cwd, n));
-for (const p of candidates) {
-  if (fs.existsSync(p)) {
-    // carga o arquivo de ambiente encontrado e para
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    require('dotenv').config({ path: p });
-    break;
-  }
-}
+const envPath = fs.existsSync(path.join(cwd, '.env.example'))
+  ? path.join(cwd, '.env.example')
+  : path.join(cwd, '.env');
+dotenv.config({ path: envPath });
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -22,7 +21,7 @@ async function bootstrap() {
   app.enableCors({
     origin: ['http://localhost:3002', 'http://127.0.0.1:3002'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Authorization, X-Requested-With',
+    allowedHeaders: 'Content-Type, Authorization, X-Requested-With, X-Webhook-Token, X-Evolution-Token',
     credentials: true,
     optionsSuccessStatus: 204,
   });
@@ -35,7 +34,7 @@ async function bootstrap() {
     if (req.method === 'OPTIONS') {
       res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
       res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-      res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+      res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-Webhook-Token, X-Evolution-Token');
       if (req.headers.origin && ['http://localhost:3002', 'http://127.0.0.1:3002'].includes(req.headers.origin)) {
         res.header('Access-Control-Allow-Credentials', 'true');
       }

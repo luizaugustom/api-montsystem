@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { NfseConfigService, NfseXmlService, NfseSignatureService, NfseWebServiceService } from './services';
-import { NfseController } from './controllers/nfse.controller';
-import { CompanyModule } from '../company/company.module';
 import { NfseEntity } from './entities/nfse.entity';
+import { FocusNfeController } from './controllers/focus-nfe.controller';
+import { FocusNfeService } from './services/focus-nfe.service';
+import { IntegrationsModule } from '../integrations/integrations.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [CompanyModule, TypeOrmModule.forFeature([NfseEntity])],
-  providers: [NfseConfigService, NfseXmlService, NfseSignatureService, NfseWebServiceService],
-  controllers: [NfseController],
-  exports: [NfseConfigService, NfseXmlService, NfseSignatureService, NfseWebServiceService]
+  imports: [TypeOrmModule.forFeature([NfseEntity]), IntegrationsModule, AuthModule],
+  providers: [FocusNfeService],
+  controllers: [FocusNfeController],
+  exports: [FocusNfeService, TypeOrmModule],
 })
 export class NfseModule {}

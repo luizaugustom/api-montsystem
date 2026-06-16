@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
+import { PermissionsGuard } from '../../shared/guards/permissions.guard';
+import { Permissions } from '../../shared/decorators/permissions.decorator';
 import { z } from 'zod';
 import { Customer } from './entities/customer.entity';
 import { FilesInterceptor } from '@nestjs/platform-express';
@@ -22,12 +24,13 @@ const CustomerSchema = z.object({
 });
 
 @Controller('customers')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, PermissionsGuard)
 export class CustomersController {
   constructor(private customers: CustomersService) {}
 
   @Post()
   @UseInterceptors(FilesInterceptor('invoices'))
+  @Permissions('customers', 'edit')
   async create(@Body() body: any, @UploadedFiles() files: Express.Multer.File[]) {
     const parsed = CustomerSchema.parse(body);
     const invoices: string[] = [];
@@ -46,27 +49,32 @@ export class CustomersController {
   }
 
   @Get()
+  @Permissions('customers', 'view')
   findAll() {
     return this.customers.findAll();
   }
 
   @Get(':id')
+  @Permissions('customers', 'view')
   findOne(@Param('id') id: string) {
     return this.customers.findOne(id);
   }
 
   @Put(':id')
+  @Permissions('customers', 'edit')
   update(@Param('id') id: string, @Body() body: any) {
     const parsed = CustomerSchema.partial().parse(body);
     return this.customers.update(id, parsed as any);
   }
 
   @Delete(':id')
+  @Permissions('customers', 'edit')
   remove(@Param('id') id: string) {
     return this.customers.remove(id);
   }
 
   @Post('list-by-month')
+  @Permissions('customers', 'view')
   listByMonth(@Body() body: any) {
     const months: string[] = body.months || [];
     return this.customers.findByMonths(months);

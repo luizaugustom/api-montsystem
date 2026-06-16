@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { MonthlyCharge } from '../../monthly-charges/entities/monthly-charge.entity';
 
 @Entity('sales')
 export class Sale {
@@ -50,6 +51,9 @@ export class Sale {
 
   @Column({ nullable: true })
   clientId?: string; // ID do cliente (pode ser usado para relacionamento futuro)
+
+  @OneToMany(() => MonthlyCharge, (charge) => charge.sale)
+  monthlyCharges?: MonthlyCharge[];
 
   // Getters para expor valores como number (em reais)
   get saleValue(): number | null {

@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Boleto } from '../../boletos/entities/boleto.entity';
+import { MonthlyCharge } from '../../monthly-charges/entities/monthly-charge.entity';
 
 @Entity('customers')
 export class Customer {
@@ -37,4 +39,13 @@ export class Customer {
 
   @Column({ type: 'simple-json', nullable: true })
   invoices?: string[];
+
+  @Column({ default: true })
+  active!: boolean;
+
+  @OneToMany(() => Boleto, (boleto) => boleto.customer)
+  boletos?: Boleto[];
+
+  @OneToMany(() => MonthlyCharge, (charge) => charge.customer)
+  monthlyCharges?: MonthlyCharge[];
 }
