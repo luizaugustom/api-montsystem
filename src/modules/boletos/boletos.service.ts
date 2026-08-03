@@ -5,6 +5,7 @@ import { BoletosRepository } from './boletos.repository';
 import { Boleto, BoletoStatus } from './entities/boleto.entity';
 import { UnimakeService, UnimakeEmitirPayload } from '../../shared/services/unimake.service';
 import { CustomersRepository } from '../customers/customers.repository';
+import { buildCustomerAddress } from '../customers/customer-address';
 import { MonthlyCharge, MonthlyChargeStatus } from '../monthly-charges/entities/monthly-charge.entity';
 import { MonthlyChargesRepository } from '../monthly-charges/monthly-charges.repository';
 import dayjs from 'dayjs';
@@ -73,7 +74,7 @@ export class BoletosService {
         cpfCnpj: customer.cpfOrCnpj.replace(/\D/g, ''),
         email: customer.email,
         telefone: customer.phone,
-        endereco: this.parseAddress(customer.address),
+        endereco: buildCustomerAddress(customer),
       },
       valor,
       vencimento,
@@ -228,19 +229,5 @@ export class BoletosService {
       }
     }
     return { checked: pending.length, updated };
-  }
-
-  private parseAddress(addr?: string) {
-    if (!addr) return undefined;
-    const parts = addr.split(',').map((p) => p.trim());
-    return {
-      logradouro: parts[0] || 'Não informado',
-      numero: parts[1] || 'S/N',
-      complemento: undefined,
-      bairro: parts[2] || 'Centro',
-      cidade: parts[3] || 'São Paulo',
-      uf: 'SP',
-      cep: '01234567',
-    };
   }
 }
