@@ -20,7 +20,28 @@ export class Customer {
   cpfOrCnpj?: string;
 
   @Column({ nullable: true })
-  address?: string;
+  tradeName?: string;
+
+  @Column({ nullable: true })
+  cep?: string;
+
+  @Column({ nullable: true })
+  street?: string;
+
+  @Column({ nullable: true })
+  number?: string;
+
+  @Column({ nullable: true })
+  complement?: string;
+
+  @Column({ nullable: true })
+  neighborhood?: string;
+
+  @Column({ nullable: true })
+  city?: string;
+
+  @Column({ nullable: true })
+  state?: string;
 
   @Column({ type: 'date', nullable: true })
   acquisitionDate?: string;
