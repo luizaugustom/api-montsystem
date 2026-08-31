@@ -41,6 +41,9 @@ const useSsl =
       migrations: [__dirname + '/migrations/*{.ts,.js}'],
       synchronize: process.env.TYPEORM_SYNC === 'true',
       ssl: useSsl ? { rejectUnauthorized: false } : false,
+      extra: {
+        connectionTimeoutMillis: Number(process.env.DATABASE_CONNECT_TIMEOUT_MS || 15000),
+      },
     }),
     HealthModule,
     AuthModule,

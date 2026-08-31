@@ -17,7 +17,17 @@ if [ -n "$missing" ]; then
   exit 1
 fi
 
-echo "[boot] running migrations..."
-node ./node_modules/typeorm/cli.js migration:run -d dist/src/data-source.js
+echo "[boot] running migrations (timeout 45s)..."
+echo "[boot] HINT: se travar aqui, no Managed DB → Settings → Trusted Sources → adicione este App Platform (ou Allow App Platform)."
+set +e
+timeout 45 node ./node_modules/typeorm/cli.js migration:run -d dist/src/data-source.js
+migrate_status=$?
+set -e
+if [ "$migrate_status" -ne 0 ]; then
+  echo "[boot] FATAL: migrations falharam (exit=$migrate_status)." >&2
+  echo "[boot] Causas comuns: Trusted Sources bloqueando o App, senha/host errados, database 'montsystem' inexistente." >&2
+  exit "$migrate_status"
+fi
+
 echo "[boot] migrations ok — starting API on 0.0.0.0:${PORT:-3000}"
 exec node dist/src/main.js

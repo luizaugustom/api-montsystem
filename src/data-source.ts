@@ -28,4 +28,7 @@ export default new DataSource({
   entities: [path.join(__dirname, '**', '*.entity{.ts,.js}')],
   migrations: [path.join(__dirname, 'migrations', '*{.ts,.js}')],
   ssl: useSsl ? { rejectUnauthorized: false } : false,
+  extra: {
+    connectionTimeoutMillis: Number(process.env.DATABASE_CONNECT_TIMEOUT_MS || 15000),
+  },
 });
