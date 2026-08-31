@@ -1,5 +1,6 @@
 node_modules
 dist
-storage
+# Disco local runtime (certs, config, PDFs) — NÃO ignore src/shared/storage/
+/storage
 .env
 secrets/evolution.env
