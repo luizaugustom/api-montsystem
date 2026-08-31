@@ -90,12 +90,15 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 function resolveCorsOrigins(): string[] {
   const raw = (process.env.CORS_ORIGINS || '').trim();
   if (raw) {
-    return raw.split(',').map((o) => o.trim()).filter(Boolean);
+    return raw
+      .split(',')
+      .map((o) => o.trim().replace(/\/$/, ''))
+      .filter(Boolean);
   }
   if (process.env.NODE_ENV === 'production') {
     throw new Error(
       'CORS_ORIGINS não configurado. Em produção defina uma lista separada por vírgula ' +
-        '(ex: https://app.seudominio.com,https://seu-projeto.vercel.app).',
+        '(ex: https://app.montsoftwares.com,https://seu-projeto.vercel.app).',
     );
   }
   return ['http://localhost:3002', 'http://127.0.0.1:3002'];
