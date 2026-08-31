@@ -5,12 +5,15 @@ import { AuthGuard } from '../auth/auth.guard';
 import { PermissionsGuard } from '../../shared/guards/permissions.guard';
 import { Permissions } from '../../shared/decorators/permissions.decorator';
 import { IntegrationsStorage } from '../integrations/integrations-storage';
+import { BulkDispatchService } from './bulk-dispatch.service';
+import { BULK_DEFAULTS } from './anti-ban.constants';
 
 @Controller('whatsapp')
 export class WhatsappController {
   constructor(
     private service: WhatsappService,
     private integrations: IntegrationsStorage,
+    private bulk: BulkDispatchService,
   ) {}
 
   @Get('messages')
@@ -44,11 +47,70 @@ export class WhatsappController {
     return this.service.getInstanceStatus();
   }
 
+  /**
+   * Retorna o QR code de pareamento (base64) ou `{ connected: true }` se a
+   * instância já está conectada. A UI usa este endpoint para exibir o QR
+   * enquanto a instância não está `open`.
+   */
+  @Get('instance/qr')
+  @UseGuards(AuthGuard, PermissionsGuard)
+  @Permissions('whatsapp', 'view')
+  async qr() {
+    return this.service.getInstanceQR();
+  }
+
+  /**
+   * Desconecta a instância WhatsApp. Após isso, o próximo `instance/qr`
+   * retorna um QR novo.
+   */
+  @Post('instance/logout')
+  @UseGuards(AuthGuard, PermissionsGuard)
+  @Permissions('whatsapp', 'edit')
+  async logout() {
+    return this.service.logoutInstance();
+  }
+
   @Post('send')
   @UseGuards(AuthGuard, PermissionsGuard)
   @Permissions('whatsapp', 'edit')
   async send(@Body() body: { phone: string; text: string; templateKey?: string; mediaUrl?: string; mediaCaption?: string }) {
     return this.service.sendText(body);
+  }
+
+  /**
+   * Cria uma campanha em massa. Enfileira (não envia) mensagens para cada
+   * destinatário. O cron drenador (BulkDispatchCron) processa respeitando
+   * todas as camadas anti-ban.
+   */
+  @Post('bulk/dispatch')
+  @UseGuards(AuthGuard, PermissionsGuard)
+  @Permissions('whatsapp', 'edit')
+  async bulkDispatch(
+    @Body()
+    body: {
+      customerIds?: string[];
+      contactIds?: string[];
+      text: string;
+      templateId?: string;
+    },
+  ) {
+    return this.bulk.createBulk(body);
+  }
+
+  /** Retorna contadores agregados por dispatchId para acompanhamento na UI. */
+  @Get('bulk/status')
+  @UseGuards(AuthGuard, PermissionsGuard)
+  @Permissions('whatsapp', 'view')
+  async bulkStatus(@Query('dispatchId') dispatchId: string) {
+    return this.bulk.getDispatchStatus(dispatchId);
+  }
+
+  /** Expõe os limites anti-ban atuais para a UI exibir no card de configuração. */
+  @Get('bulk/limits')
+  @UseGuards(AuthGuard, PermissionsGuard)
+  @Permissions('whatsapp', 'view')
+  async bulkLimits() {
+    return BULK_DEFAULTS;
   }
 
   /**

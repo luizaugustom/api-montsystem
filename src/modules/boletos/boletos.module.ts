@@ -14,6 +14,7 @@ import { ResendService } from '../../shared/services/resend.service';
 import { WhatsappModule } from '../whatsapp/whatsapp.module';
 import { MonthlyCharge } from '../monthly-charges/entities/monthly-charge.entity';
 import { MonthlyChargesModule } from '../monthly-charges/monthly-charges.module';
+import { NFeModule } from '../nfe/nfe.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MonthlyChargesModule } from '../monthly-charges/monthly-charges.module'
     AuthModule,
     CustomersModule,
     WhatsappModule,
+    NFeModule,
     forwardRef(() => MonthlyChargesModule),
   ],
   providers: [BoletosRepository, BoletosService, UnimakeService, ResendService, EmailService, BoletoListener],

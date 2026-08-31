@@ -39,7 +39,7 @@ export class Ticket {
   @Column({ type: 'timestamptz', nullable: true })
   dueDate?: Date | string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   assigneeName?: string | null;
 
   @Column({ type: 'simple-json', nullable: true, default: () => "'[]'" })

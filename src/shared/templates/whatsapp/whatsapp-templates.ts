@@ -8,7 +8,8 @@ export type WhatsAppTemplateKey =
   | 'boleto_vencido'
   | 'pagamento_confirmado'
   | 'nfse_emitida'
-  | 'cobranca_avulsa';
+  | 'cobranca_avulsa'
+  | 'despesa_vencimento';
 
 export interface WhatsAppTemplate {
   key: WhatsAppTemplateKey;
@@ -86,6 +87,19 @@ Segue cobrança referente a *{{descricao}}*:
 🔢 Linha digitável: {{linha_digitavel}}
 
 Caso já tenha efetuado o pagamento, por favor desconsidere.`,
+  },
+  despesa_vencimento: {
+    key: 'despesa_vencimento',
+    title: 'Lembrete de vencimento (despesa interna)',
+    text: `📋 *Lembrete de despesa* — {{dias_restantes}} dia(s) para o vencimento
+
+🏷 Descrição: {{descricao}}
+🏢 Fornecedor: {{fornecedor}}
+💰 Valor: R$ {{valor}}
+📅 Vencimento: {{vencimento}}
+🏷 Categoria: {{categoria}}
+
+Não deixe passar da data. Qualquer ajuste, atualize no painel de Despesas do Mont System.`,
   },
 };
 

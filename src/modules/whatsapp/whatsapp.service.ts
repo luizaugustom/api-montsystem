@@ -39,15 +39,23 @@ export class WhatsappService {
 
   /**
    * Envia texto (com ou sem mídia). Sempre grava log.
+   *
+   * Quando `markAsBulk=true`, também aceita `dispatchId`/`scheduledAt`/`contactId`
+   * para diferenciar mensagens originadas de campanha. Listeners atuais não
+   * passam esses campos, mantendo o comportamento 1-a-1 intocado.
    */
   async sendText(opts: {
     phone: string;
     text: string;
     templateKey?: string;
     customerId?: string;
+    contactId?: string;
     monthlyChargeId?: string;
     mediaUrl?: string;
     mediaCaption?: string;
+    isBulk?: boolean;
+    dispatchId?: string;
+    scheduledAt?: Date;
   }): Promise<WhatsappMessage> {
     const normalized = EvolutionService.normalizePhone(opts.phone);
     if (!normalized) {
@@ -70,10 +78,14 @@ export class WhatsappService {
       text: opts.text,
       templateKey: opts.templateKey,
       customerId: opts.customerId,
+      contactId: opts.contactId,
       monthlyChargeId: opts.monthlyChargeId,
       status: WhatsappMessageStatus.QUEUED,
       direction: 'OUTBOUND' as any,
       payload: opts.mediaUrl ? { mediaUrl: opts.mediaUrl, mediaCaption: opts.mediaCaption } : null,
+      isBulk: !!opts.isBulk,
+      dispatchId: opts.isBulk ? opts.dispatchId : null,
+      scheduledAt: opts.isBulk ? opts.scheduledAt : null,
     });
 
     if (!this.evolution.isConfigured()) {
@@ -114,6 +126,22 @@ export class WhatsappService {
 
   async getInstanceStatus() {
     return this.evolution.getInstanceState();
+  }
+
+  /**
+   * Busca o QR code de pareamento para exibir na UI.
+   * Se a instância já está `open`, retorna `{ connected: true }` sem base64.
+   */
+  async getInstanceQR() {
+    return this.evolution.connectInstance();
+  }
+
+  /**
+   * Desconecta a instância WhatsApp. Após logout, a próxima chamada a
+   * `getInstanceQR()` retorna um novo QR para re-parear.
+   */
+  async logoutInstance() {
+    return this.evolution.logoutInstance();
   }
 
   findAll(opts: Parameters<WhatsappRepository['findAll']>[0] = {}) {

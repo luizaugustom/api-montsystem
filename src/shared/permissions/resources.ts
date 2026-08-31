@@ -17,6 +17,8 @@ export const RESOURCES = [
   'company',
   'integrations',
   'users',
+  'expenses',
+  'contacts',
 ] as const;
 
 export type Resource = (typeof RESOURCES)[number];
@@ -47,4 +49,6 @@ export const RESOURCE_LABELS: Record<Resource, string> = {
   company: 'Empresa',
   integrations: 'Integrações',
   users: 'Usuários',
+  expenses: 'Despesas',
+  contacts: 'Contatos',
 };

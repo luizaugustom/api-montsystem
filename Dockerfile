@@ -12,6 +12,5 @@ COPY --from=builder /app/package.json .
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 EXPOSE 3000
-# O build atual gera arquivos em dist/src (preserva a estrutura src), então
-# apontamos o entrypoint para o main gerado dentro de dist/src.
-CMD ["node", "dist/src/main.js"]
+# Migrations + boot. App Platform health check: GET /api/health
+CMD ["sh", "-c", "node ./node_modules/typeorm/cli.js migration:run -d dist/src/data-source.js && node dist/src/main.js"]

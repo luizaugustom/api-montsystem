@@ -7,10 +7,28 @@ import { WhatsappController } from './whatsapp.controller';
 import { EvolutionService } from '../../shared/services/evolution.service';
 import { IntegrationsModule } from '../integrations/integrations.module';
 import { AuthModule } from '../auth/auth.module';
+import { AntiBanService } from './anti-ban.service';
+import { BulkDispatchService } from './bulk-dispatch.service';
+import { BulkDispatchCron } from './bulk-dispatch.cron';
+import { ContactsModule } from '../contacts/contacts.module';
+import { CustomersModule } from '../customers/customers.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([WhatsappMessage]), IntegrationsModule, AuthModule],
-  providers: [WhatsappRepository, WhatsappService, EvolutionService],
+  imports: [
+    TypeOrmModule.forFeature([WhatsappMessage]),
+    IntegrationsModule,
+    AuthModule,
+    ContactsModule,
+    CustomersModule,
+  ],
+  providers: [
+    WhatsappRepository,
+    WhatsappService,
+    EvolutionService,
+    AntiBanService,
+    BulkDispatchService,
+    BulkDispatchCron,
+  ],
   controllers: [WhatsappController],
   exports: [WhatsappService, EvolutionService, TypeOrmModule],
 })

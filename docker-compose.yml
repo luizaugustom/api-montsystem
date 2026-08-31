@@ -20,17 +20,23 @@ services:
   api:
     build: .
     depends_on:
+      bootstrap-secrets:
+        condition: service_completed_successfully
       db:
         condition: service_healthy
       notification:
         condition: service_started
-    env_file: .env
+    env_file:
+      - .env
+      - ./secrets/evolution.env
     environment:
       DATABASE_HOST: db
       DATABASE_PORT: 5432
       DATABASE_USER: ${POSTGRES_USER:-postgres}
       DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       DATABASE_NAME: ${POSTGRES_DB:-montsystem}
+    volumes:
+      - ./secrets:/run/secrets:ro
     ports:
       - '3000:3000'
     healthcheck:
@@ -71,6 +77,115 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
 
+  # ----------------------------------------------------------------------------
+  # bootstrap-secrets: gera EVOLUTION_API_KEY e EVOLUTION_WEBHOOK_SECRET em um
+  # arquivo no host, idempotente. Roda uma vez antes da api e da evolution e
+  # sai (restart: no). Se o .env já define essas chaves, elas são propagadas
+  # para o arquivo (sem sobrescrever valores do .env). Após a primeira execução,
+  # o arquivo persiste em `./secrets/evolution.env` entre reboots do compose.
+  # ----------------------------------------------------------------------------
+  bootstrap-secrets:
+    image: alpine:3.18
+    env_file: .env
+    volumes:
+      - ./secrets:/secrets
+    command:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        # Cria o arquivo se não existir (caso fresh checkout sem evolution.env)
+        touch /secrets/evolution.env
+        # Lê chaves atuais do arquivo (vazio em fresh checkout)
+        CUR_API="$$(awk -F= '/^EVOLUTION_API_KEY=/{print $$2}' /secrets/evolution.env)"
+        CUR_HOOK="$$(awk -F= '/^EVOLUTION_WEBHOOK_SECRET=/{print $$2}' /secrets/evolution.env)"
+        # Se o .env define, ele tem prioridade; senão, usa o que está no arquivo;
+        # senão, gera aleatório.
+        KEY_API="$${EVOLUTION_API_KEY:-$${CUR_API:-$$(openssl rand -hex 32)}}"
+        KEY_HOOK="$${EVOLUTION_WEBHOOK_SECRET:-$${CUR_HOOK:-$$(openssl rand -hex 32)}}"
+        {
+          echo "EVOLUTION_API_KEY=$${KEY_API}"
+          echo "EVOLUTION_WEBHOOK_SECRET=$${KEY_HOOK}"
+        } > /secrets/evolution.env
+        chmod 0644 /secrets/evolution.env
+        echo "bootstrap-secrets: chaves aplicadas em ./secrets/evolution.env"
+    restart: 'no'
+
+  # ----------------------------------------------------------------------------
+  # init-db: cria o database `evolution` no Postgres compartilhado, idempotente.
+  # Necessário porque o Evolution API v2 usa Postgres e o db principal já existe.
+  # Roda uma vez e sai (restart: no) — pode ficar no compose sem efeito colateral.
+  # ----------------------------------------------------------------------------
+  init-db:
+    image: postgres:15
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    command:
+      - bash
+      - -c
+      - |
+        set -e
+        psql -h db -U ${POSTGRES_USER:-postgres} -tc "SELECT 1 FROM pg_database WHERE datname = 'evolution'" | grep -q 1 || \
+          psql -h db -U ${POSTGRES_USER:-postgres} -c "CREATE DATABASE evolution"
+    restart: 'no'
+
+  # ----------------------------------------------------------------------------
+  # evolution: Evolution API v2 (WhatsApp via Baileys). Roda junto da api no
+  # mesmo compose. Persistência em volume nomeado (sessões Baileys sobrevivem
+  # a `docker compose down`). Webhook configurado para chamar a api pela rede
+  # interna do compose em /api/whatsapp/webhook/evolution.
+  #
+  # Crie a instância após o primeiro `docker compose up`:
+  #   curl -H "apikey: $EVOLUTION_API_KEY" \
+  #     -X POST http://localhost:8080/instance/create \
+  #     -H "Content-Type: application/json" \
+  #     -d '{"instanceName":"montsystem","qrcode":true,"integration":"WHATSAPP-BAILEYS"}'
+  # Em seguida escaneie o QR via GET /instance/connect/montsystem (base64) ou
+  # pelo painel /integracoes no frontend.
+  # ----------------------------------------------------------------------------
+  evolution:
+    image: atendai/evolution-api:v2
+    depends_on:
+      bootstrap-secrets:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+      init-db:
+        condition: service_completed_successfully
+      api:
+        condition: service_started
+    env_file:
+      - .env
+      - ./secrets/evolution.env
+    environment:
+      SERVER_URL: http://evolution:8080
+      DATABASE_PROVIDER: postgresql
+      DATABASE_CONNECTION_URI: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/evolution
+      AUTHENTICATION_API_KEY: ${EVOLUTION_API_KEY}
+      # Webhook → api dentro da rede do compose. O header `x-evolution-token`
+      # é validado por whatsapp.controller.ts:101 (cfg.webhookSecret).
+      WEBHOOK_GLOBAL_URL: http://api:3000/api/whatsapp/webhook/evolution
+      WEBHOOK_GLOBAL_ENABLED: 'true'
+      WEBHOOK_GLOBAL_HEADERS: '{"x-evolution-token":"${EVOLUTION_WEBHOOK_SECRET}"}'
+      WEBHOOK_EVENTS_MESSAGES_UPSERT: 'true'
+      WEBHOOK_EVENTS_MESSAGES_UPDATE: 'true'
+      LOG_LEVEL: ERROR
+    ports:
+      - '8080:8080'
+    volumes:
+      - evolution_instances:/evolution/instances
+      - ./secrets:/run/secrets:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8080/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
 volumes:
   db_data:
   db_backups:
+  evolution_instances:

@@ -26,6 +26,8 @@ export enum WhatsappMessageStatus {
 @Index(['phone'])
 @Index(['status'])
 @Index(['createdAt'])
+@Index(['scheduledAt'])
+@Index(['dispatchId'])
 export class WhatsappMessage {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -36,6 +38,9 @@ export class WhatsappMessage {
   @ManyToOne(() => Customer, { onDelete: 'SET NULL', nullable: true })
   @JoinColumn({ name: 'customerId' })
   customer?: Customer;
+
+  @Column({ type: 'uuid', nullable: true })
+  contactId?: string;
 
   @Column({ type: 'uuid', nullable: true })
   monthlyChargeId?: string;
@@ -63,6 +68,22 @@ export class WhatsappMessage {
 
   @Column({ type: 'text', nullable: true })
   errorMessage?: string;
+
+  /** Quando o envio é agendado (campanha). Null para envios 1-a-1 imediatos. */
+  @Column({ type: 'timestamp with time zone', nullable: true })
+  scheduledAt?: Date | null;
+
+  /** Identificador agrupador de uma campanha. Permite consultar status agregado. */
+  @Column({ type: 'uuid', nullable: true })
+  dispatchId?: string | null;
+
+  /** Marca mensagens originadas de campanha (em massa) vs 1-a-1. */
+  @Column({ default: false })
+  isBulk!: boolean;
+
+  /** Tentativas de reenvio após falha (incrementado pelo cron retryFailed). */
+  @Column({ type: 'int', default: 0 })
+  attempts!: number;
 
   @CreateDateColumn()
   createdAt!: Date;

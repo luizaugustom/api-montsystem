@@ -58,7 +58,10 @@ export class EvolutionService {
 
   private requireClient(): AxiosInstance {
     if (!this.client) {
-      throw new BadRequestException('Evolution API não configurada (defina EVOLUTION_API_KEY em /integracoes)');
+      throw new BadRequestException(
+        'Evolution API não configurada. Defina EVOLUTION_API_KEY no .env, salve em /integracoes, ' +
+          'ou rode `docker compose up bootstrap-secrets` (gera ./secrets/evolution.env automaticamente).',
+      );
     }
     return this.client;
   }
@@ -102,6 +105,36 @@ export class EvolutionService {
   }
 
   /**
+   * Verifica quais números possuem WhatsApp (camada anti-ban).
+   * Retorna { valid: phones[], invalid: phones[] }.
+   */
+  async checkWhatsappNumbers(phones: string[]): Promise<{ valid: string[]; invalid: string[]; skipped: boolean }> {
+    if (!this.isConfigured()) return { valid: phones, invalid: [], skipped: true };
+    const cfg = this.getConfig();
+    const client = this.requireClient();
+    try {
+      const res = await client.post(`/chat/whatsappNumbers/${cfg.instance}`, { numbers: phones }, { validateStatus: () => true });
+      if (res.status < 200 || res.status >= 300) {
+        this.logger.warn(`checkWhatsappNumbers HTTP ${res.status}`);
+        return { valid: phones, invalid: [], skipped: true };
+      }
+      const data = res.data;
+      if (!Array.isArray(data)) return { valid: phones, invalid: [], skipped: true };
+      const valid: string[] = [];
+      const invalid: string[] = [];
+      for (const entry of data) {
+        const num = String(entry?.number || '').replace(/\D/g, '');
+        if (entry?.exists === true) valid.push(num);
+        else invalid.push(num);
+      }
+      return { valid, invalid, skipped: false };
+    } catch (e: any) {
+      this.logger.warn(`checkWhatsappNumbers erro: ${e?.message}`);
+      return { valid: phones, invalid: [], skipped: true };
+    }
+  }
+
+  /**
    * Verifica status de conexão da instância.
    */
   async getInstanceState(): Promise<{ state: string; data?: any }> {
@@ -116,6 +149,67 @@ export class EvolutionService {
       return { state: 'error', data: res.data };
     } catch (e: any) {
       return { state: 'unreachable', data: { error: e?.message } };
+    }
+  }
+
+  /**
+   * Inicia (ou retorna) o QR code de pareamento da instância.
+   * Quando a instância já está `open`, a Evolution retorna o estado atual em
+   * `data.instance.state` — sem QR.
+   *
+   * Resposta típica da Evolution v2 quando ainda não conectada:
+   *   { pairingCode, code, base64, count }
+   * onde `base64` é uma data URL `data:image/png;base64,...` pronta para `<img src>`.
+   */
+  async connectInstance(): Promise<{
+    connected: boolean;
+    state?: string;
+    pairingCode?: string;
+    code?: string;
+    base64?: string;
+    data?: any;
+  }> {
+    const cfg = this.getConfig();
+    const client = this.requireClient();
+    try {
+      const res = await client.get(`/instance/connect/${cfg.instance}`, { validateStatus: () => true });
+      if (res.status === 200) {
+        const body = res.data || {};
+        const state = body?.instance?.state || 'unknown';
+        return {
+          connected: state === 'open',
+          state,
+          pairingCode: body.pairingCode,
+          code: body.code,
+          base64: body.base64,
+          data: body,
+        };
+      }
+      if (res.status === 404) {
+        return { connected: false, state: 'not_found', data: res.data };
+      }
+      return { connected: false, state: 'error', data: res.data };
+    } catch (e: any) {
+      this.logger.warn(`Evolution connect falhou: ${e?.message}`);
+      return { connected: false, state: 'unreachable', data: { error: e?.message } };
+    }
+  }
+
+  /**
+   * Desconecta (logout) a instância WhatsApp.
+   * Útil para o usuário reiniciar o pareamento sem recriar a instância.
+   */
+  async logoutInstance(): Promise<{ ok: boolean; data?: any; error?: string }> {
+    const cfg = this.getConfig();
+    const client = this.requireClient();
+    try {
+      const res = await client.delete(`/instance/logout/${cfg.instance}`, { validateStatus: () => true });
+      if (res.status >= 200 && res.status < 300) {
+        return { ok: true, data: res.data };
+      }
+      return { ok: false, error: `HTTP ${res.status}`, data: res.data };
+    } catch (e: any) {
+      return { ok: false, error: e?.message || 'Erro' };
     }
   }
 
