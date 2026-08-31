@@ -11,6 +11,8 @@ ENV NODE_ENV=production
 COPY --from=builder /app/package.json .
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/scripts/start-prod.sh ./scripts/start-prod.sh
+RUN chmod +x ./scripts/start-prod.sh
 EXPOSE 3000
-# Migrations + boot. App Platform health check: GET /api/health
-CMD ["sh", "-c", "node ./node_modules/typeorm/cli.js migration:run -d dist/src/data-source.js && node dist/src/main.js"]
+# Health check App Platform: GET /api/health (após migrate + listen em 0.0.0.0)
+CMD ["./scripts/start-prod.sh"]

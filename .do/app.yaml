@@ -24,11 +24,11 @@ services:
     instance_size_slug: basic-xxs
     health_check:
       http_path: /api/health
-      initial_delay_seconds: 20
+      initial_delay_seconds: 60
       period_seconds: 10
       timeout_seconds: 5
       success_threshold: 1
-      failure_threshold: 3
+      failure_threshold: 6
     envs:
       - key: NODE_ENV
         value: production
@@ -65,9 +65,9 @@ services:
         scope: RUN_TIME
         type: SECRET
       - key: DO_SPACES_REGION
-        value: nyc3
+        value: sfo3
       - key: DO_SPACES_ENDPOINT
-        value: https://nyc3.digitaloceanspaces.com
+        value: https://sfo3.digitaloceanspaces.com
       - key: DO_SPACES_BUCKET
         scope: RUN_TIME
         type: SECRET
