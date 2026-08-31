@@ -84,6 +84,7 @@ if (envFile) {
 
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
+import { RequestMethod } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -132,7 +133,10 @@ async function bootstrap() {
     next();
   });
 
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', {
+    // App Platform / load balancers costumam sondar /health (sem prefixo).
+    exclude: [{ path: 'health', method: RequestMethod.GET }],
+  });
 
   const config = new DocumentBuilder().setTitle('api-montsystem').setVersion('1.0').addBearerAuth().build();
   const document = SwaggerModule.createDocument(app, config);

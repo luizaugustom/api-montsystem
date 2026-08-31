@@ -63,7 +63,7 @@ Sem Spaces a API sobe; uploads de tickets ficam vazios.
 1. Conecte o repositório `api-montsystem`.
 2. Use o `Dockerfile` na raiz (ou importe `.do/app.yaml` e ajuste `github.repo`).
 3. **HTTP port:** `3000`
-4. **Health check:** `GET /api/health`
+4. **Health check:** `GET /health`
 5. Envs obrigatórias:
 
 | Env | Notas |
@@ -79,7 +79,7 @@ Sem Spaces a API sobe; uploads de tickets ficam vazios.
 
 6. Opcionais: Unimake, Focus NFe, Resend (ver `.env.example`).
 7. Deploy. Confirme:
-   - `https://<api-host>/api/health` → `{ "status": "ok" }`
+   - `https://<api-host>/health` → `{ "status": "ok" }`
    - `https://<api-host>/api/docs` → Swagger
 
 **CORS:** em produção a API **não sobe** sem `CORS_ORIGINS`. Inclua também URLs de Preview da Vercel se for usá-las.
