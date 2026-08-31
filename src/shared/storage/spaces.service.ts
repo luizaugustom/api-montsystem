@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { S3Client, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
-import { v4 as uuid } from 'uuid';
+import { randomUUID } from 'crypto';
 
 /**
  * Serviço de storage no DigitalOcean Spaces (S3-compatível).
@@ -82,7 +82,7 @@ export class SpacesService {
     const urls: string[] = [];
     for (const file of files) {
       const safeName = this.slugify(file.originalname);
-      const key = `${this.keyPrefix}/${subfolder}/${uuid()}-${safeName}`;
+      const key = `${this.keyPrefix}/${subfolder}/${randomUUID()}-${safeName}`;
       try {
         const upload = new Upload({
           client: this.client,

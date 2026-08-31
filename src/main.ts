@@ -14,17 +14,12 @@ if (envFile) {
   dotenv.config({ path: envFile });
 }
 
-// Fallback para chaves auto-geradas da Evolution: quando rodando fora do
-// docker-compose (`npm run start:dev` em workstation, por exemplo), as variáveis
-// `EVOLUTION_API_KEY` / `EVOLUTION_WEBHOOK_SECRET` não são injetadas via
-// `env_file`. Lê o arquivo gerado pelo `bootstrap-secrets` (ou pelo script
-// `scripts/bootstrap-evolution-keys.sh`) e injeta em `process.env` antes do
-// Nest construir o grafo de módulos.
-//
-// Se o arquivo não existir OU existir mas sem `EVOLUTION_API_KEY=...` definido,
-// gera chaves aleatórias, persiste no arquivo e injeta em process.env. Assim
-// `npm run start:dev` funciona "out of the box" sem precisar rodar bootstrap.
+// Evolution: desligada por padrão. Só ativa com EVOLUTION_ENABLED=true (compose local).
 {
+  const evolutionEnabled = process.env.EVOLUTION_ENABLED === 'true';
+  if (!evolutionEnabled) {
+    console.log('[main] Evolution desabilitada (EVOLUTION_ENABLED!=true).');
+  } else {
   const crypto = require('crypto');
   const secretPath = path.join(cwd, 'secrets', 'evolution.env');
   let fileApi = '';
@@ -58,11 +53,14 @@ if (envFile) {
   if (generated || !fileApi || !fileHook) {
     try {
       fs.mkdirSync(path.dirname(secretPath), { recursive: true });
-      const banner = fs
-        .readFileSync(secretPath, 'utf8')
-        .split(/\r?\n/)
-        .filter((l: string) => l.trim() && !l.startsWith('EVOLUTION_API_KEY=') && !l.startsWith('EVOLUTION_WEBHOOK_SECRET='))
-        .join('\n');
+      let banner = '';
+      if (fs.existsSync(secretPath)) {
+        banner = fs
+          .readFileSync(secretPath, 'utf8')
+          .split(/\r?\n/)
+          .filter((l: string) => l.trim() && !l.startsWith('EVOLUTION_API_KEY=') && !l.startsWith('EVOLUTION_WEBHOOK_SECRET='))
+          .join('\n');
+      }
       const content =
         (banner ? banner + '\n' : '') +
         `EVOLUTION_API_KEY=${process.env.EVOLUTION_API_KEY}\n` +
@@ -80,6 +78,7 @@ if (envFile) {
     );
   } else if (fileApi) {
     console.log(`[main] EVOLUTION_API_KEY carregada de ${path.relative(cwd, secretPath)}`);
+  }
   }
 }
 

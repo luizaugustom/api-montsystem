@@ -6,7 +6,6 @@ import axios from 'axios';
 import * as https from 'https';
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import { XMLParser } from 'fast-xml-parser';
 

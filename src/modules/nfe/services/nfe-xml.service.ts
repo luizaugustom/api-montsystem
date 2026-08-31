@@ -3,7 +3,6 @@ import { create } from 'xmlbuilder2';
 import { NFeData, NFeItem } from '../interfaces/nfe.interface';
 import { NFeConfigService } from './nfe-config.service';
 import dayjs from 'dayjs';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class NFeXmlService {
