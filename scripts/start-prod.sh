@@ -2,6 +2,7 @@
 set -eu
 
 echo "[boot] NODE_ENV=${NODE_ENV:-} PORT=${PORT:-3000} DATABASE_HOST=${DATABASE_HOST:-} DATABASE_PORT=${DATABASE_PORT:-} DATABASE_NAME=${DATABASE_NAME:-} DATABASE_SSL=${DATABASE_SSL:-}"
+echo "[boot] CORS_ORIGINS=${CORS_ORIGINS:-<vazio>}"
 
 missing=""
 [ -z "${JWT_SECRET:-}" ] && missing="$missing JWT_SECRET"
@@ -9,8 +10,11 @@ missing=""
 [ -z "${DATABASE_USER:-}" ] && missing="$missing DATABASE_USER"
 [ -z "${DATABASE_PASSWORD:-}" ] && missing="$missing DATABASE_PASSWORD"
 [ -z "${DATABASE_NAME:-}" ] && missing="$missing DATABASE_NAME"
-if [ "${NODE_ENV:-}" = "production" ] && [ -z "${CORS_ORIGINS:-}" ]; then
-  missing="$missing CORS_ORIGINS"
+# Managed DO / prod: CORS é obrigatório (senão o browser bloqueia o front)
+if [ -z "${CORS_ORIGINS:-}" ]; then
+  if [ "${NODE_ENV:-}" = "production" ] || [ "${DATABASE_SSL:-}" = "true" ]; then
+    missing="$missing CORS_ORIGINS"
+  fi
 fi
 if [ -n "$missing" ]; then
   echo "[boot] FATAL: missing required env:$missing" >&2

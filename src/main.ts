@@ -96,10 +96,14 @@ function resolveCorsOrigins(): string[] {
       .map((o) => o.trim().replace(/\/$/, ''))
       .filter(Boolean);
   }
-  if (process.env.NODE_ENV === 'production') {
+  const looksHosted =
+    process.env.NODE_ENV === 'production' ||
+    process.env.DATABASE_SSL === 'true' ||
+    (process.env.DATABASE_HOST || '').includes('ondigitalocean');
+  if (looksHosted) {
     throw new Error(
-      'CORS_ORIGINS não configurado. Em produção defina uma lista separada por vírgula ' +
-        '(ex: https://app.montsoftwares.com,https://seu-projeto.vercel.app).',
+      'CORS_ORIGINS não configurado. Defina no App Platform, ex: ' +
+        'CORS_ORIGINS=https://app.montsoftwares.com',
     );
   }
   return ['http://localhost:3002', 'http://127.0.0.1:3002'];
@@ -108,35 +112,35 @@ function resolveCorsOrigins(): string[] {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const corsOrigins = resolveCorsOrigins();
+  console.log(`[boot] CORS_ORIGINS => ${corsOrigins.join(' | ')}`);
 
+  // Somente Nest enableCors — middleware OPTIONS manual removido (respondia 204
+  // sem Allow-Origin quando a origin não batia, gerando falso erro de CORS).
   app.enableCors({
-    origin: corsOrigins,
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      if (!origin) return callback(null, true);
+      if (corsOrigins.includes(origin)) return callback(null, true);
+      console.warn(`[cors] origin bloqueada: ${origin}`);
+      return callback(null, false);
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Authorization, X-Requested-With, X-Webhook-Token, X-Evolution-Token',
     credentials: true,
     optionsSuccessStatus: 204,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { Request, Response, NextFunction } = require('express');
-  app.use((req: typeof Request.prototype, res: typeof Response.prototype, next: typeof NextFunction.prototype) => {
-    if (req.method === 'OPTIONS') {
-      const origin = req.headers.origin as string | undefined;
-      if (origin && corsOrigins.includes(origin)) {
-        res.header('Access-Control-Allow-Origin', origin);
-        res.header('Access-Control-Allow-Credentials', 'true');
-      }
-      res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
-      res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-Webhook-Token, X-Evolution-Token');
-      return res.status(204).end();
-    }
-    next();
+  app.setGlobalPrefix('api', {
+    exclude: [
+      { path: 'health', method: RequestMethod.GET },
+      { path: '/', method: RequestMethod.GET },
+    ],
   });
 
-  app.setGlobalPrefix('api', {
-    // App Platform / load balancers costumam sondar /health (sem prefixo).
-    exclude: [{ path: 'health', method: RequestMethod.GET }],
-  });
+  // Probes do App Platform (path padrão costuma ser / ou /health)
+  const expressApp = app.getHttpAdapter().getInstance();
+  const ok = (_req: any, res: any) => res.status(200).json({ status: 'ok' });
+  expressApp.get('/', ok);
+  expressApp.get('/health', ok);
 
   const config = new DocumentBuilder().setTitle('api-montsystem').setVersion('1.0').addBearerAuth().build();
   const document = SwaggerModule.createDocument(app, config);
