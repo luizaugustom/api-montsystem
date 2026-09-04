@@ -34,6 +34,8 @@ const SaleSchema = z.object({
   nextPaymentDate: z.preprocess(emptyToUndefined, z.string().optional()),
 });
 
+const SaleSchemaPartial = SaleSchema.partial();
+
 const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -45,9 +47,16 @@ function assertSaleId(id: string) {
   }
 }
 
-function parseSaleBody(body: any, partial = false) {
-  const schema = partial ? SaleSchema.partial() : SaleSchema;
-  const parsed = schema.safeParse(body);
+function parseSaleBody(body: any): z.infer<typeof SaleSchema> {
+  const parsed = SaleSchema.safeParse(body);
+  if (!parsed.success) {
+    throw new BadRequestException(parsed.error.errors.map((e) => e.message).join('; '));
+  }
+  return parsed.data;
+}
+
+function parseSaleBodyPartial(body: any): z.infer<typeof SaleSchemaPartial> {
+  const parsed = SaleSchemaPartial.safeParse(body);
   if (!parsed.success) {
     throw new BadRequestException(parsed.error.errors.map((e) => e.message).join('; '));
   }
@@ -63,7 +72,7 @@ export class SalesController {
   @UseInterceptors(FilesInterceptor('files'))
   @Permissions('sales', 'edit')
   async create(@Body() body: any, @UploadedFiles() files: Express.Multer.File[]) {
-    const parsed = parseSaleBody(body, false);
+    const parsed = parseSaleBody(body);
     if (!parsed.phone) {
       throw new BadRequestException('Telefone é obrigatório');
     }
@@ -109,8 +118,8 @@ export class SalesController {
   @Permissions('sales', 'edit')
   async update(@Param('id') id: string, @Body() body: any) {
     assertSaleId(id);
-    const parsed = parseSaleBody(body, true);
-    const updated = await this.sales.update(id, parsed as any);
+    const parsed = parseSaleBodyPartial(body);
+    const updated = await this.sales.update(id, parsed);
     if (!updated) throw new NotFoundException('Venda não encontrada');
     return updated;
   }
