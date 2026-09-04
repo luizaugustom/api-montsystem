@@ -1,31 +1,58 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { PermissionsGuard } from '../../shared/guards/permissions.guard';
 import { Permissions } from '../../shared/decorators/permissions.decorator';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
-import { Sale } from './entities/sale.entity';
 import { SalesService } from './sales.service';
 import { z } from 'zod';
 import { parseCurrency } from '../../shared/utils/currency';
 
+const emptyToUndefined = (v: unknown) =>
+  typeof v === 'string' && v.trim() === '' ? undefined : v;
+
 const SaleSchema = z.object({
-  clientName: z.string(),
-  phone: z.string(),
-  cpfOrCnpj: z.string().optional(),
-  address: z.string().optional(),
-  saleDate: z.string().optional(),
-  warrantyEndDate: z.string().optional(),
-  productDescription: z.string().optional(),
-  // Novos campos para valor da venda
-  clientId: z.string().optional(),
-  saleValue: z.preprocess((v) => parseCurrency(v), z.number().min(0).optional()),
-  isMonthly: z.boolean().optional().default(false),
-  entryValue: z.preprocess((v) => parseCurrency(v), z.number().min(0).optional()),
-  monthlyValue: z.preprocess((v) => parseCurrency(v), z.number().min(0).optional()),
-  nextPaymentDate: z.string().optional(),
+  clientName: z.string().min(1),
+  phone: z.preprocess(emptyToUndefined, z.string().optional()),
+  cpfOrCnpj: z.preprocess(emptyToUndefined, z.string().optional()),
+  address: z.preprocess(emptyToUndefined, z.string().optional()),
+  saleDate: z.preprocess(emptyToUndefined, z.string().optional()),
+  warrantyEndDate: z.preprocess(emptyToUndefined, z.string().optional()),
+  productDescription: z.preprocess(emptyToUndefined, z.string().optional()),
+  clientId: z.preprocess(emptyToUndefined, z.string().optional()),
+  saleValue: z.preprocess((v) => parseCurrency(emptyToUndefined(v)), z.number().min(0).optional()),
+  isMonthly: z.preprocess((v) => {
+    if (v === undefined || v === null || v === '') return undefined;
+    if (typeof v === 'boolean') return v;
+    if (v === 'true' || v === '1') return true;
+    if (v === 'false' || v === '0') return false;
+    return v;
+  }, z.boolean().optional()),
+  entryValue: z.preprocess((v) => parseCurrency(emptyToUndefined(v)), z.number().min(0).optional()),
+  monthlyValue: z.preprocess((v) => parseCurrency(emptyToUndefined(v)), z.number().min(0).optional()),
+  nextPaymentDate: z.preprocess(emptyToUndefined, z.string().optional()),
 });
+
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+function assertSaleId(id: string) {
+  if (!UUID_RE.test(id)) {
+    throw new BadRequestException(
+      'ID de venda inválido. Mensalidades/entradas derivadas do cliente não podem ser editadas por aqui.',
+    );
+  }
+}
+
+function parseSaleBody(body: any, partial = false) {
+  const schema = partial ? SaleSchema.partial() : SaleSchema;
+  const parsed = schema.safeParse(body);
+  if (!parsed.success) {
+    throw new BadRequestException(parsed.error.errors.map((e) => e.message).join('; '));
+  }
+  return parsed.data;
+}
 
 @Controller('sales')
 @UseGuards(AuthGuard, PermissionsGuard)
@@ -36,7 +63,10 @@ export class SalesController {
   @UseInterceptors(FilesInterceptor('files'))
   @Permissions('sales', 'edit')
   async create(@Body() body: any, @UploadedFiles() files: Express.Multer.File[]) {
-    const parsed = SaleSchema.parse(body);
+    const parsed = parseSaleBody(body, false);
+    if (!parsed.phone) {
+      throw new BadRequestException('Telefone é obrigatório');
+    }
     const id = `${Date.now()}`;
     const storage = join(process.cwd(), 'storage', 'sales');
     if (!existsSync(storage)) mkdirSync(storage, { recursive: true });
@@ -51,7 +81,12 @@ export class SalesController {
       });
     }
 
-    const sale = await this.sales.create({ ...parsed, contractFile: contract, invoiceFile: invoice });
+    const sale = await this.sales.create({
+      ...parsed,
+      phone: parsed.phone,
+      contractFile: contract,
+      invoiceFile: invoice,
+    });
     return sale;
   }
 
@@ -63,20 +98,27 @@ export class SalesController {
 
   @Get(':id')
   @Permissions('sales', 'view')
-  findOne(@Param('id') id: string) {
-    return this.sales.findOne(id);
+  async findOne(@Param('id') id: string) {
+    assertSaleId(id);
+    const sale = await this.sales.findOne(id);
+    if (!sale) throw new NotFoundException('Venda não encontrada');
+    return sale;
   }
 
   @Put(':id')
   @Permissions('sales', 'edit')
-  update(@Param('id') id: string, @Body() body: any) {
-    const parsed = SaleSchema.partial().parse(body);
-    return this.sales.update(id, parsed as any);
+  async update(@Param('id') id: string, @Body() body: any) {
+    assertSaleId(id);
+    const parsed = parseSaleBody(body, true);
+    const updated = await this.sales.update(id, parsed as any);
+    if (!updated) throw new NotFoundException('Venda não encontrada');
+    return updated;
   }
 
   @Delete(':id')
   @Permissions('sales', 'edit')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    assertSaleId(id);
     return this.sales.remove(id);
   }
 

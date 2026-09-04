@@ -11,6 +11,10 @@ export class SalesRepository {
     return this.repo.save(this.repo.create(entity as any));
   }
 
+  save(entity: Sale) {
+    return this.repo.save(entity);
+  }
+
   findAll() {
     return this.repo.find();
   }
