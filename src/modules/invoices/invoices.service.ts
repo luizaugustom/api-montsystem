@@ -333,7 +333,7 @@ export class InvoicesService {
     }
 
     // Prestador — sempre da empresa cadastrada
-    const company = this.companyService.get();
+    const company = await this.companyService.get();
     if (!company) {
       throw new BadRequestException(
         'Empresa não cadastrada. Preencha os dados em /empresa antes de emitir NFSe.',

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import * as fs from 'fs';
-import * as path from 'path';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Company } from './entities/company.entity';
 
 export interface CompanyConfig {
   environment: 'homologacao' | 'producao';
@@ -26,7 +27,7 @@ export interface CompanyConfig {
     contact: {
       phone?: string;
       email?: string;
-    }
+    };
   };
   certificate: {
     path: string;
@@ -45,24 +46,51 @@ export interface CompanyConfig {
   };
 }
 
+/** ID fixo do singleton — toda a aplicação lê/grava nesta linha. */
+const COMPANY_SINGLETON_ID = '00000000-0000-0000-0000-000000000001';
+
 @Injectable()
 export class CompanyService {
-  private getConfigPath() {
-    const dir = path.join(process.cwd(), 'storage', 'config');
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    return path.join(dir, 'company.json');
+  constructor(
+    @InjectRepository(Company) private readonly repo: Repository<Company>,
+  ) {}
+
+  async get(): Promise<CompanyConfig | null> {
+    const row = await this.repo.findOne({ where: { id: COMPANY_SINGLETON_ID } });
+    if (!row) return null;
+    return {
+      environment: row.environment,
+      uf: row.uf,
+      company: row.company,
+      certificate: row.certificate ?? { path: '', password: '' },
+      email: row.email ?? undefined,
+      paths: row.paths ?? undefined,
+    };
   }
 
-  get(): CompanyConfig | null {
-    const file = this.getConfigPath();
-    if (!fs.existsSync(file)) return null;
-    const raw = fs.readFileSync(file, 'utf8');
-    return JSON.parse(raw);
-  }
+  async save(data: CompanyConfig): Promise<{ message: string }> {
+    // Upsert: cria se não existir, atualiza se já existir — sempre no id do singleton.
+    const payload: Partial<Company> = {
+      environment: data.environment,
+      uf: data.uf,
+      company: data.company,
+      certificate: data.certificate ?? { path: '', password: '' },
+      email: data.email ?? undefined,
+      paths: data.paths ?? undefined,
+    };
 
-  save(data: CompanyConfig) {
-    const file = this.getConfigPath();
-    fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf8');
+    // INSERT … ON CONFLICT (id) DO UPDATE — preserva createdAt.
+    await this.repo
+      .createQueryBuilder()
+      .insert()
+      .into(Company)
+      .values({ id: COMPANY_SINGLETON_ID, ...payload })
+      .orUpdate(
+        ['environment', 'uf', 'company', 'certificate', 'email', 'paths'],
+        ['id'],
+      )
+      .execute();
+
     return { message: 'Configuração salva com sucesso' };
   }
 }

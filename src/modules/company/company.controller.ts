@@ -16,14 +16,14 @@ export class CompanyController {
 
   @Get()
   @Permissions('company', 'view')
-  getConfig() {
+  async getConfig() {
     return this.service.get();
   }
 
   @Post()
   @Permissions('company', 'edit')
-  saveConfig(@Body() body: CompanyConfig) {
-    const res = this.service.save(body);
+  async saveConfig(@Body() body: CompanyConfig) {
+    const res = await this.service.save(body);
     this.nfeConfig.reload();
     return res;
   }
@@ -31,7 +31,7 @@ export class CompanyController {
   @Post('certificate')
   @UseInterceptors(FileInterceptor('file'))
   @Permissions('company', 'edit')
-  uploadCertificate(@UploadedFile() file: Express.Multer.File, @Body('password') password: string) {
+  async uploadCertificate(@UploadedFile() file: Express.Multer.File, @Body('password') password: string) {
     if (!file) {
       return { message: 'Arquivo não enviado' };
     }
@@ -40,17 +40,26 @@ export class CompanyController {
     const certPath = path.join(dir, file.originalname);
     fs.writeFileSync(certPath, file.buffer);
 
-    const cfg = this.service.get() || ({} as any);
+    // AVISO: o .pfx é gravado em disco local. Em ambientes com filesystem efêmero
+    // (Vercel, DigitalOcean App Platform), o arquivo se perde a cada deploy/restart
+    // e o certificado precisará ser reenviado. TODO: armazenar como bytea no banco.
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[company] Certificado gravado em disco local (${certPath}). ` +
+        'Em ambientes efêmeros isso não persiste entre deploys.',
+    );
+
+    const cfg = (await this.service.get()) || ({} as any);
     const newCfg = { ...(cfg || {}), certificate: { path: certPath, password } };
-    this.service.save(newCfg);
+    await this.service.save(newCfg as CompanyConfig);
     this.nfeConfig.reload();
     return { message: 'Certificado salvo', path: certPath };
   }
 
   @Get('certificate-info')
   @Permissions('company', 'view')
-  certificateInfo() {
-    const cfg = this.service.get();
+  async certificateInfo() {
+    const cfg = await this.service.get();
     if (!cfg?.certificate?.path) return { valid: false, message: 'Certificado não configurado' };
     try {
       const info = this.nfeSignature.getCertificateInfo(cfg.certificate.path, cfg.certificate.password);

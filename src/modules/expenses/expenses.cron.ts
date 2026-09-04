@@ -109,7 +109,7 @@ export class ExpensesCron {
 
   private async dispatchWhatsApp(expense: any, daysBefore: number): Promise<void> {
     try {
-      const cfg = this.company.get() || ({} as any);
+      const cfg = (await this.company.get()) || ({} as any);
       const phone = cfg?.company?.contact?.phone;
       if (!phone) {
         await this.remindersRepo.create({
