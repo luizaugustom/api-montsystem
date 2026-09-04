@@ -49,10 +49,26 @@ export class MonthlyChargesService {
       }
 
       const valorCents = Math.round(Number(customer.monthlyValue) * 100);
-      const baseVencimento = customer.nextPaymentDate
-        ? dayjs(customer.nextPaymentDate)
-        : dayjs(competencia).endOf('month');
-      const vencimento = baseVencimento.format('YYYY-MM-DD');
+      const next = customer.nextPaymentDate ? dayjs(customer.nextPaymentDate) : null;
+      const competenciaMonth = dayjs(competencia);
+
+      // Só gera se o próximo pagamento já caiu neste mês de competência
+      // (ou está atrasado). Evita criar cobrança no dia 1 quando o vencimento é dia 10.
+      if (next && next.isAfter(competenciaMonth.endOf('month'), 'day')) {
+        skipped++;
+        continue;
+      }
+
+      const billingDay = next ? next.date() : competenciaMonth.daysInMonth();
+      const vencimento = competenciaMonth
+        .date(Math.min(billingDay, competenciaMonth.daysInMonth()))
+        .format('YYYY-MM-DD');
+
+      // Se o próximo pagamento ainda está no futuro (após hoje), não gera ainda
+      if (dayjs(vencimento).isAfter(dayjs(), 'day') && next && next.isAfter(dayjs(), 'day')) {
+        skipped++;
+        continue;
+      }
 
       const charge = await this.repo.create({
         customerId: customer.id,
@@ -62,7 +78,7 @@ export class MonthlyChargesService {
         status: MonthlyChargeStatus.PENDING,
       });
 
-      // Atualiza nextPaymentDate do cliente para o próximo mês
+      // Mantém o mesmo dia do mês no próximo ciclo
       customer.nextPaymentDate = dayjs(vencimento).add(1, 'month').format('YYYY-MM-DD');
       await this.customersRepo.save(customer);
 
