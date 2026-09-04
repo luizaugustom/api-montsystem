@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { WhatsappRepository } from './whatsapp.repository';
-import { EvolutionService } from '../../shared/services/evolution.service';
+import { ZapiService } from '../../shared/services/zapi.service';
 import { WhatsappMessage, WhatsappMessageStatus } from './entities/whatsapp-message.entity';
 import { renderTemplate, WhatsAppTemplateKey } from '../../shared/templates/whatsapp/whatsapp-templates';
 
@@ -10,7 +10,7 @@ export class WhatsappService {
 
   constructor(
     private repo: WhatsappRepository,
-    private evolution: EvolutionService,
+    private zapi: ZapiService,
   ) {}
 
   /**
@@ -57,7 +57,7 @@ export class WhatsappService {
     dispatchId?: string;
     scheduledAt?: Date;
   }): Promise<WhatsappMessage> {
-    const normalized = EvolutionService.normalizePhone(opts.phone);
+    const normalized = ZapiService.normalizePhone(opts.phone);
     if (!normalized) {
       const msg = this.repo.create({
         phone: opts.phone,
@@ -88,24 +88,24 @@ export class WhatsappService {
       scheduledAt: opts.isBulk ? opts.scheduledAt : null,
     });
 
-    if (!this.evolution.isConfigured()) {
+    if (!this.zapi.isConfigured()) {
       queued.status = WhatsappMessageStatus.FAILED;
-      queued.errorMessage = 'Evolution API não configurada';
+      queued.errorMessage = 'Z-API não configurada';
       return this.repo.save(queued);
     }
 
     try {
       let res;
       if (opts.mediaUrl) {
-        res = await this.evolution.sendMedia({
-          number: normalized,
+        res = await this.zapi.sendMedia({
+          phone: normalized,
           mediatype: 'document',
           media: opts.mediaUrl,
           fileName: 'boleto.pdf',
           caption: opts.mediaCaption || opts.text.slice(0, 200),
         });
       } else {
-        res = await this.evolution.sendText({ number: normalized, text: opts.text });
+        res = await this.zapi.sendText({ phone: normalized, message: opts.text });
       }
 
       if (res.error) {
@@ -114,7 +114,7 @@ export class WhatsappService {
         this.logger.warn(`WhatsApp falhou para ${normalized}: ${res.error}`);
       } else {
         queued.status = WhatsappMessageStatus.SENT;
-        queued.evolutionMessageId = (res as any).key?.id || (res as any).id || null;
+        queued.providerMessageId = (res as any).messageId || (res as any).id || null;
       }
       return this.repo.save(queued);
     } catch (e: any) {
@@ -125,7 +125,7 @@ export class WhatsappService {
   }
 
   async getInstanceStatus() {
-    return this.evolution.getInstanceState();
+    return this.zapi.getInstanceState();
   }
 
   /**
@@ -133,7 +133,7 @@ export class WhatsappService {
    * Se a instância já está `open`, retorna `{ connected: true }` sem base64.
    */
   async getInstanceQR() {
-    return this.evolution.connectInstance();
+    return this.zapi.getQr();
   }
 
   /**
@@ -141,7 +141,7 @@ export class WhatsappService {
    * `getInstanceQR()` retorna um novo QR para re-parear.
    */
   async logoutInstance() {
-    return this.evolution.logoutInstance();
+    return this.zapi.logoutInstance();
   }
 
   findAll(opts: Parameters<WhatsappRepository['findAll']>[0] = {}) {
@@ -157,11 +157,11 @@ export class WhatsappService {
   }
 
   /**
-   * Atualiza status a partir de um webhook do Evolution. Procura por evolutionMessageId.
+   * Atualiza status a partir de um webhook da Z-API. Procura por providerMessageId.
    */
-  async updateFromWebhook(evolutionMessageId: string, status: WhatsappMessageStatus, errorMessage?: string): Promise<WhatsappMessage | null> {
+  async updateFromWebhook(providerMessageId: string, status: WhatsappMessageStatus, errorMessage?: string): Promise<WhatsappMessage | null> {
     const list = await this.repo.findAll({ limit: 200 });
-    const target = list.find((m) => m.evolutionMessageId === evolutionMessageId);
+    const target = list.find((m) => m.providerMessageId === providerMessageId);
     if (!target) return null;
     target.status = status;
     if (errorMessage) target.errorMessage = errorMessage;

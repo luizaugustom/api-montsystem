@@ -114,38 +114,47 @@ export class WhatsappController {
   }
 
   /**
-   * Webhook público. Validação por token de assinatura.
+   * Webhook público da Z-API (status de entrega).
    * Sem @UseGuards e sem @Permissions: deve continuar acessível sem JWT.
+   *
+   * Payload típico:
+   *   { type: 'MessageStatusCallback', messageId, status: 'SENT|DELIVERED|READ|FAILED', phone, error?: { message } }
+   *
+   * Autenticação: Z-API envia `Client-Token` em todas as chamadas de webhook.
+   * Aceita também `webhookSecret` no body como fallback para contas antigas.
    */
-  @Post('webhook/evolution')
+  @Post('webhook/zapi')
   async webhook(@Body() body: any, @Req() req: any) {
-    // Valida token de assinatura
-    const cfg = this.integrations.getOne('evolution');
-    const provided = req.headers['x-evolution-token'] || body?.webhookSecret;
-    if (cfg.webhookSecret && provided !== cfg.webhookSecret) {
+    const cfg = this.integrations.getOne('zapi');
+    const providedHeader =
+      req.headers['client-token'] || req.headers['x-client-token'];
+    const provided = providedHeader || body?.webhookSecret;
+    const okAuth =
+      (cfg.clientToken && providedHeader === cfg.clientToken) ||
+      (cfg.webhookSecret && provided === cfg.webhookSecret) ||
+      (!cfg.clientToken && !cfg.webhookSecret);
+    if (!okAuth) {
       return { ok: false, message: 'Token inválido' };
     }
-    // Processa evento messages.update
-    const event = body?.event || body?.type;
-    if (event === 'messages.update' || event === 'send.message') {
-      const updates = Array.isArray(body.data) ? body.data : [body.data].filter(Boolean);
-      for (const upd of updates) {
-        const status = this.mapStatus(upd?.status || upd?.update?.status);
-        const messageId = upd?.key?.id || upd?.id;
-        if (messageId && status) {
-          await this.service.updateFromWebhook(messageId, status, upd?.error || upd?.update?.error);
-        }
-      }
+
+    const messageId = body?.messageId || body?.data?.messageId;
+    const status = this.mapStatus(body?.status || body?.data?.status);
+    if (!messageId || !status) {
+      return { ok: true, ignored: true };
     }
+
+    const errorMessage =
+      body?.status === 'FAILED' ? body?.error?.message || 'FAILED' : undefined;
+    await this.service.updateFromWebhook(messageId, status, errorMessage);
     return { ok: true };
   }
 
   private mapStatus(s: string | number): WhatsappMessageStatus | null {
-    const str = String(s || '').toLowerCase();
-    if (str.includes('delivered') || str === '2') return WhatsappMessageStatus.DELIVERED;
-    if (str.includes('read') || str === '3' || str === '4') return WhatsappMessageStatus.READ;
-    if (str.includes('failed') || str.includes('error')) return WhatsappMessageStatus.FAILED;
-    if (str.includes('sent') || str === '1') return WhatsappMessageStatus.SENT;
+    const v = String(s || '').toUpperCase();
+    if (v === 'SENT') return WhatsappMessageStatus.SENT;
+    if (v === 'DELIVERED') return WhatsappMessageStatus.DELIVERED;
+    if (v === 'READ') return WhatsappMessageStatus.READ;
+    if (v === 'FAILED' || v === 'ERROR') return WhatsappMessageStatus.FAILED;
     return null;
   }
 }

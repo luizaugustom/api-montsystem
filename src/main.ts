@@ -14,73 +14,11 @@ if (envFile) {
   dotenv.config({ path: envFile });
 }
 
-// Evolution: desligada por padrão. Só ativa com EVOLUTION_ENABLED=true (compose local).
-{
-  const evolutionEnabled = process.env.EVOLUTION_ENABLED === 'true';
-  if (!evolutionEnabled) {
-    console.log('[main] Evolution desabilitada (EVOLUTION_ENABLED!=true).');
-  } else {
-  const crypto = require('crypto');
-  const secretPath = path.join(cwd, 'secrets', 'evolution.env');
-  let fileApi = '';
-  let fileHook = '';
-  if (fs.existsSync(secretPath)) {
-    const raw = fs.readFileSync(secretPath, 'utf8');
-    for (const line of raw.split(/\r?\n/)) {
-      const m = line.match(/^EVOLUTION_API_KEY=(.*)$/);
-      if (m) fileApi = m[1].trim();
-      const m2 = line.match(/^EVOLUTION_WEBHOOK_SECRET=(.*)$/);
-      if (m2) fileHook = m2[1].trim();
-    }
-  }
-  // Hierarquia: process.env > .env > arquivo > gerado agora
-  let generated = false;
-  if (!process.env.EVOLUTION_API_KEY) {
-    if (!fileApi) {
-      fileApi = crypto.randomBytes(32).toString('hex');
-      generated = true;
-    }
-    process.env.EVOLUTION_API_KEY = fileApi;
-  }
-  if (!process.env.EVOLUTION_WEBHOOK_SECRET) {
-    if (!fileHook) {
-      fileHook = crypto.randomBytes(32).toString('hex');
-      generated = true;
-    }
-    process.env.EVOLUTION_WEBHOOK_SECRET = fileHook;
-  }
-  // Se geramos agora OU o arquivo não tem as chaves ainda, persiste
-  if (generated || !fileApi || !fileHook) {
-    try {
-      fs.mkdirSync(path.dirname(secretPath), { recursive: true });
-      let banner = '';
-      if (fs.existsSync(secretPath)) {
-        banner = fs
-          .readFileSync(secretPath, 'utf8')
-          .split(/\r?\n/)
-          .filter((l: string) => l.trim() && !l.startsWith('EVOLUTION_API_KEY=') && !l.startsWith('EVOLUTION_WEBHOOK_SECRET='))
-          .join('\n');
-      }
-      const content =
-        (banner ? banner + '\n' : '') +
-        `EVOLUTION_API_KEY=${process.env.EVOLUTION_API_KEY}\n` +
-        `EVOLUTION_WEBHOOK_SECRET=${process.env.EVOLUTION_WEBHOOK_SECRET}\n`;
-      fs.writeFileSync(secretPath, content, { mode: 0o644 });
-    } catch (e: any) {
-      console.warn(`[main] não foi possível persistir chaves em ${secretPath}: ${e?.message}`);
-    }
-  }
-  if (generated) {
-    console.log(
-      `[main] EVOLUTION_API_KEY auto-gerada e persistida em ${path.relative(cwd, secretPath)}.\n` +
-        `      Para a Evolution usar a mesma chave, defina AUTHENTICATION_API_KEY no ambiente dela\n` +
-        `      ou rode \`docker compose up\` (o serviço bootstrap-secrets cuida disso).`,
-    );
-  } else if (fileApi) {
-    console.log(`[main] EVOLUTION_API_KEY carregada de ${path.relative(cwd, secretPath)}`);
-  }
-  }
-}
+// Z-API: credenciais ficam em storage/config/integrations.json (configuradas via /integracoes).
+// As envs ZAPI_* abaixo só servem como defaults iniciais quando integrations.json ainda não existe.
+console.log(
+  `[main] Z-API configurada? ${!!(process.env.ZAPI_INSTANCE_ID && process.env.ZAPI_TOKEN)}`,
+);
 
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
@@ -124,7 +62,7 @@ async function bootstrap() {
       return callback(null, false);
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type, Authorization, X-Requested-With, X-Webhook-Token, X-Evolution-Token',
+    allowedHeaders: 'Content-Type, Authorization, X-Requested-With, X-Webhook-Token, Client-Token, X-Client-Token',
     credentials: true,
     optionsSuccessStatus: 204,
   });

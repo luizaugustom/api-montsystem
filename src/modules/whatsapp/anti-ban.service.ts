@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, MoreThanOrEqual } from 'typeorm';
-import { EvolutionService } from '../../shared/services/evolution.service';
+import { ZapiService } from '../../shared/services/zapi.service';
 import { WhatsappMessage, WhatsappMessageStatus } from './entities/whatsapp-message.entity';
 import {
   BULK_DELAY_MIN_MS,
@@ -18,7 +18,8 @@ import {
  * Camada anti-ban para disparo em massa.
  *
  * Camadas:
- *  1) validateNumbers — consulta Evolution para descartar números sem WhatsApp
+ *  1) validateNumbers — consulta Z-API para descartar números sem WhatsApp
+ *    (Z-API não expõe esse endpoint; retorna skipped=true silenciosamente)
  *  2) isWithinBusinessHours — limita envios à janela configurada
  *  3) randomDelay — pausa aleatória entre envios (não fixa)
  *  4) canSendNow (hourly) — pausa se já passou do limite por hora
@@ -34,13 +35,14 @@ export class AntiBanService {
   constructor(
     @InjectRepository(WhatsappMessage)
     private repo: Repository<WhatsappMessage>,
-    private evolution: EvolutionService,
+    private zapi: ZapiService,
   ) {}
 
-  /** Camada 1 — chama Evolution para confirmar que o número tem WhatsApp. */
+  /** Camada 1 — chama Z-API para confirmar que o número tem WhatsApp.
+   *  Z-API não expõe esse endpoint; retorna skipped silenciosamente. */
   async validateNumbers(phones: string[]): Promise<{ valid: string[]; invalid: string[]; skipped: boolean }> {
     if (!BULK_VALIDATE_NUMBERS) return { valid: phones, invalid: [], skipped: true };
-    return this.evolution.checkWhatsappNumbers(phones);
+    return this.zapi.checkWhatsappNumbers(phones);
   }
 
   /** Camada 2. */

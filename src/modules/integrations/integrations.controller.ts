@@ -5,7 +5,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { PermissionsGuard } from '../../shared/guards/permissions.guard';
 import { Permissions } from '../../shared/decorators/permissions.decorator';
 
-const VALID_KEYS: IntegrationKey[] = ['unimake', 'focus-nfe', 'resend', 'evolution'];
+const VALID_KEYS: IntegrationKey[] = ['unimake', 'focus-nfe', 'resend', 'zapi'];
 
 @Controller('integrations')
 @UseGuards(AuthGuard, PermissionsGuard)

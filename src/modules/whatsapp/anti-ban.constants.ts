@@ -10,7 +10,8 @@
  *  - BULK_TICK_LIMIT: máximo de mensagens processadas por tick do cron
  *  - BULK_MAX_ATTEMPTS: limite de retry por mensagem
  *  - BULK_JITTER_MAX_MS: jitter extra entre destinatários (camada 6)
- *  - BULK_VALIDATE_NUMBERS: se true, valida números via Evolution antes de enfileirar
+ *  - BULK_VALIDATE_NUMBERS: se true, valida números via Z-API antes de enfileirar
+ *    (Z-API não expõe esse endpoint; o serviço retorna skipped=true silenciosamente)
  */
 
 const envNum = (key: string, fallback: number): number => {

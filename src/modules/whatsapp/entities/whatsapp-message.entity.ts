@@ -64,7 +64,7 @@ export class WhatsappMessage {
   status!: WhatsappMessageStatus;
 
   @Column({ nullable: true })
-  evolutionMessageId?: string;
+  providerMessageId?: string;
 
   @Column({ type: 'text', nullable: true })
   errorMessage?: string;

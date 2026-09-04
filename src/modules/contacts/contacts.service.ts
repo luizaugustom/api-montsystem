@@ -1,14 +1,14 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { ContactsRepository } from './contacts.repository';
 import { Contact } from './entities/contact.entity';
-import { EvolutionService } from '../../shared/services/evolution.service';
+import { ZapiService } from '../../shared/services/zapi.service';
 
 @Injectable()
 export class ContactsService {
   constructor(private repo: ContactsRepository) {}
 
   async create(data: Partial<Contact>): Promise<Contact> {
-    const phone = EvolutionService.normalizePhone(data.phone || '');
+    const phone = ZapiService.normalizePhone(data.phone || '');
     if (!phone) {
       throw new BadRequestException('Telefone inválido');
     }
@@ -33,7 +33,7 @@ export class ContactsService {
 
   async update(id: string, patch: Partial<Contact>) {
     if (patch.phone !== undefined) {
-      const normalized = EvolutionService.normalizePhone(patch.phone || '');
+      const normalized = ZapiService.normalizePhone(patch.phone || '');
       if (!normalized) {
         throw new BadRequestException('Telefone inválido');
       }

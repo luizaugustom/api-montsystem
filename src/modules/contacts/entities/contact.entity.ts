@@ -8,7 +8,7 @@ export class Contact {
   @Column({ nullable: true })
   name?: string;
 
-  /** Telefone normalizado pelo EvolutionService.normalizePhone (55 + DDD + número). */
+  /** Telefone normalizado pelo ZapiService.normalizePhone (55 + DDD + número). */
   @Index()
   @Column()
   phone!: string;

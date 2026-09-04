@@ -11,7 +11,7 @@ Checklist para subir **sem** provisionar automaticamente: você cria os recursos
 | Postgres | DigitalOcean Managed Database |
 | Anexos (tickets) | DigitalOcean Spaces |
 
-**Fora deste guia:** Evolution/WhatsApp, serviço `notification`, disco local `storage/`.
+**Fora deste guia:** Z-API/WhatsApp (configurado pela UI), serviço `notification`, disco local `storage/`.
 
 ---
 

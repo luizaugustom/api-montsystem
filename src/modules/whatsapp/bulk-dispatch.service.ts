@@ -2,7 +2,7 @@ import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { WhatsappRepository } from './whatsapp.repository';
 import { WhatsappMessage, WhatsappMessageStatus } from './entities/whatsapp-message.entity';
-import { EvolutionService } from '../../shared/services/evolution.service';
+import { ZapiService } from '../../shared/services/zapi.service';
 import { AntiBanService } from './anti-ban.service';
 import { ContactsService } from '../contacts/contacts.service';
 import { CustomersService } from '../customers/customers.service';
@@ -12,7 +12,7 @@ import { BULK_TICK_LIMIT, BULK_MAX_ATTEMPTS } from './anti-ban.constants';
  * Coordena o disparo em massa (bulk dispatch) de WhatsApp.
  *
  * createBulk()        — recebe lista de customerIds/contactIds + texto; enfileira
- *                       linhas em whatsapp_messages (status=QUEUED) sem chamar Evolution.
+ *                       linhas em whatsapp_messages (status=QUEUED) sem chamar Z-API.
  * dispatchPending()   — drena filas respeitando limites anti-ban. Chamado pelo cron.
  * retryFailed()       — reprocessa falhas antigas. Chamado pelo cron.
  * getDispatchStatus() — retorna contadores agregados por dispatchId.
@@ -23,7 +23,7 @@ export class BulkDispatchService {
 
   constructor(
     private repo: WhatsappRepository,
-    private evolution: EvolutionService,
+    private zapi: ZapiService,
     private antiBan: AntiBanService,
     private contacts: ContactsService,
     private customers: CustomersService,
@@ -31,7 +31,8 @@ export class BulkDispatchService {
 
   /**
    * Cria uma campanha. Valida destinatários, normaliza telefones,
-   * opcionalmente consulta Evolution para descartar números sem WhatsApp,
+   * opcionalmente consulta Z-API para descartar números sem WhatsApp
+   * (Z-API não expõe esse endpoint; a validação retorna skipped=true),
    * e enfileira uma linha por destinatário.
    */
   async createBulk(input: {
@@ -145,14 +146,14 @@ export class BulkDispatchService {
       }
 
       try {
-        const res = await this.evolution.sendText({ number: msg.phone, text: msg.text || '' });
+        const res = await this.zapi.sendText({ phone: msg.phone, message: msg.text || '' });
         if (res.error) {
           msg.status = WhatsappMessageStatus.FAILED;
           msg.errorMessage = res.error;
           failed++;
         } else {
           msg.status = WhatsappMessageStatus.SENT;
-          msg.evolutionMessageId = (res as any).key?.id || (res as any).id || null;
+          msg.providerMessageId = (res as any).messageId || (res as any).id || null;
           sent++;
         }
       } catch (e: any) {
@@ -186,7 +187,7 @@ export class BulkDispatchService {
       if (!recheck.allowed) break;
 
       try {
-        const res = await this.evolution.sendText({ number: msg.phone, text: msg.text || '' });
+        const res = await this.zapi.sendText({ phone: msg.phone, message: msg.text || '' });
         if (res.error) {
           msg.status = WhatsappMessageStatus.FAILED;
           msg.errorMessage = res.error;
@@ -194,7 +195,7 @@ export class BulkDispatchService {
           failed_count++;
         } else {
           msg.status = WhatsappMessageStatus.SENT;
-          msg.evolutionMessageId = (res as any).key?.id || (res as any).id || null;
+          msg.providerMessageId = (res as any).messageId || (res as any).id || null;
           msg.attempts += 1;
           msg.errorMessage = undefined;
           sent++;

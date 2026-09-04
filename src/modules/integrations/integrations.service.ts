@@ -32,8 +32,8 @@ export class IntegrationsService {
           return await this.testFocusNfe(cfg as any);
         case 'resend':
           return await this.testResend(cfg as any);
-        case 'evolution':
-          return await this.testEvolution(cfg as any);
+        case 'zapi':
+          return await this.testZapi(cfg as any);
         default:
           return { ok: false, message: 'Integração desconhecida' };
       }
@@ -99,20 +99,22 @@ export class IntegrationsService {
     }
   }
 
-  private async testEvolution(cfg: { baseUrl: string; instance: string; apiKey: string }): Promise<{ ok: boolean; message: string; details?: any }> {
-    if (!cfg.apiKey) return { ok: false, message: 'API key não configurada' };
+  private async testZapi(cfg: { instanceId: string; token: string; clientToken: string }): Promise<{ ok: boolean; message: string; details?: any }> {
+    if (!cfg.instanceId || !cfg.token) {
+      return { ok: false, message: 'Instance ID e Token são obrigatórios' };
+    }
+    const url = `https://api.z-api.io/instances/${cfg.instanceId}/token/${cfg.token}/status`;
+    const headers: Record<string, string> = {};
+    if (cfg.clientToken) headers['Client-Token'] = cfg.clientToken;
     try {
-      const url = `${cfg.baseUrl.replace(/\/$/, '')}/instance/connectionState/${cfg.instance}`;
-      const res = await axios.get(url, {
-        headers: { apikey: cfg.apiKey },
-        timeout: 8000,
-        validateStatus: () => true,
-      });
-      if (res.status === 401 || res.status === 403 || res.status === 404) {
-        return { ok: false, message: `Falha ao contatar Evolution (status ${res.status})`, details: res.data };
+      const res = await axios.get(url, { headers, timeout: 8000, validateStatus: () => true });
+      if (res.status === 200) {
+        return { ok: true, message: 'Conectado à Z-API', details: res.data };
       }
-      const state = res.data?.instance?.state || res.data?.state || 'unknown';
-      return { ok: true, message: `Instância Evolution "${cfg.instance}" respondeu (state: ${state})`, details: res.data };
+      if (res.status === 401 || res.status === 403) {
+        return { ok: false, message: 'Token ou Client-Token inválido', details: res.data };
+      }
+      return { ok: false, message: `Falha ao contatar Z-API (status ${res.status})`, details: res.data };
     } catch (e: any) {
       return { ok: false, message: `Falha de rede: ${e?.message || e}` };
     }

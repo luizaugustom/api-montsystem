@@ -4,7 +4,7 @@ import { WhatsappMessage } from './entities/whatsapp-message.entity';
 import { WhatsappRepository } from './whatsapp.repository';
 import { WhatsappService } from './whatsapp.service';
 import { WhatsappController } from './whatsapp.controller';
-import { EvolutionService } from '../../shared/services/evolution.service';
+import { ZapiService } from '../../shared/services/zapi.service';
 import { IntegrationsModule } from '../integrations/integrations.module';
 import { AuthModule } from '../auth/auth.module';
 import { AntiBanService } from './anti-ban.service';
@@ -24,12 +24,12 @@ import { CustomersModule } from '../customers/customers.module';
   providers: [
     WhatsappRepository,
     WhatsappService,
-    EvolutionService,
+    ZapiService,
     AntiBanService,
     BulkDispatchService,
     BulkDispatchCron,
   ],
   controllers: [WhatsappController],
-  exports: [WhatsappService, EvolutionService, TypeOrmModule],
+  exports: [WhatsappService, ZapiService, TypeOrmModule],
 })
 export class WhatsappModule {}

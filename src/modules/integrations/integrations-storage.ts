@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 
-export type IntegrationKey = 'unimake' | 'focus-nfe' | 'resend' | 'evolution';
+export type IntegrationKey = 'unimake' | 'focus-nfe' | 'resend' | 'zapi';
 
 export interface UnimakeConfig {
   apiUrl: string;
@@ -32,10 +32,10 @@ export interface ResendConfig {
   from: string;
 }
 
-export interface EvolutionConfig {
-  baseUrl: string;
-  instance: string;
-  apiKey: string;
+export interface ZapiConfig {
+  instanceId: string;
+  token: string;
+  clientToken: string;
   webhookSecret: string;
 }
 
@@ -43,7 +43,7 @@ export interface IntegrationsData {
   unimake: UnimakeConfig;
   'focus-nfe': FocusNfeConfig;
   resend: ResendConfig;
-  evolution: EvolutionConfig;
+  zapi: ZapiConfig;
 }
 
 const DEFAULTS: IntegrationsData = {
@@ -72,11 +72,11 @@ const DEFAULTS: IntegrationsData = {
     apiKey: process.env.RESEND_API_KEY || '',
     from: process.env.RESEND_FROM || 'Mont System <noreply@montsystem.com>',
   },
-  evolution: {
-    baseUrl: process.env.EVOLUTION_BASE_URL || 'http://evolution:8080',
-    instance: process.env.EVOLUTION_INSTANCE || 'montsystem',
-    apiKey: process.env.EVOLUTION_API_KEY || '',
-    webhookSecret: process.env.EVOLUTION_WEBHOOK_SECRET || '',
+  zapi: {
+    instanceId: process.env.ZAPI_INSTANCE_ID || '',
+    token: process.env.ZAPI_TOKEN || '',
+    clientToken: process.env.ZAPI_CLIENT_TOKEN || '',
+    webhookSecret: process.env.ZAPI_WEBHOOK_SECRET || '',
   },
 };
 
@@ -102,7 +102,7 @@ export class IntegrationsStorage {
         unimake: { ...DEFAULTS.unimake, ...(persisted.unimake || {}) },
         'focus-nfe': { ...DEFAULTS['focus-nfe'], ...(persisted['focus-nfe'] || {}) },
         resend: { ...DEFAULTS.resend, ...(persisted.resend || {}) },
-        evolution: { ...DEFAULTS.evolution, ...(persisted.evolution || {}) },
+        zapi: { ...DEFAULTS.zapi, ...(persisted.zapi || {}) },
       };
     } catch (e) {
       return { ...DEFAULTS };
@@ -119,7 +119,7 @@ export class IntegrationsStorage {
       unimake: { ...current.unimake, ...(data.unimake || {}) },
       'focus-nfe': { ...current['focus-nfe'], ...(data['focus-nfe'] || {}) },
       resend: { ...current.resend, ...(data.resend || {}) },
-      evolution: { ...current.evolution, ...(data.evolution || {}) },
+      zapi: { ...current.zapi, ...(data.zapi || {}) },
     };
     const file = this.getConfigPath();
     fs.writeFileSync(file, JSON.stringify(merged, null, 2), 'utf8');
@@ -127,14 +127,18 @@ export class IntegrationsStorage {
   }
 
   /**
-   * Mascara campos sensíveis (apiKey, token) para retorno ao frontend.
+   * Mascara campos sensíveis (apiKey, token, clientToken) para retorno ao frontend.
    */
   mask(data: IntegrationsData): IntegrationsData {
     return {
       unimake: { ...data.unimake, apiKey: data.unimake.apiKey ? maskKey(data.unimake.apiKey) : '' },
       'focus-nfe': { ...data['focus-nfe'], token: data['focus-nfe'].token ? maskKey(data['focus-nfe'].token) : '' },
       resend: { ...data.resend, apiKey: data.resend.apiKey ? maskKey(data.resend.apiKey) : '' },
-      evolution: { ...data.evolution, apiKey: data.evolution.apiKey ? maskKey(data.evolution.apiKey) : '' },
+      zapi: {
+        ...data.zapi,
+        token: data.zapi.token ? maskKey(data.zapi.token) : '',
+        clientToken: data.zapi.clientToken ? maskKey(data.zapi.clientToken) : '',
+      },
     };
   }
 }
