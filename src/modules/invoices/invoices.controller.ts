@@ -166,6 +166,19 @@ export class InvoicesController {
     return this.invoicesService.sendToSefaz(id);
   }
 
+  @Post(':id/send-nfse')
+  @Permissions('invoices', 'edit')
+  async sendNfse(@Param('id') id: string) {
+    return this.invoicesService.sendNfse(id);
+  }
+
+  @Get(':id/nfse-status')
+  @Permissions('invoices', 'view')
+  async nfseStatus(@Param('id') id: string) {
+    const record = await this.invoicesService.getNfseStatus(id);
+    return record ?? { status: 'unknown', mensagem: 'NFSe ainda não registrada na prefeitura.' };
+  }
+
   @Post(':id/validate-before-send')
   @Permissions('invoices', 'view')
   async validateBeforeSend(@Param('id') id: string) {
