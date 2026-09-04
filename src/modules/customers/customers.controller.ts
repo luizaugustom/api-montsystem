@@ -61,6 +61,12 @@ export class CustomersController {
     return this.customers.findAll();
   }
 
+  @Get('active')
+  @Permissions('customers', 'view')
+  findActive() {
+    return this.customers.findActive();
+  }
+
   @Get(':id')
   @Permissions('customers', 'view')
   findOne(@Param('id') id: string) {

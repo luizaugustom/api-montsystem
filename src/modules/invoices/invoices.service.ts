@@ -11,6 +11,9 @@ import { NFeWebServiceService } from '../nfe/services/nfe-webservice.service';
 import { FocusNfeService } from '../nfse/services/focus-nfe.service';
 import { DanfeService } from '../nfe/services/danfe.service';
 import { NFeData } from '../nfe/interfaces/nfe.interface';
+import { CustomersService } from '../customers/customers.service';
+import { CompanyService } from '../company/company.service';
+import { buildCustomerAddress } from '../customers/customer-address';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { InvoiceItem } from './entities/invoice_item.entity';
@@ -24,12 +27,22 @@ interface CreateInvoiceData {
   totalValue: number;
   taxValue?: number;
   discountValue?: number;
-  clientName: string;
-  clientDocument: string;
+  /** Tomador (NFSe). Quando presente, sobrescreve os campos clientName/Document/... */
+  customerId?: string;
+  clientName?: string;
+  clientDocument?: string;
   clientEmail?: string;
   clientAddress?: string;
   description: string;
   saleId?: string;
+  /** NFSe payload (sem prestador — vem da empresa). */
+  nfse?: {
+    codigoServico?: string;
+    descricaoDetalhada?: string;
+    aliquotaIss?: number;
+    issRetido?: boolean;
+    dataPrestacao?: string;
+  };
 }
 
 interface UpdateInvoiceData {
@@ -55,9 +68,36 @@ export class InvoicesService {
     private danfeService: DanfeService,
     // NFSe (Focus NFe)
     private focusNfeService: FocusNfeService,
+    // Tomador (NFSe) e prestador (empresa)
+    private customersService: CustomersService,
+    private companyService: CompanyService,
   ) {}
 
   async create(data: CreateInvoiceData & { items?: Array<{ codigo: string; descricao: string; ncm: string; cfop: string; unidade: string; quantidade: number; valorUnitario: number; icms?: { origem: string; cst: string; aliquota?: number; valor?: number } }> }) {
+    // Recusa explicitamente qualquer tentativa de spoofar prestador via payload
+    if ((data as any).nfse?.prestador) {
+      throw new BadRequestException(
+        'O prestador é definido pela empresa cadastrada em /empresa e não pode ser enviado no payload.',
+      );
+    }
+
+    // NFSe exige cliente selecionado — backend deriva o tomador estruturado
+    if (!data.customerId) {
+      throw new BadRequestException(
+        'Selecione um cliente antes de criar a nota. (Notas fiscais requerem tomador estruturado.)',
+      );
+    }
+
+    const customer = await this.customersService.findOne(data.customerId);
+    if (!customer) {
+      throw new NotFoundException(`Cliente com ID ${data.customerId} não encontrado`);
+    }
+    if (!customer.cpfOrCnpj || !customer.name) {
+      throw new BadRequestException(
+        'O cliente selecionado precisa ter CPF/CNPJ e nome para emitir NFSe.',
+      );
+    }
+
     // Verificar se já existe nota fiscal com o mesmo número
     const existingInvoice = await this.repo.findByNumber(data.number);
     if (existingInvoice) {
@@ -72,45 +112,35 @@ export class InvoicesService {
       }
     }
 
-    // Se itens informados, recalcula total
-    let totalFromItems = 0;
-    let itemsEntities: Partial<InvoiceItem>[] | undefined;
-    if (data.items && data.items.length > 0) {
-      itemsEntities = data.items.map((it) => {
-        const valorTotal = it.quantidade * it.valorUnitario;
-        totalFromItems += valorTotal;
-        return {
-          codigo: it.codigo,
-          descricao: it.descricao,
-          ncm: it.ncm,
-          cfop: it.cfop,
-          unidade: it.unidade,
-          quantidade: it.quantidade,
-          valorUnitarioCents: toCents(it.valorUnitario),
-          valorTotalCents: toCents(valorTotal),
-          icmsOrigem: it.icms?.origem,
-          icmsCst: it.icms?.cst,
-          icmsAliquota: it.icms?.aliquota ?? null,
-          icmsValor: it.icms?.valor ?? null,
-        } as Partial<InvoiceItem>;
-      });
-    }
+    // Derivar campos do tomador a partir do cliente (campos denormalizados
+    // continuam sendo preenchidos para a tabela/listagem não quebrar)
+    const addr = buildCustomerAddress(customer);
+    const clientAddress = `${addr.logradouro}, ${addr.numero}${addr.complemento ? ' - ' + addr.complemento : ''} - ${addr.bairro}, ${addr.cidade}/${addr.uf}, CEP ${addr.cep}`;
+
+    // NFSe: linha única é a descrição da invoice
+    const totalFromItems = 0;
+    const itemsEntities: Partial<InvoiceItem>[] | undefined = undefined;
 
     // Converter valores para centavos
     const invoiceData: Partial<Invoice> = {
-      ...data,
-      totalValueCents: toCents(itemsEntities ? totalFromItems : data.totalValue),
+      number: data.number,
+      series: data.series,
+      type: data.type || InvoiceType.NFSE,
+      issueDate: data.issueDate,
+      dueDate: data.dueDate,
+      totalValueCents: toCents(data.totalValue),
       taxValueCents: data.taxValue ? toCents(data.taxValue) : undefined,
       discountValueCents: data.discountValue ? toCents(data.discountValue) : undefined,
-      type: data.type || InvoiceType.NFE,
+      customerId: customer.id,
+      clientName: customer.name,
+      clientDocument: customer.cpfOrCnpj,
+      clientEmail: customer.email,
+      clientAddress,
+      description: data.description,
+      saleId: data.saleId,
       status: InvoiceStatus.DRAFT,
       items: itemsEntities as any,
     };
-
-    // Remove campos que não existem na entidade
-    delete (invoiceData as any).totalValue;
-    delete (invoiceData as any).taxValue;
-    delete (invoiceData as any).discountValue;
 
   const created = await this.repo.create(invoiceData);
   const invoice = Array.isArray(created) ? created[0] : created;
@@ -285,6 +315,8 @@ export class InvoicesService {
 
   /**
    * Emite NFSe (nota de serviço) via Focus NFe.
+   * - Prestador vem da empresa cadastrada (company.im, NÃO ie).
+   * - Tomador vem do cliente vinculado à invoice (customerId).
    */
   async sendNfse(id: string): Promise<Invoice> {
     const invoice = await this.repo.findOne(id);
@@ -294,34 +326,59 @@ export class InvoicesService {
       throw new BadRequestException('Nota fiscal deve estar em rascunho ou pendente para envio');
     }
 
+    if (!invoice.customerId) {
+      throw new BadRequestException(
+        'Selecione um cliente antes de emitir a NFSe. Notas sem cliente vinculado não podem ser emitidas.',
+      );
+    }
+
+    // Prestador — sempre da empresa cadastrada
+    const company = this.companyService.get();
+    if (!company) {
+      throw new BadRequestException(
+        'Empresa não cadastrada. Preencha os dados em /empresa antes de emitir NFSe.',
+      );
+    }
+    if (!company.company.cnpj) {
+      throw new BadRequestException('CNPJ da empresa não configurado.');
+    }
+    if (!company.company.im) {
+      throw new BadRequestException(
+        'Inscrição Municipal (IM) da empresa não configurada. Preencha em /empresa antes de emitir NFSe.',
+      );
+    }
+
+    // Tomador — sempre do cliente vinculado
+    const customer = await this.customersService.findOne(invoice.customerId);
+    if (!customer) {
+      throw new NotFoundException(`Cliente vinculado à nota (ID ${invoice.customerId}) não foi encontrado.`);
+    }
+    const tomadorEndereco = buildCustomerAddress(customer);
+
     // Atualiza status
     await this.updateStatus(id, InvoiceStatus.PENDING);
-
-    const nfeConfig = this.nfeConfigService.getConfig();
-    const tomadorEndereco = this.parseClientAddress(invoice.clientAddress || '');
 
     const focusPayload = {
       data_emissao: new Date().toISOString().slice(0, 10),
       prestador: {
-        cnpj: nfeConfig.company.cnpj.replace(/\D/g, ''),
-        inscricao_municipal: nfeConfig.company.ie || undefined,
-        codigo_municipio: nfeConfig.company.address.cityCode || '3550308',
+        cnpj: company.company.cnpj.replace(/\D/g, ''),
+        inscricao_municipal: company.company.im,
+        codigo_municipio: company.company.address?.cityCode || '3550308',
       },
       tomador: {
-        cpf_cnpj: (invoice.clientDocument || '').replace(/\D/g, ''),
-        razao_social: invoice.clientName,
-        email: invoice.clientEmail,
-        endereco: tomadorEndereco
-          ? {
-              logradouro: tomadorEndereco.logradouro,
-              numero: tomadorEndereco.numero,
-              bairro: tomadorEndereco.bairro,
-              cep: tomadorEndereco.cep,
-              uf: tomadorEndereco.uf,
-              codigo_municipio: tomadorEndereco.codigoMunicipio,
-              municipio: tomadorEndereco.cidade,
-            }
-          : undefined,
+        cpf_cnpj: (customer.cpfOrCnpj || '').replace(/\D/g, ''),
+        razao_social: customer.name,
+        email: customer.email,
+        endereco: {
+          logradouro: tomadorEndereco.logradouro,
+          numero: tomadorEndereco.numero,
+          complemento: tomadorEndereco.complemento,
+          bairro: tomadorEndereco.bairro,
+          cep: tomadorEndereco.cep,
+          uf: tomadorEndereco.uf,
+          codigo_municipio: tomadorEndereco.codigoMunicipio,
+          municipio: tomadorEndereco.cidade,
+        },
       },
       servico: {
         valor_servicos: invoice.totalValue,
@@ -353,6 +410,28 @@ export class InvoicesService {
     }
 
     return this.findOne(id);
+  }
+
+  /**
+   * Retorna o último registro NFSe (Focus) desta nota, ou null.
+   * Usado pela UI para "Consultar Status" sem chamar endpoint morto /nfse/consult.
+   */
+  async getNfseStatus(id: string): Promise<any> {
+    const invoice = await this.repo.findOne(id);
+    if (!invoice) throw new NotFoundException(`Nota fiscal com ID ${id} não encontrada`);
+
+    const numericId = Number(id);
+    if (!Number.isFinite(numericId)) return null;
+
+    try {
+      const list = await this.focusNfeService.listAll({ invoiceId: numericId });
+      const records = Array.isArray(list) ? list : [];
+      if (records.length === 0) return null;
+      records.sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+      return records[0];
+    } catch {
+      return null;
+    }
   }
 
   /**

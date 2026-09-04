@@ -9,6 +9,8 @@ import { NFeModule } from '../nfe/nfe.module';
 import { NfseModule } from '../nfse/nfse.module';
 import { AuthModule } from '../auth/auth.module';
 import { IntegrationsModule } from '../integrations/integrations.module';
+import { CustomersModule } from '../customers/customers.module';
+import { CompanyModule } from '../company/company.module';
 import { EmailService } from '../../shared/services/email.service';
 import { ResendService } from '../../shared/services/resend.service';
 import { InvoiceEmailListener } from './listeners/invoice-email.listener';
@@ -21,6 +23,8 @@ import { InvoiceEmailListener } from './listeners/invoice-email.listener';
     NfseModule,
     AuthModule,
     IntegrationsModule,
+    CustomersModule,
+    CompanyModule,
   ],
   controllers: [InvoicesController],
   providers: [

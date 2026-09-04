@@ -8,6 +8,9 @@ export interface CompanyConfig {
   company: {
     cnpj: string;
     ie: string;
+    /** Inscrição Municipal — exigida na emissão de NFSe. Vem do cadastro da
+     *  prefeitura, não confundir com a IE (estadual). */
+    im?: string;
     name: string;
     fantasy?: string;
     crt: number;

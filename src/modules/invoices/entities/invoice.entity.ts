@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Sale } from '../../sales/entities/sale.entity';
 import { InvoiceItem } from './invoice_item.entity';
+import { Customer } from '../../customers/entities/customer.entity';
 
 export enum InvoiceStatus {
   DRAFT = 'draft',           // Rascunho
@@ -83,6 +84,15 @@ export class Invoice {
   @ManyToOne(() => Sale, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'saleId' })
   sale?: Sale;
+
+  // Tomador da NFSe — fonte estruturada do cliente (endereço, CPF/CNPJ).
+  // Denormalizado em clientName/clientDocument/clientAddress para a tabela/listagem.
+  @Column({ nullable: true })
+  customerId?: string;
+
+  @ManyToOne(() => Customer, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'customerId' })
+  customer?: Customer;
 
   // Itens da nota
   @OneToMany(() => InvoiceItem, (item) => item.invoice, { cascade: true })

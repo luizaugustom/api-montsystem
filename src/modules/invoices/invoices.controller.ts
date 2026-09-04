@@ -12,17 +12,10 @@ import { join } from 'path';
 import { Response } from 'express';
 import { Res } from '@nestjs/common';
 
-// Schema de validação para criação de nota fiscal
-const InvoiceItemSchema = z.object({
-  codigo: z.string().min(1),
-  descricao: z.string().min(1),
-  ncm: z.string().min(4),
-  cfop: z.string().min(4),
-  unidade: z.string().min(1),
-  quantidade: z.number().positive(),
-  valorUnitario: z.preprocess((v) => parseCurrency(v), z.number().positive()),
-  icms: z.object({ origem: z.string(), cst: z.string(), aliquota: z.number().optional(), valor: z.number().optional() }).optional()
-});
+/** Itens só fazem sentido em NFe (produto). NFSe é uma linha única de serviço
+ *  descrita em `description`/`totalValue`. Mantemos `items` opcional mas sem
+ *  validar campos fiscais — qualquer shape vindo do front-end é aceito. */
+const InvoiceItemSchema = z.object({}).passthrough();
 
 const CreateInvoiceSchema = z.object({
   number: z.string().min(1, 'Número da nota fiscal é obrigatório'),
@@ -33,13 +26,26 @@ const CreateInvoiceSchema = z.object({
   totalValue: z.preprocess((v) => parseCurrency(v), z.number().min(0, 'Valor total deve ser positivo')),
   taxValue: z.preprocess((v) => parseCurrency(v), z.number().min(0).optional()),
   discountValue: z.preprocess((v) => parseCurrency(v), z.number().min(0).optional()),
-  clientName: z.string().min(1, 'Nome do cliente é obrigatório'),
-  clientDocument: z.string().min(11, 'CPF/CNPJ é obrigatório'),
+  // Campos do cliente passam a ser opcionais no body — backend deriva do `customerId`.
+  clientName: z.string().optional(),
+  clientDocument: z.string().optional(),
   clientEmail: z.string().email('Email inválido').optional(),
   clientAddress: z.string().optional(),
   description: z.string().min(1, 'Descrição é obrigatória'),
-  items: z.array(InvoiceItemSchema).min(1, 'Informe ao menos um item').optional(),
+  items: z.array(InvoiceItemSchema).optional(),
   saleId: z.string().uuid('ID da venda deve ser um UUID válido').optional(),
+  // Tomador estruturado (NFSe). Obrigatório na prática — service lança 400 se faltar.
+  customerId: z.string().uuid('Selecione um cliente').optional(),
+  // NFSe não envia prestador (vem da empresa cadastrada). Aceito aqui só pra
+  // devolver 400 explícito se algum caller tentar forçar.
+  nfse: z.object({
+    codigoServico: z.string().optional(),
+    descricaoDetalhada: z.string().optional(),
+    aliquotaIss: z.number().optional(),
+    issRetido: z.boolean().optional(),
+    dataPrestacao: z.string().optional(),
+    prestador: z.any().optional(),
+  }).optional(),
 });
 
 // Schema para atualização de status

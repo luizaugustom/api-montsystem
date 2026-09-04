@@ -24,6 +24,10 @@ export class CustomersService {
     return this.repo.findAll();
   }
 
+  findActive() {
+    return this.repo.findAllActive();
+  }
+
   findOne(id: string) {
     return this.repo.findOne(id);
   }
