@@ -6,6 +6,8 @@
 export type WhatsAppTemplateKey =
   | 'boleto_disponivel'
   | 'boleto_vencido'
+  | 'boleto_vencimento_hoje'
+  | 'aviso_desativacao_5_dias'
   | 'pagamento_confirmado'
   | 'nfse_emitida'
   | 'cobranca_avulsa'
@@ -47,6 +49,32 @@ Identificamos que o boleto de *{{competencia}}* está em atraso:
 Para regularizar, você pode pagar pelo boleto atualizado que enviaremos por email. Caso já tenha pago, por favor desconsidere.
 
 Estamos à disposição!`,
+  },
+  boleto_vencimento_hoje: {
+    key: 'boleto_vencimento_hoje',
+    title: 'Vencimento hoje',
+    text: `Olá, {{cliente_nome}}. 📅
+
+Hoje é o vencimento do seu boleto de mensalidade *{{competencia}}*:
+
+💰 Valor: R$ {{valor}}
+🔢 Linha digitável: {{linha_digitavel}}
+
+Caso ainda não tenha efetuado o pagamento, realize-o hoje para evitar encargos. Em caso de dúvida, estamos à disposição.`,
+  },
+  aviso_desativacao_5_dias: {
+    key: 'aviso_desativacao_5_dias',
+    title: 'Aviso de desativação (5 dias em atraso)',
+    text: `Olá, {{cliente_nome}}. ⚠️
+
+Identificamos que o boleto da mensalidade *{{competencia}}* está em atraso há 5 dias:
+
+💰 Valor: R$ {{valor}}
+📅 Vencimento: {{vencimento}}
+
+Se o pagamento não for regularizado, seu acesso ao sistema será desativado.
+
+Para regularizar, entre em contato ou pague pelo boleto atualizado enviado por email.`,
   },
   pagamento_confirmado: {
     key: 'pagamento_confirmado',

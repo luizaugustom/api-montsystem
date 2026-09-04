@@ -14,6 +14,7 @@ import { ResendService } from '../../shared/services/resend.service';
 import { EmailService } from '../../shared/services/email.service';
 import { NFeModule } from '../nfe/nfe.module';
 import { NfseModule } from '../nfse/nfse.module';
+import { BillingNotificationsModule } from '../billing-notifications/billing-notifications.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { NfseModule } from '../nfse/nfse.module';
     WhatsappModule,
     NFeModule,
     NfseModule,
+    BillingNotificationsModule,
   ],
   providers: [MonthlyChargesRepository, MonthlyChargesService, MonthlyChargeListener, ResendService, EmailService],
   controllers: [MonthlyChargesController],

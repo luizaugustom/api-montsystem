@@ -21,6 +21,7 @@ import { NotificationListener } from './shared/notification/notification.listene
 import { ContactsModule } from './modules/contacts/contacts.module';
 import { WhatsappTemplatesModule } from './modules/whatsapp-templates/whatsapp-templates.module';
 import { HealthModule } from './modules/health/health.module';
+import { BillingNotificationsModule } from './modules/billing-notifications/billing-notifications.module';
 
 const useSsl =
   process.env.DATABASE_SSL === 'true' || process.env.NODE_ENV === 'production';
@@ -62,6 +63,7 @@ const useSsl =
     ExpensesModule,
     ContactsModule,
     SpacesModule,
+    BillingNotificationsModule,
   ],
   providers: [NotificationListener],
 })

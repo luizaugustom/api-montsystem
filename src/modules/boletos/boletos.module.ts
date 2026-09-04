@@ -15,6 +15,7 @@ import { WhatsappModule } from '../whatsapp/whatsapp.module';
 import { MonthlyCharge } from '../monthly-charges/entities/monthly-charge.entity';
 import { MonthlyChargesModule } from '../monthly-charges/monthly-charges.module';
 import { NFeModule } from '../nfe/nfe.module';
+import { BillingNotificationsModule } from '../billing-notifications/billing-notifications.module';
 
 @Module({
   imports: [
@@ -24,10 +25,11 @@ import { NFeModule } from '../nfe/nfe.module';
     CustomersModule,
     WhatsappModule,
     NFeModule,
+    BillingNotificationsModule,
     forwardRef(() => MonthlyChargesModule),
   ],
   providers: [BoletosRepository, BoletosService, UnimakeService, ResendService, EmailService, BoletoListener],
   controllers: [BoletosController],
-  exports: [BoletosService, UnimakeService, TypeOrmModule],
+  exports: [BoletosService, BoletosRepository, UnimakeService, TypeOrmModule],
 })
 export class BoletosModule {}

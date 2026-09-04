@@ -47,6 +47,23 @@ export class MonthlyChargesRepository {
       .getMany();
   }
 
+  /**
+   * Busca mensalidades com vencimento exatamente em uma data e status entre os
+   * informados. Usado pelos jobs automáticos (5d antes, hoje, 5d após).
+   */
+  findByVencimentoAndStatuses(
+    date: string,
+    statuses: MonthlyChargeStatus[],
+  ): Promise<MonthlyCharge[]> {
+    return this.repo.createQueryBuilder('m')
+      .leftJoinAndSelect('m.customer', 'customer')
+      .leftJoinAndSelect('m.boleto', 'boleto')
+      .where('m.vencimento = :d', { d: date })
+      .andWhere('m.status IN (:...statuses)', { statuses })
+      .orderBy('m.createdAt', 'ASC')
+      .getMany();
+  }
+
   findExisting(customerId: string, competencia: string): Promise<MonthlyCharge | null> {
     return this.repo.findOne({ where: { customerId, competencia } });
   }
