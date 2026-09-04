@@ -52,6 +52,14 @@ export class Customer {
   @Column({ type: 'decimal', nullable: true })
   monthlyValue?: number;
 
+  /**
+   * Histórico de alterações do valor mensal.
+   * Cada entrada { value, effectiveFrom } vale a partir da data (inclusive)
+   * até a próxima entrada. Parcelas anteriores à edição mantêm o valor antigo.
+   */
+  @Column({ type: 'simple-json', nullable: true })
+  monthlyValueHistory?: { value: number; effectiveFrom: string }[];
+
   @Column({ type: 'date', nullable: true })
   nextPaymentDate?: string;
 
