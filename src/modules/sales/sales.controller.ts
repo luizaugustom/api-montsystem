@@ -6,6 +6,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { SalesService } from './sales.service';
+import { BoletosService } from '../boletos/boletos.service';
 import { z } from 'zod';
 import { parseCurrency } from '../../shared/utils/currency';
 
@@ -66,7 +67,10 @@ function parseSaleBodyPartial(body: any): z.infer<typeof SaleSchemaPartial> {
 @Controller('sales')
 @UseGuards(AuthGuard, PermissionsGuard)
 export class SalesController {
-  constructor(private sales: SalesService) {}
+  constructor(
+    private sales: SalesService,
+    private boletos: BoletosService,
+  ) {}
 
   @Post()
   @UseInterceptors(FilesInterceptor('files'))
@@ -136,5 +140,38 @@ export class SalesController {
   listByMonth(@Body() body: any) {
     const months: string[] = body.months || [];
     return this.sales.findByMonths(months);
+  }
+
+  @Post(':id/mark-paid')
+  @Permissions('sales', 'edit')
+  async markPaid(@Param('id') id: string) {
+    assertSaleId(id);
+    return this.sales.markAsPaid(id);
+  }
+
+  @Post(':id/cancel')
+  @Permissions('sales', 'edit')
+  async cancel(@Param('id') id: string) {
+    assertSaleId(id);
+    return this.sales.cancel(id);
+  }
+
+  @Post(':id/issue-invoice')
+  @Permissions('sales', 'edit')
+  async issueInvoice(@Param('id') id: string) {
+    assertSaleId(id);
+    return this.sales.issueInvoice(id);
+  }
+
+  /**
+   * Emite boleto vinculado à venda. Gated por `boletos:edit` (a ação produz
+   * um boleto — segue a mesma regra do `POST /monthly-charges/:id/issue-boleto`
+   * que é `mensalidades:edit`).
+   */
+  @Post(':id/issue-boleto')
+  @Permissions('boletos', 'edit')
+  async issueBoleto(@Param('id') id: string) {
+    assertSaleId(id);
+    return this.boletos.issue({ saleId: id });
   }
 }

@@ -6,6 +6,7 @@ import { NfseEmailListener } from './listeners/nfse-email.listener';
 import { EmailService } from '../../shared/services/email.service';
 import { ResendService } from '../../shared/services/resend.service';
 import { NFeModule } from '../nfe/nfe.module';
+import { IntegrationsModule } from '../integrations/integrations.module';
 import { MonthlyCharge } from '../monthly-charges/entities/monthly-charge.entity';
 
 @Module({
@@ -15,6 +16,9 @@ import { MonthlyCharge } from '../monthly-charges/entities/monthly-charge.entity
     // MonthlyChargesModule.
     TypeOrmModule.forFeature([BillingNotification, MonthlyCharge]),
     NFeModule, // provê NFeConfigService para o EmailService
+    // Provê IntegrationsStorage (cache das configs persistedas em
+    // Postgres) consumido pelo ResendService → injetado em EmailService.
+    IntegrationsModule,
   ],
   providers: [
     BillingNotificationsRepository,

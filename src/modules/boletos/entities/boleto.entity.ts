@@ -9,6 +9,8 @@ import {
   Index,
 } from 'typeorm';
 import { Customer } from '../../customers/entities/customer.entity';
+import { Sale } from '../../sales/entities/sale.entity';
+import { MonthlyCharge } from '../../monthly-charges/entities/monthly-charge.entity';
 
 export enum BoletoStatus {
   ISSUED = 'ISSUED',
@@ -39,6 +41,20 @@ export class Boleto {
 
   @Column({ type: 'uuid', nullable: true })
   monthlyChargeId?: string;
+
+  @ManyToOne(() => MonthlyCharge, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'monthlyChargeId' })
+  monthlyCharge?: MonthlyCharge;
+
+  // Origem do boleto: saleId XOR monthlyChargeId. O CHECK no banco
+  // (CHK_boleto_exactly_one_origin) garante que exatamente um dos dois é
+  // não-nulo — não há boleto avulso e não há boleto com ambos preenchidos.
+  @Column({ type: 'uuid', nullable: true })
+  saleId?: string;
+
+  @ManyToOne(() => Sale, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'saleId' })
+  sale?: Sale;
 
   @Column({ type: 'integer' })
   valorCents!: number;

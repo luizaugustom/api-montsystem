@@ -15,6 +15,8 @@ import { EmailService } from '../../shared/services/email.service';
 import { NFeModule } from '../nfe/nfe.module';
 import { NfseModule } from '../nfse/nfse.module';
 import { BillingNotificationsModule } from '../billing-notifications/billing-notifications.module';
+import { InvoicesModule } from '../invoices/invoices.module';
+import { SalesModule } from '../sales/sales.module';
 
 @Module({
   imports: [
@@ -22,11 +24,20 @@ import { BillingNotificationsModule } from '../billing-notifications/billing-not
     IntegrationsModule,
     AuthModule,
     CustomersModule,
+    // forwardRef: SalesModule também depende transitivamente de InvoicesModule
+    // (através do SalesController -> SalesService -> InvoicesService). Sem
+    // forwardRef aqui, o scanner do Nest resolve SalesModule como `undefined`
+    // enquanto InvoicesModule ainda está sendo instanciado.
+    forwardRef(() => SalesModule), // provê SalesRepository para o listener maybeEmitSalePaid
     forwardRef(() => BoletosModule),
     WhatsappModule,
     NFeModule,
     NfseModule,
     BillingNotificationsModule,
+    // forwardRef: MonthlyChargesService injeta InvoicesService para criar
+    // invoice a partir de mensalidade (refator do fluxo direto FocusNfeService).
+    // InvoicesService injeta MonthlyChargesRepository. Ciclo resolvido.
+    forwardRef(() => InvoicesModule),
   ],
   providers: [MonthlyChargesRepository, MonthlyChargesService, MonthlyChargeListener, ResendService, EmailService],
   controllers: [MonthlyChargesController],

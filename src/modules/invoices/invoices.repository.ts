@@ -13,7 +13,7 @@ export class InvoicesRepository {
 
   findAll() {
     return this.repo.find({
-      relations: ['sale', 'items'],
+      relations: ['sale', 'items', 'monthlyCharge'],
       order: { createdAt: 'DESC' }
     });
   }
@@ -21,7 +21,7 @@ export class InvoicesRepository {
   findOne(id: string) {
     return this.repo.findOne({
       where: { id } as any,
-      relations: ['sale', 'items']
+      relations: ['sale', 'items', 'monthlyCharge']
     } as any);
   }
 
@@ -34,14 +34,21 @@ export class InvoicesRepository {
   findBySaleId(saleId: string) {
     return this.repo.find({
       where: { saleId } as any,
-      relations: ['sale', 'items']
+      relations: ['sale', 'items', 'monthlyCharge']
+    } as any);
+  }
+
+  findByMonthlyChargeId(monthlyChargeId: string) {
+    return this.repo.find({
+      where: { monthlyChargeId } as any,
+      relations: ['sale', 'items', 'monthlyCharge']
     } as any);
   }
 
   findByStatus(status: InvoiceStatus) {
     return this.repo.find({
       where: { status } as any,
-      relations: ['sale', 'items'],
+      relations: ['sale', 'items', 'monthlyCharge'],
       order: { createdAt: 'DESC' }
     } as any);
   }

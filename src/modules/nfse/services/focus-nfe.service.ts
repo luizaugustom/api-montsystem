@@ -100,7 +100,7 @@ export class FocusNfeService {
   /**
    * Emite uma NFSe. Cria registro NfseEntity antes do envio.
    */
-  async emitir(payload: FocusNfePayload, opts?: { monthlyChargeId?: string; invoiceId?: number; prestadorCnpj?: string; prestadorIM?: string; prestadorMunicipio?: string }): Promise<NfseEntity> {
+  async emitir(payload: FocusNfePayload, opts?: { monthlyChargeId?: string; invoiceId?: string; prestadorCnpj?: string; prestadorIM?: string; prestadorMunicipio?: string }): Promise<NfseEntity> {
     const cfg = this.getConfig();
     if (!cfg.token) throw new BadRequestException('Focus NFe não configurado');
 
@@ -231,7 +231,7 @@ export class FocusNfeService {
     return this.repo.findOne({ where: { id } });
   }
 
-  async listAll(opts?: { monthlyChargeId?: string; invoiceId?: number }) {
+  async listAll(opts?: { monthlyChargeId?: string; invoiceId?: string }) {
     const where: any = {};
     if (opts?.monthlyChargeId) where.monthlyChargeId = opts.monthlyChargeId;
     if (opts?.invoiceId) where.invoiceId = opts.invoiceId;

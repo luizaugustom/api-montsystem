@@ -1,5 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { MonthlyCharge } from '../../monthly-charges/entities/monthly-charge.entity';
+import { Boleto } from '../../boletos/entities/boleto.entity';
+
+export enum SaleStatus {
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  CANCELLED = 'CANCELLED',
+}
 
 @Entity('sales')
 export class Sale {
@@ -52,8 +59,28 @@ export class Sale {
   @Column({ nullable: true })
   clientId?: string; // ID do cliente (pode ser usado para relacionamento futuro)
 
+  // Lifecycle: a venda começa PENDING e vira PAID quando o pagamento é confirmado.
+  // Para venda mensalista: a confirmação vem do listener que detecta todos os
+  // MonthlyCharge pagos. Para venda avulsa: endpoint manual POST /sales/:id/mark-paid.
+  @Column({ type: 'enum', enum: SaleStatus, default: SaleStatus.PENDING })
+  status!: SaleStatus;
+
+  @Column({ type: 'date', nullable: true })
+  paidAt?: string;
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
+
   @OneToMany(() => MonthlyCharge, (charge) => charge.sale)
   monthlyCharges?: MonthlyCharge[];
+
+  // Boletos diretamente vinculados à venda (boletos avulsos para esta venda).
+  // Boletos nascidos de mensalidade ficam só em monthly_charges.boletoId.
+  @OneToMany(() => Boleto, (b) => b.sale)
+  boletos?: Boleto[];
 
   // Getters para expor valores como number (em reais)
   get saleValue(): number | null {

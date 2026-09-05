@@ -16,6 +16,7 @@ import { MonthlyCharge } from '../monthly-charges/entities/monthly-charge.entity
 import { MonthlyChargesModule } from '../monthly-charges/monthly-charges.module';
 import { NFeModule } from '../nfe/nfe.module';
 import { BillingNotificationsModule } from '../billing-notifications/billing-notifications.module';
+import { SalesModule } from '../sales/sales.module';
 
 @Module({
   imports: [
@@ -27,6 +28,10 @@ import { BillingNotificationsModule } from '../billing-notifications/billing-not
     NFeModule,
     BillingNotificationsModule,
     forwardRef(() => MonthlyChargesModule),
+    // forwardRef: BoletosService injeta SalesRepository (issue({ saleId })).
+    // SalesController injeta BoletosService (POST /sales/:id/issue-boleto).
+    // Não registrar Sale aqui — já vem via SalesModule.
+    forwardRef(() => SalesModule),
   ],
   providers: [BoletosRepository, BoletosService, UnimakeService, ResendService, EmailService, BoletoListener],
   controllers: [BoletosController],

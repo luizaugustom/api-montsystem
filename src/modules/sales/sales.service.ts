@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, forwardRef, Inject } from '@nestjs/common';
 import { SalesRepository } from './sales.repository';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Sale } from './entities/sale.entity';
+import { Sale, SaleStatus } from './entities/sale.entity';
 import { toCents } from '../../shared/utils/currency';
+import { InvoicesService } from '../invoices/invoices.service';
 
 interface CreateSaleData {
   clientName: string;
@@ -32,7 +33,14 @@ function omitUndefined<T extends Record<string, any>>(obj: T): Partial<T> {
 
 @Injectable()
 export class SalesService {
-  constructor(private repo: SalesRepository, private events: EventEmitter2) {}
+  constructor(
+    private repo: SalesRepository,
+    private events: EventEmitter2,
+    // forwardRef: ciclo com InvoicesModule. SalesService injeta InvoicesService
+    // para o endpoint manual `POST /sales/:id/issue-invoice`.
+    @Inject(forwardRef(() => InvoicesService))
+    private invoicesService: InvoicesService,
+  ) {}
 
   async create(data: CreateSaleData) {
     const saleData: Partial<Sale> = omitUndefined({
@@ -51,6 +59,7 @@ export class SalesService {
       entryValueCents: data.entryValue != null ? toCents(data.entryValue) : undefined,
       monthlyValueCents: data.monthlyValue != null ? toCents(data.monthlyValue) : undefined,
       isMonthly: data.isMonthly || false,
+      status: SaleStatus.PENDING,
     });
 
     const created = await this.repo.create(saleData);
@@ -108,6 +117,56 @@ export class SalesService {
     return sales.map((sale) => this.transformSaleForResponse(sale));
   }
 
+  /**
+   * Marca a venda como paga manualmente (endpoint `POST /sales/:id/mark-paid`).
+   * Emite `sale.paid` para que o listener no InvoicesModule dispare a
+   * emissão automática de NFSe consolidada da venda.
+   *
+   * Idempotência: se já está PAID, retorna a venda sem re-emitir.
+   */
+  async markAsPaid(id: string): Promise<Sale> {
+    const sale = await this.repo.findOne(id);
+    if (!sale) throw new NotFoundException('Venda não encontrada');
+
+    if (sale.status === SaleStatus.PAID) {
+      return this.transformSaleForResponse(sale);
+    }
+
+    if (sale.status === SaleStatus.CANCELLED) {
+      throw new BadRequestException('Venda cancelada não pode ser marcada como paga.');
+    }
+
+    sale.status = SaleStatus.PAID;
+    sale.paidAt = new Date().toISOString().slice(0, 10);
+    const updated = await this.repo.save(sale);
+
+    this.events.emit('sale.paid', { sale: updated });
+    return this.transformSaleForResponse(updated);
+  }
+
+  /**
+   * Cancela a venda. Emite `sale.cancelled` (sem listener hoje).
+   */
+  async cancel(id: string): Promise<Sale> {
+    const sale = await this.repo.findOne(id);
+    if (!sale) throw new NotFoundException('Venda não encontrada');
+    sale.status = SaleStatus.CANCELLED;
+    const updated = await this.repo.save(sale);
+    this.events.emit('sale.cancelled', { sale: updated });
+    return this.transformSaleForResponse(updated);
+  }
+
+  /**
+   * Emite NFSe manual a partir de uma venda (endpoint `POST /sales/:id/issue-invoice`).
+   * Cria Invoice (DRAFT) → envia via Focus NFe → persiste em `invoices` e `nfse`.
+   * Idempotência: se já houver invoice AUTHORIZED para esta venda, retorna a existente.
+   */
+  async issueInvoice(id: string) {
+    const sale = await this.repo.findOne(id);
+    if (!sale) throw new NotFoundException('Venda não encontrada');
+    return this.invoicesService.createFromSale(sale.id);
+  }
+
   private transformSaleForResponse(sale: Sale) {
     return {
       ...sale,
@@ -115,6 +174,10 @@ export class SalesService {
       saleValueCents: sale.saleValueCents,
       entryValue: sale.entryValue,
       monthlyValue: sale.monthlyValue,
+      status: sale.status,
+      paidAt: sale.paidAt,
+      createdAt: sale.createdAt,
+      updatedAt: sale.updatedAt,
     };
   }
 }

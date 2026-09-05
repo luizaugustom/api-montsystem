@@ -20,17 +20,24 @@ export class BoletosRepository {
   }
 
   findById(id: string): Promise<Boleto | null> {
-    return this.repo.findOne({ where: { id }, relations: ['customer'] });
+    return this.repo.findOne({
+      where: { id },
+      relations: ['customer', 'sale', 'monthlyCharge'],
+    });
   }
 
   findByNossoNumero(nossoNumero: string): Promise<Boleto | null> {
-    return this.repo.findOne({ where: { nossoNumero }, relations: ['customer'] });
+    return this.repo.findOne({
+      where: { nossoNumero },
+      relations: ['customer', 'sale', 'monthlyCharge'],
+    });
   }
 
   findAll(opts: {
     status?: BoletoStatus;
     customerId?: string;
     monthlyChargeId?: string;
+    saleId?: string;
     startDate?: string;
     endDate?: string;
     limit?: number;
@@ -40,8 +47,12 @@ export class BoletosRepository {
     if (opts.status) where.status = opts.status;
     if (opts.customerId) where.customerId = opts.customerId;
     if (opts.monthlyChargeId) where.monthlyChargeId = opts.monthlyChargeId;
-    const qb = this.repo.createQueryBuilder('boleto')
+    if (opts.saleId) where.saleId = opts.saleId;
+    const qb = this.repo
+      .createQueryBuilder('boleto')
       .leftJoinAndSelect('boleto.customer', 'customer')
+      .leftJoinAndSelect('boleto.sale', 'sale')
+      .leftJoinAndSelect('boleto.monthlyCharge', 'monthlyCharge')
       .where(where)
       .orderBy('boleto.createdAt', 'DESC')
       .take(opts.limit || 100)
@@ -59,11 +70,35 @@ export class BoletosRepository {
   }
 
   findOverdue(referenceDate: string): Promise<Boleto[]> {
-    return this.repo.createQueryBuilder('boleto')
+    return this.repo
+      .createQueryBuilder('boleto')
       .leftJoinAndSelect('boleto.customer', 'customer')
+      .leftJoinAndSelect('boleto.sale', 'sale')
+      .leftJoinAndSelect('boleto.monthlyCharge', 'monthlyCharge')
       .where('boleto.status IN (:...statuses)', { statuses: [BoletoStatus.ISSUED] })
       .andWhere('boleto.vencimento < :d', { d: referenceDate })
       .getMany();
+  }
+
+  /**
+   * Lista boletos diretamente vinculados a uma venda.
+   * (Não inclui boletos nascidos de mensalidades que pertencem à venda —
+   * estes ficam em `monthly_charges.boletoId` e podem ser buscados via
+   * `MonthlyChargesRepository.findBySaleId(saleId).map(c => c.boleto)`.)
+   */
+  findBySaleId(saleId: string): Promise<Boleto[]> {
+    return this.repo.find({
+      where: { saleId },
+      relations: ['customer', 'sale', 'monthlyCharge'],
+    });
+  }
+
+  /** Lista boletos vinculados a uma mensalidade específica. */
+  findByMonthlyChargeId(monthlyChargeId: string): Promise<Boleto[]> {
+    return this.repo.find({
+      where: { monthlyChargeId },
+      relations: ['customer', 'sale', 'monthlyCharge'],
+    });
   }
 
   async remove(id: string): Promise<void> {

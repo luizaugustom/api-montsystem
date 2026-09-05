@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { Sale } from '../../sales/entities/sale.entity';
 import { InvoiceItem } from './invoice_item.entity';
 import { Customer } from '../../customers/entities/customer.entity';
+import { MonthlyCharge } from '../../monthly-charges/entities/monthly-charge.entity';
 
 export enum InvoiceStatus {
   DRAFT = 'draft',           // Rascunho
@@ -84,6 +85,16 @@ export class Invoice {
   @ManyToOne(() => Sale, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'saleId' })
   sale?: Sale;
+
+  // Vínculo direto com a mensalidade (quando a NFSe nasce de uma cobrança mensal).
+  // `saleId` é auto-populado a partir de `monthlyCharge.saleId` quando a mensalidade
+  // pertence a uma venda, para permitir listagens cruzadas.
+  @Column({ type: 'uuid', nullable: true })
+  monthlyChargeId?: string;
+
+  @ManyToOne(() => MonthlyCharge, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'monthlyChargeId' })
+  monthlyCharge?: MonthlyCharge;
 
   // Tomador da NFSe — fonte estruturada do cliente (endereço, CPF/CNPJ).
   // Denormalizado em clientName/clientDocument/clientAddress para a tabela/listagem.

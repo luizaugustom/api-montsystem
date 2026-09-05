@@ -17,8 +17,8 @@ export class NfseEntity {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 
-  @Column({ nullable: true })
-  invoiceId?: number;
+  @Column({ type: 'varchar', nullable: true })
+  invoiceId?: string;
 
   @Column({ nullable: true })
   monthlyChargeId?: string;

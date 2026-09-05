@@ -68,6 +68,14 @@ export class MonthlyChargesRepository {
     return this.repo.findOne({ where: { customerId, competencia } });
   }
 
+  /**
+   * Lista mensalidades vinculadas a uma venda específica. Usado pelo listener
+   * que detecta quando todos os charges de uma venda estão pagos.
+   */
+  findBySaleId(saleId: string): Promise<MonthlyCharge[]> {
+    return this.repo.find({ where: { saleId } as any, relations: ['customer', 'boleto'] });
+  }
+
   create(data: Partial<MonthlyCharge>): Promise<MonthlyCharge> {
     const entity = this.repo.create(data);
     return this.repo.save(entity) as any;

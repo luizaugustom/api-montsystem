@@ -34,6 +34,7 @@ const CreateInvoiceSchema = z.object({
   description: z.string().min(1, 'Descrição é obrigatória'),
   items: z.array(InvoiceItemSchema).optional(),
   saleId: z.string().uuid('ID da venda deve ser um UUID válido').optional(),
+  monthlyChargeId: z.string().uuid('ID da mensalidade deve ser um UUID válido').optional(),
   // Tomador estruturado (NFSe). Obrigatório na prática — service lança 400 se faltar.
   customerId: z.string().uuid('Selecione um cliente').optional(),
   // NFSe não envia prestador (vem da empresa cadastrada). Aceito aqui só pra
@@ -102,20 +103,25 @@ export class InvoicesController {
     @Query('status') status?: InvoiceStatus,
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
-    @Query('saleId') saleId?: string
+    @Query('saleId') saleId?: string,
+    @Query('monthlyChargeId') monthlyChargeId?: string,
   ) {
     if (saleId) {
       return this.invoicesService.findBySaleId(saleId);
     }
-    
+
+    if (monthlyChargeId) {
+      return this.invoicesService.findByMonthlyChargeId(monthlyChargeId);
+    }
+
     if (status) {
       return this.invoicesService.findByStatus(status);
     }
-    
+
     if (startDate && endDate) {
       return this.invoicesService.findByDateRange(startDate, endDate);
     }
-    
+
     return this.invoicesService.findAll();
   }
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, BadRequestException, Controller, Get, Param, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Response, Request } from 'express';
 import * as fs from 'fs';
 import { BoletosService } from './boletos.service';
@@ -22,6 +22,7 @@ export class BoletosController {
     @Query('status') status?: string,
     @Query('customerId') customerId?: string,
     @Query('monthlyChargeId') monthlyChargeId?: string,
+    @Query('saleId') saleId?: string,
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
     @Query('limit') limit?: string,
@@ -30,6 +31,7 @@ export class BoletosController {
       status: status as BoletoStatus,
       customerId,
       monthlyChargeId,
+      saleId,
       startDate,
       endDate,
       limit: limit ? Number(limit) : 100,
@@ -56,10 +58,26 @@ export class BoletosController {
     fs.createReadStream(pdf.path).pipe(res);
   }
 
+  /**
+   * Emite boleto vinculado a exatamente uma origem (venda XOR mensalidade).
+   * O fluxo avulso (`customerId` + valor) foi removido — toda cobrança precisa
+   * estar ligada a uma venda (`POST /sales/:id/issue-boleto`) ou a uma
+   * mensalidade (`POST /monthly-charges/:id/issue-boleto`).
+   */
   @Post()
   @UseGuards(AuthGuard, PermissionsGuard)
   @Permissions('boletos', 'edit')
-  async issue(@Body() body: { monthlyChargeId?: string; customerId?: string; valorCents?: number; vencimento?: string; descricao?: string; nossoNumero?: string }) {
+  async issue(
+    @Body()
+    body: { saleId?: string; monthlyChargeId?: string; nossoNumero?: string },
+  ) {
+    const hasSale = !!body.saleId;
+    const hasCharge = !!body.monthlyChargeId;
+    if (hasSale === hasCharge) {
+      throw new BadRequestException(
+        'Forneça exatamente um: saleId (venda) OU monthlyChargeId (mensalidade).',
+      );
+    }
     return this.service.issue(body);
   }
 

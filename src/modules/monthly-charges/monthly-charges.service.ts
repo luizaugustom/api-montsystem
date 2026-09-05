@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException, forwardRef, Inject } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Cron } from '@nestjs/schedule';
 import dayjs from 'dayjs';
@@ -6,7 +6,6 @@ import { MonthlyChargesRepository } from './monthly-charges.repository';
 import { CustomersRepository } from '../customers/customers.repository';
 import { MonthlyCharge, MonthlyChargeStatus } from './entities/monthly-charge.entity';
 import { BoletosService } from '../boletos/boletos.service';
-import { FocusNfeService } from '../nfse/services/focus-nfe.service';
 import { IntegrationsStorage } from '../integrations/integrations-storage';
 import { WhatsappService } from '../whatsapp/whatsapp.service';
 import { EmailService } from '../../shared/services/email.service';
@@ -17,6 +16,8 @@ import {
   renderAvisoDesativacao,
 } from '../../shared/templates/email/email-templates';
 import { Boleto } from '../boletos/entities/boleto.entity';
+import { InvoicesService } from '../invoices/invoices.service';
+import { SalesRepository } from '../sales/sales.repository';
 
 @Injectable()
 export class MonthlyChargesService {
@@ -27,11 +28,18 @@ export class MonthlyChargesService {
     private customersRepo: CustomersRepository,
     private eventos: EventEmitter2,
     private boletosService: BoletosService,
-    private focusNfe: FocusNfeService,
     private integrations: IntegrationsStorage,
     private whatsapp: WhatsappService,
     private email: EmailService,
     private billingNotifRepo: BillingNotificationsRepository,
+    // forwardRef: ciclo com InvoicesModule. InvoicesService cria Invoice
+    // a partir da mensalidade; MonthlyChargesService dispara a criação
+    // após pagamento do boleto.
+    @Inject(forwardRef(() => InvoicesService))
+    private invoicesService: InvoicesService,
+    // Para o listener de mensalidade paga que dispara sale.paid quando
+    // todos os charges da venda estão pagos.
+    private salesRepo: SalesRepository,
   ) {}
 
   /**
@@ -103,6 +111,7 @@ export class MonthlyChargesService {
 
   /**
    * Listener: ao receber boleto.paid, marca a mensalidade como paga e dispara NFSe (se configurado).
+   * Também verifica se a venda inteira está quitada e emite `sale.paid` se for o caso.
    */
   async handleBoletoPaid(boleto: Boleto): Promise<void> {
     if (!boleto.monthlyChargeId) return;
@@ -125,50 +134,65 @@ export class MonthlyChargesService {
         this.logger.error(`Falha NFSe automática: ${e?.message}`);
       }
     }
+
+    // Se a mensalidade pertence a uma venda, verifica se a venda inteira
+    // está quitada e emite `sale.paid` para acionar a emissão automática
+    // de NFSe no nível da venda (listener no InvoicesModule).
+    if (charge.saleId) {
+      await this.maybeEmitSalePaid(charge.saleId);
+    }
+  }
+
+  /**
+   * Verifica se todas as mensalidades de uma venda estão pagas e, em caso
+   * afirmativo, marca a venda como paga e emite `sale.paid`. O listener em
+   * InvoicesModule cuida da emissão da NFSe consolidada da venda.
+   */
+  private async maybeEmitSalePaid(saleId: string): Promise<void> {
+    const sale = await this.salesRepo.findOne(saleId);
+    if (!sale) return;
+    // Idempotência: se a venda já está paga, não faz nada.
+    if (sale.status === 'PAID') return;
+
+    const saleCharges = await this.repo.findBySaleId(saleId);
+    if (saleCharges.length === 0) return;
+
+    const allPaid = saleCharges.every(
+      (c) => c.status === MonthlyChargeStatus.PAID || c.status === MonthlyChargeStatus.NFSE_ISSUED,
+    );
+    if (!allPaid) return;
+
+    // Marca a venda como paga e emite o evento. O listener em InvoicesModule
+    // (via InvoiceAutoListener) dispara InvoicesService.createFromSale.
+    (sale as any).status = 'PAID';
+    (sale as any).paidAt = new Date().toISOString().slice(0, 10);
+    await this.salesRepo.save(sale as any);
+
+    this.eventos.emit('sale.paid', { sale });
   }
 
   /**
    * Emite NFSe para uma mensalidade (vinculando à NfseEntity).
+   *
+   * Caminho unificado: cria uma `Invoice` (DRAFT) com `monthlyChargeId` e
+   * `saleId` populados, e chama `InvoicesService.sendNfse` que escreve tanto
+   * em `invoices` quanto em `nfse`. `MonthlyCharge.nfseId` é atualizado
+   * dentro do InvoicesService para manter compatibilidade.
    */
   async issueNfseForCharge(chargeId: string): Promise<any> {
-    const charge = await this.repo.findById(chargeId);
-    if (!charge) throw new NotFoundException('Mensalidade não encontrada');
-    if (!charge.customer) throw new BadRequestException('Mensalidade sem cliente vinculado');
-    if (!charge.customer.cpfOrCnpj) throw new BadRequestException('Cliente sem CPF/CNPJ');
-
-    const customer = charge.customer;
-    const competenciaStr = dayjs(charge.competencia).format('MM/YYYY');
-
-    const focusCfg = this.integrations.getOne('focus-nfe');
-
-    const record = await this.focusNfe.emitir(
-      {
-        ref: `${focusCfg.refPadrao}-mc-${charge.id}`,
-        data_emissao: new Date().toISOString().slice(0, 10),
-        data_competencia: charge.competencia,
-        tomador: {
-          cpf_cnpj: (customer.cpfOrCnpj || '').replace(/\D/g, ''),
-          razao_social: customer.name,
-          email: customer.email,
-        },
-        servico: {
-          valor_servicos: charge.valorCents / 100,
-          descricao: `Mensalidade ${competenciaStr}`,
-          aliquota: 5,
-          iss_retido: false,
-        },
-      } as any,
-      { monthlyChargeId: charge.id },
-    );
-
-    if (record.status === 'authorized') {
-      charge.nfseId = record.id;
-      charge.status = MonthlyChargeStatus.NFSE_ISSUED;
-      await this.repo.save(charge);
-      this.eventos.emit('nfse.authorized', { nfse: record, monthlyCharge: charge });
+    const result = await this.invoicesService.createFromMonthlyCharge(chargeId);
+    // Mantém compatibilidade com listeners existentes que escutam `nfse.authorized`
+    // recebendo o `MonthlyCharge`. O Invoice tem `monthlyChargeId` que serve de link.
+    if (result.invoice?.id) {
+      const charge = await this.repo.findById(chargeId);
+      if (charge) {
+        this.eventos.emit('nfse.authorized', {
+          invoice: result.invoice,
+          monthlyCharge: charge,
+        });
+      }
     }
-
-    return record;
+    return result;
   }
 
   /**
@@ -206,6 +230,11 @@ export class MonthlyChargesService {
     c.paidAt = new Date().toISOString().slice(0, 10);
     await this.repo.save(c);
     this.eventos.emit('monthly-charge.paid', { charge: c });
+
+    // Verifica se a venda inteira está quitada e dispara sale.paid
+    if (c.saleId) {
+      await this.maybeEmitSalePaid(c.saleId);
+    }
     return c;
   }
 

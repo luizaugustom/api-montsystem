@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException, BadRequestException, Inject, forwardRef } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import * as path from 'path';
 import { BoletosRepository } from './boletos.repository';
@@ -8,6 +8,8 @@ import { CustomersRepository } from '../customers/customers.repository';
 import { buildCustomerAddress } from '../customers/customer-address';
 import { MonthlyCharge, MonthlyChargeStatus } from '../monthly-charges/entities/monthly-charge.entity';
 import { MonthlyChargesRepository } from '../monthly-charges/monthly-charges.repository';
+import { SalesRepository } from '../sales/sales.repository';
+import { Sale } from '../sales/entities/sale.entity';
 import dayjs from 'dayjs';
 
 @Injectable()
@@ -18,44 +20,69 @@ export class BoletosService {
     private repo: BoletosRepository,
     private customersRepo: CustomersRepository,
     private monthlyRepo: MonthlyChargesRepository,
+    private salesRepo: SalesRepository,
     private unimake: UnimakeService,
     private events: EventEmitter2,
   ) {}
 
   /**
-   * Emite boleto para uma mensalidade (monthlyCharge) ou avulso.
+   * Emite boleto vinculado a exatamente uma origem: `saleId` (venda) OU
+   * `monthlyChargeId` (mensalidade). O par XOR é garantido também pelo
+   * CHECK `CHK_boleto_exactly_one_origin` no Postgres. Sem boleto avulso.
    */
   async issue(opts: {
+    saleId?: string;
     monthlyChargeId?: string;
-    customerId?: string;
-    valorCents?: number;
-    vencimento?: string;
-    descricao?: string;
     nossoNumero?: string;
   }): Promise<Boleto> {
+    // XOR: exatamente um dos dois precisa estar presente.
+    const hasSale = !!opts.saleId;
+    const hasCharge = !!opts.monthlyChargeId;
+    if (hasSale === hasCharge) {
+      throw new BadRequestException(
+        'Forneça exatamente um: saleId (venda) OU monthlyChargeId (mensalidade).',
+      );
+    }
+
     let customer: any;
     let valorCents: number;
     let vencimento: string;
     let descricao: string;
     let charge: MonthlyCharge | null = null;
+    let sale: Sale | null = null;
+    let boletoSaleId: string | undefined;
+    let boletoChargeId: string | undefined;
 
-    if (opts.monthlyChargeId) {
-      // Carrega a mensalidade e o cliente dela
-      charge = await this.monthlyRepo.findById(opts.monthlyChargeId);
+    if (opts.saleId) {
+      // --- Branch venda ---
+      sale = await this.salesRepo.findOne(opts.saleId);
+      if (!sale) throw new NotFoundException('Venda não encontrada');
+      if (!sale.clientId) {
+        throw new BadRequestException('Venda sem cliente vinculado (clientId ausente)');
+      }
+      customer = await this.customersRepo.findOne(sale.clientId);
+      if (!customer) throw new NotFoundException('Cliente da venda não encontrado');
+      if (!sale.saleValueCents || sale.saleValueCents <= 0) {
+        throw new BadRequestException('Venda com valor zerado');
+      }
+      valorCents = sale.saleValueCents;
+      vencimento =
+        sale.nextPaymentDate || sale.saleDate || dayjs().add(7, 'day').format('YYYY-MM-DD');
+      descricao = sale.productDescription || `Venda ${sale.id}`;
+      boletoSaleId = sale.id;
+    } else {
+      // --- Branch mensalidade ---
+      charge = await this.monthlyRepo.findById(opts.monthlyChargeId!);
       if (!charge) throw new NotFoundException('Mensalidade não encontrada');
       customer = await this.customersRepo.findOne(charge.customerId);
       if (!customer) throw new NotFoundException('Cliente não encontrado');
       valorCents = charge.valorCents;
       vencimento = charge.vencimento;
       descricao = `Mensalidade ${dayjs(charge.competencia).format('MM/YYYY')} - ${customer.name}`;
-    } else {
-      if (!opts.customerId) throw new BadRequestException('customerId é obrigatório');
-      customer = await this.customersRepo.findOne(opts.customerId);
-      if (!customer) throw new NotFoundException('Cliente não encontrado');
-      if (!opts.valorCents) throw new BadRequestException('valorCents é obrigatório');
-      valorCents = opts.valorCents;
-      vencimento = opts.vencimento || dayjs().add(7, 'day').format('YYYY-MM-DD');
-      descricao = opts.descricao || 'Cobrança avulsa';
+      boletoChargeId = charge.id;
+      // Por design: boleto de mensalidade carrega apenas o `monthlyChargeId`.
+      // A relação venda↔boleto via mensalidade continua consultável via
+      // `Sale.monthlyCharges → charge.boletoId`.
     }
 
     if (!customer.cpfOrCnpj) {
@@ -79,17 +106,18 @@ export class BoletosService {
       valor,
       vencimento,
       descricao,
-      referencia: charge?.id || `avulso-${customer.id}`,
+      referencia: boletoChargeId || boletoSaleId!,
     };
 
     const res = await this.unimake.emitirBoleto(payload);
     if (!res.sucesso) {
       this.logger.error(`Unimake falhou: ${res.mensagem}`);
       // Grava boleto com erro para auditoria
-      const errored = await this.repo.create({
+      await this.repo.create({
         nossoNumero: opts.nossoNumero || `ERR-${Date.now()}`,
         customerId: customer.id,
-        monthlyChargeId: charge?.id,
+        saleId: boletoSaleId,
+        monthlyChargeId: boletoChargeId,
         valorCents,
         vencimento,
         status: BoletoStatus.ERROR,
@@ -103,7 +131,8 @@ export class BoletosService {
     const boleto = await this.repo.create({
       nossoNumero: res.nossoNumero,
       customerId: customer.id,
-      monthlyChargeId: charge?.id,
+      saleId: boletoSaleId,
+      monthlyChargeId: boletoChargeId,
       valorCents,
       vencimento,
       status: BoletoStatus.ISSUED,
@@ -125,14 +154,14 @@ export class BoletosService {
         .catch((e) => this.logger.warn(`Falha cache PDF: ${e?.message}`));
     }
 
-    // Vincula à mensalidade
+    // Vincula à mensalidade (apenas no branch mensalidade)
     if (charge) {
       charge.boletoId = boleto.id;
       charge.status = MonthlyChargeStatus.BOLETO_ISSUED;
       await this.monthlyRepo.save(charge);
     }
 
-    this.events.emit('boleto.issued', { boleto, customer, monthlyCharge: charge });
+    this.events.emit('boleto.issued', { boleto, customer, monthlyCharge: charge, sale });
     return boleto;
   }
 

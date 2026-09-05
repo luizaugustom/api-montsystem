@@ -1,4 +1,6 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Inject } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { InvoicesRepository } from './invoices.repository';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Invoice, InvoiceStatus, InvoiceType } from './entities/invoice.entity';
@@ -17,6 +19,8 @@ import { buildCustomerAddress } from '../customers/customer-address';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { InvoiceItem } from './entities/invoice_item.entity';
+import { MonthlyCharge, MonthlyChargeStatus } from '../monthly-charges/entities/monthly-charge.entity';
+import dayjs from 'dayjs';
 
 interface CreateInvoiceData {
   number: string;
@@ -35,6 +39,7 @@ interface CreateInvoiceData {
   clientAddress?: string;
   description: string;
   saleId?: string;
+  monthlyChargeId?: string;
   /** NFSe payload (sem prestador — vem da empresa). */
   nfse?: {
     codigoServico?: string;
@@ -55,6 +60,12 @@ interface UpdateInvoiceData {
   pdfFilePath?: string;
 }
 
+export interface IssuedInvoiceResult {
+  invoice: Invoice;
+  /** ID do registro NfseEntity criado pelo FocusNfeService (quando aplicável). */
+  nfseId?: number;
+}
+
 @Injectable()
 export class InvoicesService {
   constructor(
@@ -71,6 +82,11 @@ export class InvoicesService {
     // Tomador (NFSe) e prestador (empresa)
     private customersService: CustomersService,
     private companyService: CompanyService,
+    // Repository direto do TypeORM para a mensalidade. Injetado aqui (e não
+    // via MonthlyChargesRepository) para evitar ciclo de módulos — InvoicesService
+    // é consumido por MonthlyChargesService.
+    @InjectRepository(MonthlyCharge)
+    private monthlyChargesRepo: Repository<MonthlyCharge>,
   ) {}
 
   async create(data: CreateInvoiceData & { items?: Array<{ codigo: string; descricao: string; ncm: string; cfop: string; unidade: string; quantidade: number; valorUnitario: number; icms?: { origem: string; cst: string; aliquota?: number; valor?: number } }> }) {
@@ -104,11 +120,27 @@ export class InvoicesService {
       throw new BadRequestException(`Nota fiscal com número ${data.number} já existe`);
     }
 
+    // Auto-popular saleId a partir de monthlyChargeId se a mensalidade
+    // pertence a uma venda. Mantém o vínculo completo (sale + charge) na invoice.
+    let saleId = data.saleId;
+    if (data.monthlyChargeId) {
+      const charge = await this.monthlyChargesRepo.findOne({
+        where: { id: data.monthlyChargeId } as any,
+        relations: ['customer', 'boleto'],
+      });
+      if (!charge) {
+        throw new NotFoundException(`Mensalidade com ID ${data.monthlyChargeId} não encontrada`);
+      }
+      if (!saleId && charge.saleId) {
+        saleId = charge.saleId;
+      }
+    }
+
     // Validar venda se informada
-    if (data.saleId) {
-      const sale = await this.salesRepo.findOne(data.saleId);
+    if (saleId) {
+      const sale = await this.salesRepo.findOne(saleId);
       if (!sale) {
-        throw new NotFoundException(`Venda com ID ${data.saleId} não encontrada`);
+        throw new NotFoundException(`Venda com ID ${saleId} não encontrada`);
       }
     }
 
@@ -137,7 +169,8 @@ export class InvoicesService {
       clientEmail: customer.email,
       clientAddress,
       description: data.description,
-      saleId: data.saleId,
+      saleId,
+      monthlyChargeId: data.monthlyChargeId,
       status: InvoiceStatus.DRAFT,
       items: itemsEntities as any,
     };
@@ -166,6 +199,11 @@ export class InvoicesService {
     return invoices.map(invoice => this.transformInvoiceForResponse(invoice));
   }
 
+  async findByMonthlyChargeId(monthlyChargeId: string) {
+    const invoices = await this.repo.findByMonthlyChargeId(monthlyChargeId);
+    return invoices.map(invoice => this.transformInvoiceForResponse(invoice));
+  }
+
   async findByStatus(status: InvoiceStatus) {
     const invoices = await this.repo.findByStatus(status);
     return invoices.map(invoice => this.transformInvoiceForResponse(invoice));
@@ -183,10 +221,10 @@ export class InvoicesService {
     }
 
     const updated = await this.repo.updateStatus(id, status, additionalData);
-    
+
     // Emitir eventos baseados no status
   this.events.emit('invoice.status.changed', { invoice: updated, oldStatus: invoice.status, newStatus: status });
-    
+
     if (status === InvoiceStatus.AUTHORIZED) {
       this.events.emit('invoice.authorized', { invoice: updated });
     } else if (status === InvoiceStatus.CANCELLED) {
@@ -289,9 +327,9 @@ export class InvoicesService {
         });
 
   this.events.emit('invoice.authorized', { invoice: await this.repo.findOne(id) });
-        
+
         // TODO: Gerar PDF e enviar por email
-        
+
       } else {
         // Marcar como rejeitada
         await this.updateStatus(id, InvoiceStatus.REJECTED, {
@@ -318,7 +356,7 @@ export class InvoicesService {
    * - Prestador vem da empresa cadastrada (company.im, NÃO ie).
    * - Tomador vem do cliente vinculado à invoice (customerId).
    */
-  async sendNfse(id: string): Promise<Invoice> {
+  async sendNfse(id: string): Promise<IssuedInvoiceResult> {
     const invoice = await this.repo.findOne(id);
     if (!invoice) throw new NotFoundException(`Nota fiscal com ID ${id} não encontrada`);
 
@@ -390,7 +428,8 @@ export class InvoicesService {
       outras_informacoes: 'Emitido pelo sistema Mont System',
     } as any;
 
-    const record = await this.focusNfeService.emitir(focusPayload, { invoiceId: Number(id) });
+    // invoiceId agora é UUID string (NfseEntity.invoiceId foi migrado para varchar).
+    const record = await this.focusNfeService.emitir(focusPayload, { invoiceId: invoice.id });
 
     if (record.status === 'authorized') {
       await this.updateStatus(id, InvoiceStatus.AUTHORIZED, {
@@ -409,7 +448,8 @@ export class InvoicesService {
       this.events.emit('nfse.processing', { invoiceId: id, ref: record.ref });
     }
 
-    return this.findOne(id);
+    const refreshed = await this.findOne(id);
+    return { invoice: refreshed, nfseId: record.id };
   }
 
   /**
@@ -420,11 +460,8 @@ export class InvoicesService {
     const invoice = await this.repo.findOne(id);
     if (!invoice) throw new NotFoundException(`Nota fiscal com ID ${id} não encontrada`);
 
-    const numericId = Number(id);
-    if (!Number.isFinite(numericId)) return null;
-
     try {
-      const list = await this.focusNfeService.listAll({ invoiceId: numericId });
+      const list = await this.focusNfeService.listAll({ invoiceId: id });
       const records = Array.isArray(list) ? list : [];
       if (records.length === 0) return null;
       records.sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
@@ -448,7 +485,7 @@ export class InvoicesService {
     }
 
     const response = await this.nfeWebServiceService.consultNFe(invoice.accessKey);
-    
+
     return {
       invoice: this.transformInvoiceForResponse(invoice),
       sefazStatus: response
@@ -532,7 +569,115 @@ export class InvoicesService {
   }
 
   /**
-   * Converte dados da Invoice para formato NFeData
+   * Cria uma Invoice (NFSe) a partir de uma venda. Usado tanto pelo endpoint
+   * manual `POST /sales/:id/issue-invoice` quanto pelo listener de `sale.paid`.
+   *
+   * Idempotência: se já existir invoice AUTHORIZED para esta venda, retorna
+   * a existente em vez de criar uma nova (evita duplicação em retentativas).
+   */
+  async createFromSale(saleId: string): Promise<IssuedInvoiceResult> {
+    const sale = await this.salesRepo.findOne(saleId);
+    if (!sale) throw new NotFoundException(`Venda com ID ${saleId} não encontrada`);
+
+    // Idempotência: invoice já autorizada para esta venda? retorna ela.
+    const existing = await this.repo.findBySaleId(saleId);
+    const authorized = existing.find((i) => i.status === InvoiceStatus.AUTHORIZED);
+    if (authorized) {
+      return { invoice: this.transformInvoiceForResponse(authorized) };
+    }
+
+    if (!sale.clientId) {
+      throw new BadRequestException(
+        'Venda sem cliente vinculado (clientId). Vincule um cliente para emitir NFSe.',
+      );
+    }
+
+    const totalReais = sale.saleValue ?? 0;
+    if (totalReais <= 0) {
+      throw new BadRequestException(
+        'Venda com valor total zerado. Defina saleValue antes de emitir NFSe.',
+      );
+    }
+
+    const today = new Date().toISOString().slice(0, 10);
+    const nextNumber = await this.generateNextNumber('1');
+
+    const invoice = await this.create({
+      number: nextNumber,
+      series: '1',
+      type: InvoiceType.NFSE,
+      issueDate: today,
+      totalValue: totalReais,
+      description: sale.productDescription || 'Venda',
+      saleId: sale.id,
+      customerId: sale.clientId,
+    });
+
+    const result = await this.sendNfse(invoice.id);
+    return result;
+  }
+
+  /**
+   * Cria uma Invoice (NFSe) a partir de uma mensalidade. Usado tanto pelo
+   * endpoint manual `POST /monthly-charges/:id/issue-nfse` quanto pelo
+   * auto-disparo após pagamento do boleto.
+   *
+   * Idempotência: se já existir invoice para esta mensalidade, retorna a
+   * existente em vez de criar uma nova.
+   */
+  async createFromMonthlyCharge(chargeId: string): Promise<IssuedInvoiceResult> {
+    const charge = await this.monthlyChargesRepo.findOne({
+      where: { id: chargeId } as any,
+      relations: ['customer', 'boleto'],
+    });
+    if (!charge) throw new NotFoundException(`Mensalidade com ID ${chargeId} não encontrada`);
+
+    // Idempotência: invoice já existente para esta mensalidade?
+    const existing = await this.repo.findByMonthlyChargeId(chargeId);
+    if (existing.length > 0) {
+      const last = existing[0];
+      return { invoice: this.transformInvoiceForResponse(last) };
+    }
+
+    if (!charge.customerId) {
+      throw new BadRequestException('Mensalidade sem cliente vinculado.');
+    }
+
+    const totalReais = charge.valorCents / 100;
+    if (totalReais <= 0) {
+      throw new BadRequestException('Mensalidade com valor zerado.');
+    }
+
+    const competenciaStr = dayjs(charge.competencia).format('MM/YYYY');
+    const today = new Date().toISOString().slice(0, 10);
+    const nextNumber = await this.generateNextNumber('1');
+
+    const invoice = await this.create({
+      number: nextNumber,
+      series: '1',
+      type: InvoiceType.NFSE,
+      issueDate: today,
+      totalValue: totalReais,
+      description: `Mensalidade ${competenciaStr}`,
+      monthlyChargeId: charge.id,
+      saleId: charge.saleId, // já é o UUID da venda se houver
+      customerId: charge.customerId,
+    });
+
+    const result = await this.sendNfse(invoice.id);
+    // Vincula o NfseEntity.id de volta à mensalidade para manter compatibilidade
+    // com o campo `MonthlyCharge.nfseId` que existe desde a migration inicial.
+    // Também marca status=NFSE_ISSUED para espelhar o que o caminho antigo fazia.
+    if (result.nfseId) {
+      charge.nfseId = result.nfseId;
+      charge.status = MonthlyChargeStatus.NFSE_ISSUED;
+      await this.monthlyChargesRepo.save(charge as any);
+    }
+    return result;
+  }
+
+  /**
+   * Converte Invoice para dados de NFeData
    */
   private convertInvoiceToNFeData(invoice: Invoice): NFeData {
     const config = this.nfeConfigService.getConfig();
@@ -598,7 +743,7 @@ export class InvoicesService {
   private parseClientAddress(address: string) {
     // Implementação básica - em produção, usar um parser mais robusto
     const parts = address.split(',');
-    
+
     return {
       logradouro: parts[0]?.trim() || 'Não informado',
       numero: parts[1]?.trim() || 'S/N',

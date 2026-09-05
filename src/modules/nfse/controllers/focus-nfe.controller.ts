@@ -28,9 +28,10 @@ export class FocusNfeController {
   @Get()
   @Permissions('nfse', 'view')
   async list(@Query('monthlyChargeId') monthlyChargeId?: string, @Query('invoiceId') invoiceId?: string) {
+    // invoiceId agora é UUID string (NfseEntity.invoiceId foi migrado para varchar).
     return this.focus.listAll({
       monthlyChargeId,
-      invoiceId: invoiceId ? Number(invoiceId) : undefined,
+      invoiceId,
     });
   }
 
