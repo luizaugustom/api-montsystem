@@ -86,6 +86,28 @@ export class NFeConfigService {
     this.loadConfig();
   }
 
+  /**
+   * Aplica config vinda do Postgres (CompanyService). Preferir isto ao reload()
+   * baseado em company.json / ENV — o disco é efêmero em App Platform.
+   */
+  applyFromCompany(cfg: any): void {
+    if (!this.config) this.loadConfig();
+    this.config = {
+      ...this.config,
+      environment: cfg.environment ?? this.config.environment,
+      uf: cfg.uf ?? this.config.uf,
+      company: {
+        ...this.config.company,
+        ...(cfg.company || {}),
+        address: { ...this.config.company.address, ...(cfg.company?.address || {}) },
+        contact: { ...this.config.company.contact, ...(cfg.company?.contact || {}) },
+      },
+      certificate: { ...this.config.certificate, ...(cfg.certificate || {}) },
+      email: { ...this.config.email, ...(cfg.email || {}) },
+      paths: { ...this.config.paths, ...(cfg.paths || {}) },
+    };
+  }
+
   getWebServiceUrls() {
     const { uf, environment } = this.config;
     

@@ -1,4 +1,4 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException, OnModuleInit } from '@nestjs/common';
 import axios, { AxiosInstance } from 'axios';
 import { IntegrationsStorage, UnimakeConfig } from '../../modules/integrations/integrations-storage';
 
@@ -46,12 +46,14 @@ export interface UnimakeEmitirResponse {
 }
 
 @Injectable()
-export class UnimakeService {
+export class UnimakeService implements OnModuleInit {
   private readonly logger = new Logger(UnimakeService.name);
   private client: AxiosInstance | null = null;
   private currentKey: string | null = null;
 
-  constructor(private storage: IntegrationsStorage) {
+  constructor(private storage: IntegrationsStorage) {}
+
+  onModuleInit() {
     this.refresh();
   }
 
@@ -78,6 +80,7 @@ export class UnimakeService {
   }
 
   private requireClient(): AxiosInstance {
+    this.refresh();
     if (!this.client) {
       throw new BadRequestException('Unimake não configurada (defina UNIMAKE_API_KEY em /integracoes)');
     }

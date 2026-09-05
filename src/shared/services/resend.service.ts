@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Resend } from 'resend';
 import * as fs from 'fs/promises';
 import { IntegrationsStorage, ResendConfig } from '../../modules/integrations/integrations-storage';
@@ -18,12 +18,14 @@ export interface ResendEmailOptions {
 }
 
 @Injectable()
-export class ResendService {
+export class ResendService implements OnModuleInit {
   private readonly logger = new Logger(ResendService.name);
   private client: Resend | null = null;
   private currentKey: string | null = null;
 
-  constructor(private storage: IntegrationsStorage) {
+  constructor(private storage: IntegrationsStorage) {}
+
+  onModuleInit() {
     this.refresh();
   }
 
@@ -53,6 +55,7 @@ export class ResendService {
    * Envia email. Anexos vêm do disco (path) ou buffer.
    */
   async send(options: ResendEmailOptions): Promise<{ id: string | null; ok: boolean; error?: string }> {
+    this.refresh();
     if (!this.client) {
       return { id: null, ok: false, error: 'Resend não configurado (defina RESEND_API_KEY em /integracoes)' };
     }

@@ -37,6 +37,7 @@ export class Company {
       city: string;
       cityCode: string;
       state: string;
+      complement?: string;
     };
     contact: {
       phone?: string;

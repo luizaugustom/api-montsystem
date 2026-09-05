@@ -15,7 +15,7 @@ export class IntegrationsService {
     return this.storage.getOne(key);
   }
 
-  save(key: IntegrationKey, partial: any): IntegrationsData {
+  async save(key: IntegrationKey, partial: any): Promise<IntegrationsData> {
     return this.storage.save({ [key]: partial } as Partial<IntegrationsData>);
   }
 

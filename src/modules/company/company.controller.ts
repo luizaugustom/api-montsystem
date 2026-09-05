@@ -24,7 +24,8 @@ export class CompanyController {
   @Permissions('company', 'edit')
   async saveConfig(@Body() body: CompanyConfig) {
     const res = await this.service.save(body);
-    this.nfeConfig.reload();
+    const saved = await this.service.get();
+    if (saved) this.nfeConfig.applyFromCompany(saved);
     return res;
   }
 
@@ -52,7 +53,8 @@ export class CompanyController {
     const cfg = (await this.service.get()) || ({} as any);
     const newCfg = { ...(cfg || {}), certificate: { path: certPath, password } };
     await this.service.save(newCfg as CompanyConfig);
-    this.nfeConfig.reload();
+    const saved = await this.service.get();
+    if (saved) this.nfeConfig.applyFromCompany(saved);
     return { message: 'Certificado salvo', path: certPath };
   }
 

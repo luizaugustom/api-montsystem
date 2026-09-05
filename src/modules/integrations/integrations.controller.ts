@@ -29,11 +29,12 @@ export class IntegrationsController {
 
   @Put(':key')
   @Permissions('integrations', 'edit')
-  update(@Param('key') key: string, @Body() body: any) {
+  async update(@Param('key') key: string, @Body() body: any) {
     if (!VALID_KEYS.includes(key as IntegrationKey)) {
       return { error: 'Integração inválida' };
     }
-    return this.service.save(key as IntegrationKey, body);
+    await this.service.save(key as IntegrationKey, body);
+    return this.service.getAll(true);
   }
 
   @Post(':key/test')

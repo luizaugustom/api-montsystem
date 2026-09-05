@@ -23,6 +23,7 @@ export interface CompanyConfig {
       city: string;
       cityCode: string;
       state: string;
+      complement?: string;
     };
     contact: {
       phone?: string;
@@ -68,15 +69,17 @@ export class CompanyService {
     };
   }
 
-  async save(data: CompanyConfig): Promise<{ message: string }> {
-    // Upsert: cria se não existir, atualiza se já existir — sempre no id do singleton.
+  async save(data: CompanyConfig | Record<string, any>): Promise<{ message: string }> {
+    const existing = await this.get();
+    const normalized = normalizeCompanyPayload(data, existing);
+
     const payload: Partial<Company> = {
-      environment: data.environment,
-      uf: data.uf,
-      company: data.company,
-      certificate: data.certificate ?? { path: '', password: '' },
-      email: data.email ?? undefined,
-      paths: data.paths ?? undefined,
+      environment: normalized.environment,
+      uf: normalized.uf,
+      company: normalized.company,
+      certificate: normalized.certificate ?? { path: '', password: '' },
+      email: normalized.email ?? undefined,
+      paths: normalized.paths ?? undefined,
     };
 
     // INSERT … ON CONFLICT (id) DO UPDATE — preserva createdAt.
@@ -93,4 +96,86 @@ export class CompanyService {
 
     return { message: 'Configuração salva com sucesso' };
   }
+}
+
+/**
+ * Aceita o shape aninhado da API ou o shape plano legado do front,
+ * mesclando com o que já está no banco.
+ */
+function normalizeCompanyPayload(
+  data: any,
+  existing: CompanyConfig | null,
+): CompanyConfig {
+  // Shape aninhado (API / NFe)
+  if (data?.company && typeof data.company === 'object') {
+    return {
+      environment: data.environment ?? existing?.environment ?? 'homologacao',
+      uf: data.uf ?? existing?.uf ?? 'SP',
+      company: {
+        cnpj: data.company.cnpj ?? existing?.company?.cnpj ?? '',
+        ie: data.company.ie ?? existing?.company?.ie ?? '',
+        im: data.company.im ?? existing?.company?.im ?? '',
+        name: data.company.name ?? existing?.company?.name ?? '',
+        fantasy: data.company.fantasy ?? existing?.company?.fantasy ?? '',
+        crt: Number(data.company.crt ?? existing?.company?.crt ?? 1),
+        address: {
+          street: data.company.address?.street ?? existing?.company?.address?.street ?? '',
+          number: data.company.address?.number ?? existing?.company?.address?.number ?? '',
+          neighborhood:
+            data.company.address?.neighborhood ?? existing?.company?.address?.neighborhood ?? '',
+          cep:
+            data.company.address?.cep ??
+            data.company.address?.zip ??
+            existing?.company?.address?.cep ??
+            '',
+          city: data.company.address?.city ?? existing?.company?.address?.city ?? '',
+          cityCode: data.company.address?.cityCode ?? existing?.company?.address?.cityCode ?? '',
+          state: data.company.address?.state ?? existing?.company?.address?.state ?? '',
+          complement:
+            data.company.address?.complement ?? existing?.company?.address?.complement ?? '',
+        },
+        contact: {
+          phone: data.company.contact?.phone ?? existing?.company?.contact?.phone ?? '',
+          email: data.company.contact?.email ?? existing?.company?.contact?.email ?? '',
+        },
+      },
+      certificate: data.certificate ?? existing?.certificate ?? { path: '', password: '' },
+      email: data.email ?? existing?.email,
+      paths: data.paths ?? existing?.paths,
+    };
+  }
+
+  // Shape plano (legado do front)
+  return {
+    environment: data.environment ?? existing?.environment ?? 'homologacao',
+    uf: data.uf ?? data.address?.state ?? existing?.uf ?? 'SP',
+    company: {
+      cnpj: data.cnpj ?? existing?.company?.cnpj ?? '',
+      ie: data.ie ?? existing?.company?.ie ?? '',
+      im: data.im ?? existing?.company?.im ?? '',
+      name: data.name ?? existing?.company?.name ?? '',
+      fantasy: data.fantasy ?? existing?.company?.fantasy ?? '',
+      crt: Number(data.crt ?? existing?.company?.crt ?? 1),
+      address: {
+        street: data.address?.street ?? existing?.company?.address?.street ?? '',
+        number: data.address?.number ?? existing?.company?.address?.number ?? '',
+        neighborhood:
+          data.address?.neighborhood ?? existing?.company?.address?.neighborhood ?? '',
+        cep: data.address?.zip ?? data.address?.cep ?? existing?.company?.address?.cep ?? '',
+        city: data.address?.city ?? existing?.company?.address?.city ?? '',
+        cityCode: data.address?.cityCode ?? existing?.company?.address?.cityCode ?? '',
+        state: data.address?.state ?? existing?.company?.address?.state ?? '',
+        complement: data.address?.complement ?? existing?.company?.address?.complement ?? '',
+      },
+      contact: {
+        phone: data.contact?.phone ?? existing?.company?.contact?.phone ?? '',
+        email: data.contact?.email ?? existing?.company?.contact?.email ?? '',
+      },
+    },
+    certificate: data.certificate?.path
+      ? { path: data.certificate.path, password: data.certificate.password ?? '' }
+      : existing?.certificate ?? { path: '', password: '' },
+    email: existing?.email,
+    paths: existing?.paths,
+  };
 }
